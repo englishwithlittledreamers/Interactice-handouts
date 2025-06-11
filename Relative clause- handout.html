@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Handout: Relative Clauses & Reading</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* White background */
+        }
+        /* Style for disabled radio buttons and text inputs */
+        input[type='radio'].form-radio:disabled,
+        input[type='text']:read-only,
+        textarea:read-only {
+            opacity: 0.7; /* Make them slightly faded when disabled */
+            cursor: not-allowed;
+            background-color: #f5f5f5; /* Light gray background for disabled inputs */
+        }
+
+        /* Style for radio buttons */
+        input[type='radio'].form-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            border-radius: 100%;
+            height: 1.25em;
+            width: 1.25em;
+            border: 2px solid #D1D5DB; /* gray-300 */
+            background-color: #F9FAFB; /* gray-50 */
+            transition: all 0.2s ease-in-out;
+        }
+        input[type='radio'].form-radio:checked {
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+        }
+        input[type='radio'].form-radio:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* blue-500 with opacity */
+        }
+
+        /* Ensure input fields don't wrap text onto the next line awkwardly */
+        .input-container {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping for small screens */
+            align-items: center;
+            gap: 0.5rem; /* Space between elements */
+        }
+        .input-container input[type="text"] {
+            flex-grow: 1; /* Allow input to grow */
+            min-width: 150px; /* Minimum width for input */
+        }
+        /* Highlight styles */
+        .highlight-yellow { background-color: #FEF9C3; } /* Yellow-100 */
+        .highlight-blue { background-color: #DBEAFE; } /* Blue-100 */
+        .highlight-green { background-color: #D1FAE5; } /* Green-100 */
+        .highlight-pink { background-color: #FCE7F3; } /* Pink-100 */
+        .highlighted-text {
+            /* Ensures highlighted text is treated as a single unit for selection */
+            display: inline;
+        }
+
+        /* Adjust for very small screens if necessary */
+        @media (max-width: 640px) {
+            .input-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .input-container input {
+                width: 100%; /* Full width on small screens */
+            }
+            .question-container .question-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .question-container .options-row {
+                justify-content: flex-start; /* Align radio buttons to start */
+                margin-left: 0; /* Remove specific left margin */
+                padding-left: 2rem; /* Add padding for alignment under number */
+            }
+            .summary-question-area .summary-text,
+            .chocolate-passage-text {
+                display: block; /* Ensure lines break correctly in summary text */
+            }
+            .summary-blank-input,
+            .chocolate-blank-input {
+                margin-top: 0.5rem; /* Add some space above input in summary */
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-6 sm:p-8 md:p-10 rounded-xl w-full max-w-4xl border border-gray-200">
+
+        <div id="handoutContent" class="space-y-8 text-gray-700 text-base sm:text-lg leading-relaxed select-text">
+
+            <!-- A. Context Listening -->
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">A. Context Listening</h2>
+            <div class="mb-6">
+                <p class="font-semibold text-base sm:text-lg text-gray-800">Before you listen:</p>
+                <p class="text-base sm:text-lg text-gray-700">You are going to hear part of a radio programme about making sure your home is safe when you are away. Look at the picture below. What do you think the programme will mention? </p>
+            </div>
+
+            <div class="mb-8">
+                <p class="font-semibold text-base sm:text-lg text-gray-800">During Listening:</p>
+                <p class="text-base sm:text-lg text-gray-700">2. Listen and check your ideas. </p>
+                <p class="text-base sm:text-lg text-gray-700 mt-2">3. Listen again and complete the advice below using no more than three words from the recording.</p>
+
+                <h3 class="text-lg font-bold text-gray-800 mt-4">How to Protect Your Home</h3>
+                <h4 class="text-md font-semibold text-gray-800 mt-2">Outdoors</h4>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                    <li>If you live in an area 1.
+                        <input type="text" id="cl_blank1" data-correct-answer="where there are" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                        a lot of tall trees, cut off overhanging or dead branches.
+                    </li>
+                    <li>Put away objects 2.
+                        <input type="text" id="cl_blank2" data-correct-answer="that could become" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                        damaging missiles.
+                    </li>
+                </ul>
+                <h4 class="text-md font-semibold text-gray-800 mt-4">Indoors</h4>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                    <li>If you are away for a long time, then find someone 3.
+                        <input type="text" id="cl_blank3" data-correct-answer="that can check" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                        on your home for you.
+                    </li>
+                    <li>Install lights 4.
+                        <input type="text" id="cl_blank4" data-correct-answer="which have" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                        a timer so that it looks as though you are home.
+                    </li>
+                    <li>Find someone 5.
+                        <input type="text" id="cl_blank5" data-correct-answer="who can collect" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                        your mail regularly.
+                    </li>
+                </ul>
+
+                <p class="text-base sm:text-lg text-gray-700 mt-6">Underline all relative pronouns in your answers (where, which, who, that). </p>
+                <div class="flex flex-col space-y-2 mt-4">
+                    <div class="flex items-center">
+                        <span class="mr-2">Which relative pronoun refers to a place?</span>
+                        <input type="text" id="cl_qPlace" data-correct-answer="where" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-32">
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2">Which pronouns refer to people?</span>
+                        <input type="text" id="cl_qPeople" data-correct-answer="that,who" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2">Which pronouns refer to things?</span>
+                        <input type="text" id="cl_qThings" data-correct-answer="that,which" class="context-listening-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                    </div>
+                </div>
+            </div>
+
+            <!-- B. Grammar Reference -->
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">B. Grammar Reference</h2>
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-gray-800">0. Structure of a Relative Clause</h3>
+                <p class="text-base sm:text-lg text-gray-700">A relative clause is formed by:</p>
+                <pre class="bg-gray-100 p-3 rounded-md text-sm sm:text-base">[Relative Pronoun] + [Subject/Object] + [Verb Phrase]</pre>
+                <ul class="list-disc list-inside ml-4 text-base sm:text-lg text-gray-700">
+                    <li>Relative Pronoun: who, which, that, where, when, whose, why</li>
+                    <li>Subject/Object: can be omitted if the pronoun refers to the object in defining clauses</li>
+                    <li>Verb Phrase: follows the pronoun to give additional information</li>
+                </ul>
+                <p class="text-base sm:text-lg text-gray-700">Examples:</p>
+                <ul class="list-disc list-inside ml-4 text-base sm:text-lg text-gray-700">
+                    <li>The house that stands at the end of the street.</li>
+                    <li>The man who lives next door.</li>
+                    <li>A time when everything changes.</li>
+                </ul>
+
+                <h3 class="text-lg font-bold text-gray-800">1. Relative Pronouns</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-2 px-4 border-b text-left text-sm sm:text-base">Pronoun</th>
+                                <th class="py-2 px-4 border-b text-left text-sm sm:text-base">Refers to</th>
+                                <th class="py-2 px-4 border-b text-left text-sm sm:text-base">Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">who</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">people</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Please welcome Mike Bowers, who is going to talk…</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">which</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">things</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">These are dangerous if you live in a flat which…</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">that</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">people or things</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Find someone that can check on your home…</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">where</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">places</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Your home, the place where you keep…</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">when</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">times</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">At times when you would normally be home.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">whose</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">possession</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">A person whose job involves…</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">why</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">reason(s)</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Reasons why one house is burgled…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="text-md font-semibold text-gray-800">Notes:</h4>
+                <ul class="list-disc list-inside ml-4 text-base sm:text-lg text-gray-700">
+                    <li>that is not used in non-defining clauses.</li>
+                    <li>We can omit the relative pronoun when it’s the object in defining clauses.</li>
+                    <li>Example:</li>
+                    <ul class="list-circle list-inside ml-8 text-base sm:text-lg text-gray-700">
+                        <li>Defining clause with pronoun: The book that I borrowed was fascinating.</li>
+                        <li>Pronoun omitted: The book I borrowed was fascinating.</li>
+                    </ul>
+                </ul>
+
+                <h3 class="text-lg font-bold text-gray-800">2. Defining Relative Clauses</h3>
+                <ul class="list-disc list-inside ml-4 text-base sm:text-lg text-gray-700">
+                    <li>Give essential information to identify a noun.</li>
+                    <li>No commas.</li>
+                    <li>You’re someone who can collect your mail.</li>
+                </ul>
+
+                <h3 class="text-lg font-bold text-gray-800">3. Non‑Defining Relative Clauses</h3>
+                <ul class="list-disc list-inside ml-4 text-base sm:text-lg text-gray-700">
+                    <li>Add extra, non‑essential information.</li>
+                    <li>Must use commas and cannot use that.</li>
+                    <li>Mr. Smith, who was my teacher,…</li>
+                </ul>
+
+                <h3 class="text-lg font-bold text-gray-800">Key Differences</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-2 px-4 border-b text-left text-sm sm:text-base"></th>
+                                <th class="py-2 px-4 border-b text-left text-sm sm:text-base">Defining</th>
+                                <th class="py-2 px-4 border-b text-left text-sm sm:text-base">Non‑defining</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Information</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Essential to identify noun</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Additional, non-essential</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Pronoun that</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">✅ allowed</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">❌ not allowed</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Omission of pronoun</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">✅ if object</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">❌</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">Commas</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">❌ none</td>
+                                <td class="py-2 px-4 border-b text-sm sm:text-base">✅ required</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="text-lg font-bold text-gray-800">4. Prepositions + Relative Clauses</h3>
+                <ul class="list-disc list-inside ml-4 text-base sm:text-lg text-gray-700">
+                    <li>Informal (end): *a neighbour that you can rely *on</li>
+                    <li>Formal (front): a place to which I applied</li>
+                </ul>
+            </div>
+
+            <!-- C. Grammar Exercises -->
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mt-8 mb-4">C. Grammar Exercises</h2>
+            <div class="space-y-6">
+                <h3 class="text-lg font-bold text-gray-800">1. Match & Join</h3>
+                <p class="text-base sm:text-lg text-gray-700">Match the sentence beginnings with their endings by adding a relative pronoun. Identify two sentences where the pronoun can be omitted.</p>
+
+                <div class="flex flex-col space-y-4">
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">1. The college has many students
+                            <input type="text" id="mj_q1_pronoun" data-correct-answer="that" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            d. are classed as ‘mature’ because they are over 21.
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">2. My cousin Phillip is a solicitor; he was the one
+                            <input type="text" id="mj_q2_pronoun" data-correct-answer="who" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            e. advised me to study law.
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">3. I went to a school
+                            <input type="text" id="mj_q3_pronoun" data-correct-answer="which" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            i. didn’t have very good sports facilities.
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">4. I visited the theatre
+                            <input type="text" id="mj_q4_pronoun" data-correct-answer="where" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            a. Mozart performed many of his operas.
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">5. Why don’t you call again at a time
+                            <input type="text" id="mj_q5_pronoun" data-correct-answer="when" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            f. I'm not as busy.
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">6. Mrs Jackson is the kind of teacher
+                            <input type="text" id="mj_q6_pronoun" data-correct-answer="that" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            c. every student wants to have.
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">7. Faraday was the man
+                            <input type="text" id="mj_q7_pronoun" data-correct-answer="who" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            g. invented the first electric motor.
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">8. Is there any reason
+                            <input type="text" id="mj_q8_pronoun" data-correct-answer="why" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            h. factory burned down yesterday?
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">9. What was the name of that company
+                            <input type="text" id="mj_q9_pronoun" data-correct-answer="whose" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            j. manufacturers like to keep demand above supply?
+                        </p>
+                    </div>
+                    <div class="match-join-question">
+                        <p class="text-base sm:text-lg text-gray-700">10. That’s the woman
+                            <input type="text" id="mj_q10_pronoun" data-correct-answer="whose" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24">
+                            b. flat I rent.
+                        </p>
+                    </div>
+                    <div class="flex items-center mt-6">
+                        <span class="mr-2 text-base sm:text-lg font-semibold">Which two sentences can omit the pronoun?</span>
+                        <input type="text" id="mj_omit_q" data-correct-answer="3,6" class="grammar-exercise-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-gray-800 mt-8">2. Non‑Defining Clauses. Non‑Defining Clauses</h3>
+                <p class="text-base sm:text-lg text-gray-700">Rewrite as single sentences using non‑defining relative clauses:</p>
+                <div class="space-y-4">
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">My father lives in a small house full of ornaments. This makes it really difficult to clean.</p>
+                        <textarea id="ndc_q1" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">Some students take a year out before university. This allows them to work or travel.</p>
+                        <textarea id="ndc_q2" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">The Guggenheim Museum is in Bilbao. It only displays contemporary art.</p>
+                        <textarea id="ndc_q3" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">My English teacher is leaving. His lectures are very interesting.</p>
+                        <textarea id="ndc_q4" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">The lecture was about current economic policy. It was not very easy to understand.</p>
+                        <textarea id="ndc_q5" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">In 1951 my parents arrived in New York. They stayed there for the rest of their lives.</p>
+                        <textarea id="ndc_q6" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">I gave my assignment to the faculty secretary. She was not very friendly.</p>
+                        <textarea id="ndc_q7" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                    <div class="non-defining-exercise">
+                        <p class="text-base sm:text-lg text-gray-700">Faraday was the man who invented the electric motor.</p>
+                        <textarea id="ndc_q8" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your rewritten sentence"></textarea>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-gray-800 mt-8">3. Error Correction</h3>
+                <p class="text-base sm:text-lg text-gray-700">Each email extract contains a mistake with relative clauses. Find and correct them.</p>
+                <div class="space-y-4">
+                    <div class="error-correction-exercise">
+                        <p class="text-base sm:text-lg text-gray-700 font-semibold">Extract 1:</p>
+                        <p class="text-base sm:text-lg text-gray-700 italic">Hi John, I'm looking for someone (which/that) I can borrow a ladder from.</p>
+                        <p class="text-base sm:text-lg text-gray-700">Correction:</p>
+                        <textarea id="ec_q1" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your corrected extract"></textarea>
+                    </div>
+                    <div class="error-correction-exercise">
+                        <p class="text-base sm:text-lg text-gray-700 font-semibold">Extract 2:</p>
+                        <p class="text-base sm:text-lg text-gray-700 italic">Dear team, Please find attached the details of the new courses (which) I saw them advertised last week.</p>
+                        <p class="text-base sm:text-lg text-gray-700">Correction:</p>
+                        <textarea id="ec_q2" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your corrected extract"></textarea>
+                    </div>
+                    <div class="error-correction-exercise">
+                        <p class="text-base sm:text-lg text-gray-700 font-semibold">Extract 3:</p>
+                        <p class="text-base sm:text-lg text-gray-700 italic">Hello, The job you posted sounds very exhausting, that is exactly the kind of role I want.</p>
+                        <p class="text-base sm:text-lg text-gray-700">Correction:</p>
+                        <textarea id="ec_q3" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your corrected extract"></textarea>
+                    </div>
+                    <div class="error-correction-exercise">
+                        <p class="text-base sm:text-lg text-gray-700 font-semibold">Extract 4:</p>
+                        <p class="text-base sm:text-lg text-gray-700 italic">Hi Susan, The lecture (which/that) you gave it on Wednesday was very informative.</p>
+                        <p class="text-base sm:text-lg text-gray-700">Correction:</p>
+                        <textarea id="ec_q4" class="grammar-exercise-textarea w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Your corrected extract"></textarea>
+                    </div>
+                    <!-- Assuming extracts 5-8 would follow a similar pattern if provided -->
+                </div>
+
+                <h3 class="text-lg font-bold text-gray-800 mt-8">4. Chocolate‑making Passage</h3>
+                <p class="text-base sm:text-lg text-gray-700">Complete the text with clauses (a–i) and the correct pronoun (where, which, or that):</p>
+                <div class="space-y-4">
+                    <p class="text-base sm:text-lg text-gray-700 chocolate-passage-text">
+                        Chocolate’s varied flavours, colours, shapes and textures result from different recipe traditions 1.
+                        <input type="text" id="choco_q1_pronoun" data-correct-answer="which" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q1_clause" data-correct-answer="g" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) have evolved in different parts of the world. The essential ingredient in all chocolate is cocoa, which is made from the cream-coloured beans 2.
+                        <input type="text" id="choco_q2_pronoun" data-correct-answer="that" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q2_clause" data-correct-answer="i" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) grow in pods on the cacao tree. The cacao tree, 3.
+                        <input type="text" id="choco_q3_pronoun" data-correct-answer="which" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q3_clause" data-correct-answer="e" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) grows in equatorial regions such as South America, Africa and Indonesia, produces a fruit about the size of a small pineapple. 4.
+                        <input type="text" id="choco_q4_pronoun" data-correct-answer="inside" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q4_clause" data-correct-answer="h" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) are the tree’s seeds.
+                    </p>
+                    <p class="text-base sm:text-lg text-gray-700 chocolate-passage-text">
+                        After harvesting, the cocoa beans are removed from the pods and piled in heaps 5.
+                        <input type="text" id="choco_q5_pronoun" data-correct-answer="where" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q5_clause" data-correct-answer="c" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) they are left for several days to dry. The dried beans are then transported to factories 6.
+                        <input type="text" id="choco_q6_pronoun" data-correct-answer="where" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q6_clause" data-correct-answer="b" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) they are sorted and roasted. The shells are then removed and the beans are ground into chocolate liquor – a thick brown liquid 7.
+                        <input type="text" id="choco_q7_pronoun" data-correct-answer="which" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q7_clause" data-correct-answer="d" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) can be used to make a hot chocolate drink. This liquor contains a high percentage of fat (cocoa butter), 8.
+                        <input type="text" id="choco_q8_pronoun" data-correct-answer="which" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q8_clause" data-correct-answer="f" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) forms a solid at about room temperature. The solid block of cocoa that remains is then made into a powder 9.
+                        <input type="text" id="choco_q9_pronoun" data-correct-answer="that" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-24" placeholder="pronoun">
+                        (
+                        <input type="text" id="choco_q9_clause" data-correct-answer="a" class="chocolate-input p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-12 uppercase" maxlength="1" placeholder="a-i">
+                        ) is removed by using presses, or is mixed back with some of the cocoa butter, sugar and other flavour such as vanilla to make the different kinds of chocolate.
+                    </p>
+                    <h4 class="text-md font-semibold text-gray-800 mt-4">Clauses:</h4>
+                    <ul class="list-disc list-inside ml-4 text-base sm:text-lg text-gray-700">
+                        <li>a. is removed by using presses</li>
+                        <li>b. they are sorted and roasted</li>
+                        <li>c. are left for several days to dry</li>
+                        <li>d. can be used to make a hot chocolate drink</li>
+                        <li>e. grows in equatorial regions such as South America, Africa and Indonesia</li>
+                        <li>f. forms a solid at about room temperature</li>
+                        <li>g. have evolved in different parts of the world</li>
+                        <li>h. inside are the tree's seeds</li>
+                        <li>i. grow in pods on the cacao tree</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- D. Test Practice: Academic Reading -->
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mt-8 mb-4">D. Test Practice: Academic Reading</h2>
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Reading Passage: Robotic approach to crop breeding by Jennifer Manyweathers</h3>
+
+            <div class="space-y-4 text-base sm:text-lg text-gray-700 reading-passage">
+                <p><span class="font-bold">Paragraph A:</span> The Australian sunflower industry is the major source of polyunsaturated fatty acids found in margarines and spreads. Recognised as the type of fatty acid most able to protect against heart disease, it is in everybody’s best interest that Australia has a competitive and healthy sunflower industry, but in Australia there is a constant struggle with the harsh climate. However, thanks to one special robot, farmers may be able to win the battle against drought.</p>
+                <p><span class="font-bold">Paragraph B:</span> Dr Chris Lambrides, a research fellow at the University of Queensland, is nearing the end of a project that aims to develop more drought-tolerant sunflowers by selecting flowers that use water more efficiently. He's done this with the help of a robot developed by the Australian National University's Research School of Biological Sciences.</p>
+                <p><span class="font-bold">Paragraph C:</span> Plants undergo photosynthesis to produce energy in the form of sugar. This involves allowing carbon dioxide to enter the leaves through pores called stomata. Transpiration is the mechanism by which plants lose water through their leaves. This system is thought to facilitate the passage of minerals through the plant and is vital for healthy plants.</p>
+                <p><span class="font-bold">Paragraph D:</span> However, in conditions of drought, the plants that can use the available water efficiently and lose less to the environment will be more likely to thrive and, in a commercial sense, become more profitable. These plants are classified as having a high transpiration efficiency. When plants transpire, the leaves become cooler due to evaporation. Therefore, by measuring the temperature of the leaves, scientists can determine how much water is being lost through transpiration.</p>
+                <p><span class="font-bold">Paragraph E:</span> When the project first began, the researchers used hand-held infrared thermometers to measure the temperature difference between leaves of different varieties of sunflowers in an experimental plot. Wind can affect leaf temperature, and the research team discovered that its initial approach did not cater for changes in wind speed, which could not be controlled as an experimental variable. The team therefore needed a technique to measure temperature continuously that would allow it to examine the effects of other variables such as humidity. They needed a robot.</p>
+                <p><span class="font-bold">Paragraph F:</span> They designed a robot with two infrared thermometers set at 180° to each other. The robot runs on an oblong track around the experimental plot and the thermometers operate on each side of the track. In order to minimize any variables from the two thermometers, they are rotated 180° at the beginning of each run and the results are averaged. The infrared thermometers can be rotated on an angle to examine different parts of the foliage.</p>
+                <p><span class="font-bold">Paragraph G:</span> The robot is also able to detect light intensity. It has a garage on the track, where it waits until the light intensity is high enough to give useful results. If the skies darken due to rain, heavy cloud cover or sunset, the robot makes its way back to the garage to wait.</p>
+                <p><span class="font-bold">Paragraph H:</span> The main difficulty faced by the research group was to find an agronomist who could grow the perfect crop of sunflowers. The sunflower canopy had to be complete, with no visible soil, so that the thermometers would only measure the temperature of the plants and not the surrounding environment. Eight varieties of sunflower were examined. The data collected by the robot has been used by the research team to determine which variety has the highest transpiration efficiency.</p>
+                <p><span class="font-bold">Paragraph I:</span> This is not the first time such methods have been used to determine drought-resistance in plants. The team and their robot have already made a major breakthrough in the Australian wheat industry with Drysdale Wheat, which signalled the arrival of a new technique for selecting drought-resistant species.</p>
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-800 mt-8 mb-4">Questions 1–4 (NO MORE THAN TWO WORDS)</h3>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">Complete the sentences below using NO MORE THAN TWO WORDS from the passage.</p>
+            <div class="space-y-4">
+                <div class="short-answer-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">1</span>
+                    <p class="flex-grow pl-2">Sunflowers defend humans against
+                        <input type="text" id="rp_q1" data-correct-answer="heart disease" class="reading-practice-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-48">.
+                    </p>
+                </div>
+                <div class="short-answer-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">2</span>
+                    <p class="flex-grow pl-2">The team wanted a sunflower for
+                        <input type="text" id="rp_q2" data-correct-answer="drought-tolerant" class="reading-practice-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-48"> conditions.
+                    </p>
+                </div>
+                <div class="short-answer-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">3</span>
+                    <p class="flex-grow pl-2">The process believed to help keep plants healthy is
+                        <input type="text" id="rp_q3" data-correct-answer="transpiration" class="reading-practice-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-48">.
+                    </p>
+                </div>
+                <div class="short-answer-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">4</span>
+                    <p class="flex-grow pl-2">They needed to measure external conditions like
+                        <input type="text" id="rp_q4a" data-correct-answer="wind speed" class="reading-practice-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">
+                        and
+                        <input type="text" id="rp_q4b" data-correct-answer="humidity" class="reading-practice-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-40">.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-800 mt-8 mb-4">Questions 5–12 (Paragraph Matching)</h3>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">Which paragraph (A–I) contains:</p>
+            <div class="space-y-4">
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">5</span>
+                    <p class="flex-grow pl-2">Precise growing conditions for the experiment.</p>
+                    <input type="text" id="rp_q5" data-correct-answer="H" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">6</span>
+                    <p class="flex-grow pl-2">A description of how the robot operates.</p>
+                    <input type="text" id="rp_q6" data-correct-answer="F" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">7</span>
+                    <p class="flex-grow pl-2">An explanation of two plant processes.</p>
+                    <input type="text" id="rp_q7" data-correct-answer="C" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">8</span>
+                    <p class="flex-grow pl-2">A reference to a previous study with a different crop.</p>
+                    <input type="text" id="rp_q8" data-correct-answer="I" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">9</span>
+                    <p class="flex-grow pl-2">Details of what the robot does in poor conditions.</p>
+                    <input type="text" id="rp_q9" data-correct-answer="G" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">10</span>
+                    <p class="flex-grow pl-2">Name of the group responsible for the robot.</p>
+                    <input type="text" id="rp_q10" data-correct-answer="B" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">11</span>
+                    <p class="flex-grow pl-2">Number of sunflower types tested.</p>
+                    <input type="text" id="rp_q11" data-correct-answer="H" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+                <div class="paragraph-matching-question flex items-center">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">12</span>
+                    <p class="flex-grow pl-2">Purpose of measuring leaf temperature.</p>
+                    <input type="text" id="rp_q12" data-correct-answer="D" class="paragraph-matching-blank p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 w-20 text-center uppercase" maxlength="1" placeholder="A-I">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <button id="checkAnswersBtn"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    disabled>
+                Check Answers
+            </button>
+            <button id="saveResultsBtn"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                    disabled>
+                Download Results (PDF)
+            </button>
+        </div>
+
+        <div id="feedback" class="mt-6 text-center text-lg font-semibold text-gray-800"></div>
+
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500 transition-colors duration-200" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500 transition-colors duration-200" data-color="highlight-pink"></div>
+    </div>
+
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contextListeningBlanks = document.querySelectorAll('.context-listening-blank');
+            const matchJoinPronouns = document.querySelectorAll('.match-join-question input[type="text"]');
+            const matchJoinOmitQ = document.getElementById('mj_omit_q');
+            const nonDefiningTextareas = document.querySelectorAll('.non-defining-exercise textarea');
+            const errorCorrectionTextareas = document.querySelectorAll('.error-correction-exercise textarea');
+            const chocolateInputs = document.querySelectorAll('.chocolate-input'); // for pronoun and clause letter
+            const readingPracticeBlanks = document.querySelectorAll('.reading-practice-blank');
+            const paragraphMatchingBlanks = document.querySelectorAll('.paragraph-matching-blank');
+
+            const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+            const saveResultsBtn = document.getElementById('saveResultsBtn');
+            const feedbackDiv = document.getElementById('feedback');
+            const handoutContent = document.getElementById('handoutContent'); // Changed from dictationContent
+
+            // Floating toolbar elements
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const toolbarClearBtn = document.getElementById('toolbarClearBtn');
+            const toolbarYellow = document.getElementById('toolbarYellow');
+            const toolbarBlue = document.getElementById('toolbarBlue');
+            const toolbarGreen = document.getElementById('toolbarGreen');
+            const toolbarPink = document.getElementById('toolbarPink');
+
+            let currentHighlights = [];
+            let lastSelectionRange = null;
+            let answersCheckedFlag = false;
+
+            // Define correct answers for non-auto-graded sections for PDF output
+            const nonDefiningCorrectAnswers = {
+                'ndc_q1': 'My father lives in a small house full of ornaments, which makes it really difficult to clean.',
+                'ndc_q2': 'Some students take a year out before university, which allows them to work or travel.',
+                'ndc_q3': 'The Guggenheim Museum, which only displays contemporary art, is in Bilbao.',
+                'ndc_q4': 'My English teacher, whose lectures are very interesting, is leaving.',
+                'ndc_q5': 'The lecture, which was not very easy to understand, was about current economic policy.',
+                'ndc_q6': 'My parents arrived in New York in 1951, where they stayed for the rest of their lives.',
+                'ndc_q7': 'I gave my assignment to the faculty secretary, who was not very friendly.',
+                'ndc_q8': 'Faraday was the man who invented the electric motor.'
+            };
+
+            const errorCorrectionCorrectAnswers = {
+                'ec_q1': "Hi John, I'm looking for someone (who/that) I can borrow a ladder from.",
+                'ec_q2': "Dear team, Please find attached the details of the new courses (that) I saw advertised last week.",
+                'ec_q3': "Hello, The job you posted sounds very exhausting, which is exactly the kind of role I want.",
+                'ec_q4': "Hi Susan, The lecture (which/that) you gave on Wednesday was very informative."
+            };
+
+
+            // --- Highlighting Logic ---
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                let range;
+
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    feedbackDiv.textContent = "No text selected or previously selected to highlight.";
+                    feedbackDiv.classList.add('text-red-600');
+                    return;
+                }
+
+                const selectedText = range.toString().trim();
+                if (!selectedText) return;
+
+                const span = document.createElement('span');
+                span.classList.add(colorClass);
+                span.classList.add('highlighted-text');
+
+                try {
+                    const contents = range.extractContents();
+                    span.appendChild(contents);
+                    range.insertNode(span);
+
+                    const existingHighlight = currentHighlights.find(
+                        h => h.text === selectedText && h.color === colorClass.replace('highlight-', '')
+                    );
+                    if (!existingHighlight) {
+                        currentHighlights.push({
+                            text: selectedText,
+                            color: colorClass.replace('highlight-', '')
+                        });
+                    }
+
+                    selection.removeAllRanges();
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                } catch (e) {
+                    console.error("Error applying highlight:", e);
+                    feedbackDiv.textContent = "Could not highlight complex selection. Try selecting less text.";
+                    feedbackDiv.classList.add('text-red-600');
+                }
+            }
+
+            function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                let range;
+
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    feedbackDiv.textContent = "No text selected or previously selected to clear highlight.";
+                    feedbackDiv.classList.add('text-red-600');
+                    return;
+                }
+
+                const selectedNode = range.commonAncestorContainer;
+                let highlightedSpan = null;
+
+                if (selectedNode && selectedNode.nodeType === Node.ELEMENT_NODE && selectedNode.classList.contains('highlighted-text')) {
+                    highlightedSpan = selectedNode;
+                } else {
+                    let currentNode = selectedNode;
+                    while (currentNode && currentNode !== handoutContent && currentNode.parentNode) { // Changed dictationContent to handoutContent
+                        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.classList.contains('highlighted-text')) {
+                            highlightedSpan = currentNode;
+                            break;
+                        }
+                        currentNode = currentNode.parentNode;
+                    }
+                }
+
+                if (highlightedSpan && highlightedSpan.parentNode) {
+                    const textContent = highlightedSpan.textContent;
+                    highlightedSpan.parentNode.replaceChild(document.createTextNode(textContent), highlightedSpan);
+
+                    currentHighlights = currentHighlights.filter(h => h.text.toLowerCase() !== textContent.toLowerCase());
+
+                    selection.removeAllRanges();
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                    feedbackDiv.textContent = "Highlight cleared.";
+                    feedbackDiv.classList.remove('text-green-600', 'text-red-600', 'text-blue-600');
+                } else {
+                    feedbackDiv.textContent = "No highlight found to clear for this selection.";
+                    feedbackDiv.classList.add('text-red-600');
+                }
+            }
+
+            // --- Event Listeners for Toolbar ---
+            toolbarYellow.addEventListener('click', () => applyHighlight('highlight-yellow'));
+            toolbarBlue.addEventListener('click', () => applyHighlight('highlight-blue'));
+            toolbarGreen.addEventListener('click', () => applyHighlight('highlight-green'));
+            toolbarPink.addEventListener('click', () => applyHighlight('highlight-pink'));
+            toolbarClearBtn.addEventListener('click', clearSelectedHighlight);
+
+            handoutContent.addEventListener('mouseup', (event) => { // Changed dictationContent to handoutContent
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0);
+                    const rect = lastSelectionRange.getBoundingClientRect();
+                    const toolbarHeight = floatingToolbar.offsetHeight;
+                    const toolbarWidth = floatingToolbar.offsetWidth;
+
+                    floatingToolbar.style.top = `${rect.top + window.scrollY - toolbarHeight - 10}px`;
+                    let leftPos = rect.left + window.scrollX + (rect.width / 2) - (toolbarWidth / 2);
+                    leftPos = Math.max(10, leftPos);
+                    leftPos = Math.min(leftPos, window.innerWidth - toolbarWidth - 10);
+                    floatingToolbar.style.left = `${leftPos}px`;
+
+                    floatingToolbar.classList.remove('hidden');
+                } else {
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                }
+            });
+
+            document.addEventListener('mousedown', (event) => {
+                if (!floatingToolbar.contains(event.target) && !handoutContent.contains(event.target)) { // Changed dictationContent to handoutContent
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                }
+            });
+
+            // --- Worksheet Functionality ---
+            function getResults() {
+                const results = [];
+                let correctCount = 0;
+                let totalQuestions = 0;
+
+                // A. Context Listening
+                contextListeningBlanks.forEach(input => {
+                    totalQuestions++;
+                    const questionNumber = input.id.replace('cl_blank', '').replace('cl_q', '');
+                    const userAnswer = input.value.trim();
+                    const correctAnswer = input.dataset.correctAnswer.trim();
+                    let isCorrect = (userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+                    if (input.id === 'cl_qPeople' || input.id === 'cl_qThings') {
+                        // For comma-separated answers, allow different order
+                        const userParts = userAnswer.toLowerCase().split(',').map(p => p.trim()).sort().join(',');
+                        const correctParts = correctAnswer.toLowerCase().split(',').map(p => p.trim()).sort().join(',');
+                        isCorrect = (userParts === correctParts);
+                    }
+
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'Context Listening',
+                        questionNumber: questionNumber,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+
+                // C.1 Match & Join
+                matchJoinPronouns.forEach(input => {
+                    totalQuestions++;
+                    const questionNumber = input.id.replace('mj_q', '').replace('_pronoun', '');
+                    const userAnswer = input.value.trim();
+                    const correctAnswer = input.dataset.correctAnswer.trim();
+                    const isCorrect = (userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+                    if (isCorrect) correctCount++;
+                    results.push({
+                        type: 'Match & Join (Pronoun)',
+                        questionNumber: questionNumber,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+
+                totalQuestions++;
+                const omitUserAnswer = matchJoinOmitQ.value.trim();
+                const omitCorrectAnswer = matchJoinOmitQ.dataset.correctAnswer.trim();
+                const omitUserParts = omitUserAnswer.split(',').map(p => p.trim()).sort().join(',');
+                const omitCorrectParts = omitCorrectAnswer.split(',').map(p => p.trim()).sort().join(',');
+                const isOmitCorrect = (omitUserParts === omitCorrectParts);
+                if (isOmitCorrect) correctCount++;
+                results.push({
+                    type: 'Match & Join (Omissible)',
+                    questionNumber: 'Omissible Sentences',
+                    userAnswer: omitUserAnswer,
+                    correctAnswer: omitCorrectAnswer,
+                    isCorrect: isOmitCorrect
+                });
+
+
+                // C.2 Non-Defining Clauses (Manual grading in PDF)
+                nonDefiningTextareas.forEach(textarea => {
+                    totalQuestions++; // Count as a question for total
+                    const questionNumber = textarea.id.replace('ndc_q', '');
+                    const userAnswer = textarea.value.trim();
+                    const correctAnswer = nonDefiningCorrectAnswers[textarea.id]; // Get from JS object
+                    results.push({
+                        type: 'Non-Defining Clause Rewrite',
+                        questionNumber: `ND ${questionNumber}`,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        isCorrect: 'Requires manual review' // Indicate manual review
+                    });
+                });
+
+                // C.3 Error Correction (Manual grading in PDF)
+                errorCorrectionTextareas.forEach(textarea => {
+                    totalQuestions++; // Count as a question for total
+                    const questionNumber = textarea.id.replace('ec_q', '');
+                    const userAnswer = textarea.value.trim();
+                    const correctAnswer = errorCorrectionCorrectAnswers[textarea.id]; // Get from JS object
+                    results.push({
+                        type: 'Error Correction',
+                        questionNumber: `EC ${questionNumber}`,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        isCorrect: 'Requires manual review' // Indicate manual review
+                    });
+                });
+
+                // C.4 Chocolate-making Passage
+                for (let i = 1; i <= 9; i++) {
+                    const pronounInput = document.getElementById(`choco_q${i}_pronoun`);
+                    const clauseInput = document.getElementById(`choco_q${i}_clause`);
+
+                    totalQuestions += 2; // Each blank has 2 parts (pronoun + clause letter)
+
+                    const userPronoun = pronounInput.value.trim();
+                    const correctPronoun = pronounInput.dataset.correctAnswer.trim();
+                    const isPronounCorrect = (userPronoun.toLowerCase() === correctPronoun.toLowerCase());
+                    if (isPronounCorrect) correctCount++;
+
+                    const userClause = clauseInput.value.trim();
+                    const correctClause = clauseInput.dataset.correctAnswer.trim();
+                    const isClauseCorrect = (userClause.toLowerCase() === correctClause.toLowerCase());
+                    if (isClauseCorrect) correctCount++;
+
+                    results.push({
+                        type: 'Chocolate Passage',
+                        questionNumber: `Choco ${i} (Pronoun)`,
+                        userAnswer: userPronoun,
+                        correctAnswer: correctPronoun,
+                        isCorrect: isPronounCorrect
+                    });
+                    results.push({
+                        type: 'Chocolate Passage',
+                        questionNumber: `Choco ${i} (Clause)`,
+                        userAnswer: userClause.toUpperCase(),
+                        correctAnswer: correctClause.toUpperCase(),
+                        isCorrect: isClauseCorrect
+                    });
+                }
+
+
+                // D. Test Practice Questions 1-4 (Short Answer)
+                readingPracticeBlanks.forEach(input => {
+                    totalQuestions++;
+                    const questionNumber = input.id.replace('rp_q', '');
+                    const userAnswer = input.value.trim();
+                    const correctAnswer = input.dataset.correctAnswer.trim();
+                    let isCorrect = (userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+                    
+                    // Special handling for q4a and q4b if they are part of a combined answer
+                    if (input.id === 'rp_q4a' || input.id === 'rp_q4b') {
+                         // This is a combined answer for Q4.
+                         // We'll treat it as one overall question for scoring after combining.
+                         // For now, record individually, but the totalQuestions count is already correct.
+                         // Actual scoring for combined Q4 will be handled by seeing if BOTH are correct.
+                        const q4a_val = document.getElementById('rp_q4a').value.trim().toLowerCase();
+                        const q4b_val = document.getElementById('rp_q4b').value.trim().toLowerCase();
+                        const correct4a = document.getElementById('rp_q4a').dataset.correctAnswer.toLowerCase();
+                        const correct4b = document.getElementById('rp_q4b').dataset.correctAnswer.toLowerCase();
+
+                        isCorrect = (q4a_val === correct4a && q4b_val === correct4b) || (q4a_val === correct4b && q4b_val === correct4a);
+                        // To avoid double counting, I'll count this as 1 question for score logic outside the loop.
+                        // For the results array, we'll list both parts.
+                    }
+
+                    results.push({
+                        type: 'Reading Practice (Short Answer)',
+                        questionNumber: questionNumber,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+                
+                // Adjust for Q4 double-counting in short answers: 
+                // For Q4, if both blanks were filled, it contributes 2 to totalQuestions, but should be 1 for score.
+                // Re-evaluate correctCount for Q4 specifically.
+                // Assuming Q4 is split into rp_q4a and rp_q4b and counted as 2 questions above.
+                // If the prompt implies Q4 is *one* question with two parts, then adjust totalQuestions and correctCount.
+                // For now, let's keep it simple: each blank is a point. So, 2 points for Q4.
+
+                // D. Test Practice Questions 5-12 (Paragraph Matching)
+                paragraphMatchingBlanks.forEach(input => {
+                    totalQuestions++;
+                    const questionNumber = input.id.replace('rp_q', '');
+                    const userAnswer = input.value.trim();
+                    const correctAnswer = input.dataset.correctAnswer.trim();
+                    const isCorrect = (userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'Reading Practice (Paragraph Match)',
+                        questionNumber: questionNumber,
+                        userAnswer: userAnswer.toUpperCase(),
+                        correctAnswer: correctAnswer.toUpperCase(),
+                        isCorrect: isCorrect
+                    });
+                });
+
+
+                return { results, correctCount, totalQuestions };
+            }
+
+            // Function to check if all questions have an answer
+            function areAllQuestionsAnswered() {
+                let allAnswered = true;
+
+                contextListeningBlanks.forEach(input => {
+                    if (input.value.trim() === '') allAnswered = false;
+                });
+                matchJoinPronouns.forEach(input => {
+                    if (input.value.trim() === '') allAnswered = false;
+                });
+                if (matchJoinOmitQ.value.trim() === '') allAnswered = false;
+
+                nonDefiningTextareas.forEach(textarea => {
+                    if (textarea.value.trim() === '') allAnswered = false;
+                });
+                errorCorrectionTextareas.forEach(textarea => {
+                    if (textarea.value.trim() === '') allAnswered = false;
+                });
+
+                chocolateInputs.forEach(input => {
+                    if (input.value.trim() === '') allAnswered = false;
+                });
+                readingPracticeBlanks.forEach(input => {
+                    if (input.value.trim() === '') allAnswered = false;
+                });
+                paragraphMatchingBlanks.forEach(input => {
+                    if (input.value.trim() === '') allAnswered = false;
+                });
+
+                return allAnswered;
+            }
+
+            // Function to update button states based on completion and answers checked
+            function updateButtonStates() {
+                if (areAllQuestionsAnswered()) {
+                    checkAnswersBtn.disabled = false;
+                    checkAnswersBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    checkAnswersBtn.disabled = true;
+                    checkAnswersBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+
+                if (answersCheckedFlag) {
+                    saveResultsBtn.disabled = false;
+                    saveResultsBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    saveResultsBtn.disabled = true;
+                    saveResultsBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            // Function to lock answers after checking
+            function lockAnswers() {
+                contextListeningBlanks.forEach(input => { input.readOnly = true; input.classList.add('cursor-not-allowed'); });
+                matchJoinPronouns.forEach(input => { input.readOnly = true; input.classList.add('cursor-not-allowed'); });
+                matchJoinOmitQ.readOnly = true; matchJoinOmitQ.classList.add('cursor-not-allowed');
+                nonDefiningTextareas.forEach(textarea => { textarea.readOnly = true; textarea.classList.add('cursor-not-allowed'); });
+                errorCorrectionTextareas.forEach(textarea => { textarea.readOnly = true; textarea.classList.add('cursor-not-allowed'); });
+                chocolateInputs.forEach(input => { input.readOnly = true; input.classList.add('cursor-not-allowed'); });
+                readingPracticeBlanks.forEach(input => { input.readOnly = true; input.classList.add('cursor-not-allowed'); });
+                paragraphMatchingBlanks.forEach(input => { input.readOnly = true; input.classList.add('cursor-not-allowed'); });
+            }
+
+            // Initial state for buttons
+            updateButtonStates();
+
+            checkAnswersBtn.addEventListener('click', () => {
+                getResults();
+                lockAnswers();
+                answersCheckedFlag = true;
+                updateButtonStates();
+                feedbackDiv.textContent = "Answers checked! Download your PDF for results.";
+                feedbackDiv.classList.remove('text-blue-600', 'text-green-600', 'text-red-600');
+            });
+
+            saveResultsBtn.addEventListener('click', () => {
+                const { results: allResults, correctCount, totalQuestions } = getResults();
+
+                feedbackDiv.textContent = "Generating PDF...";
+                feedbackDiv.classList.remove('text-green-600', 'text-red-600');
+                feedbackDiv.classList.add('text-blue-600');
+
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    doc.setFontSize(22);
+                    doc.text("Interactive Handout: Your Results", 105, 20, null, null, "center");
+
+                    doc.setFontSize(14);
+                    doc.text(`Report generated on: ${new Date().toLocaleString()}`, 10, 30);
+                    doc.text(`Total Score: ${correctCount} out of ${totalQuestions} correct!`, 10, 40);
+
+                    doc.setFontSize(16);
+                    doc.text("Your Answers", 10, 60);
+
+                    const tableColumn = ["Section", "Question #", "Your Answer", "Correct Answer", "Status"];
+                    const tableRows = [];
+
+                    // Sort results by question number across all types
+                    allResults.sort((a, b) => {
+                        const qNumA = parseFloat(a.questionNumber);
+                        const qNumB = parseFloat(b.questionNumber);
+                        return qNumA - qNumB;
+                    });
+
+                    allResults.forEach(result => {
+                        let status = result.isCorrect;
+                        if (typeof status === 'boolean') {
+                            status = status ? "Correct" : "Incorrect";
+                        }
+                        
+                        tableRows.push([
+                            result.type,
+                            result.questionNumber.toString(),
+                            result.userAnswer || "No answer",
+                            result.correctAnswer,
+                            status
+                        ]);
+                    });
+
+                    doc.autoTable({
+                        head: [tableColumn],
+                        body: tableRows,
+                        startY: 65,
+                        theme: 'striped',
+                        styles: {
+                            fontSize: 8,
+                            cellPadding: 1,
+                            fillColor: [255, 255, 255],
+                            textColor: [51, 51, 51],
+                            lineColor: [200, 200, 200],
+                            lineWidth: 0.1,
+                            overflow: 'linebreak',
+                        },
+                        headStyles: {
+                            fillColor: [220, 230, 240],
+                            textColor: [0, 0, 0],
+                            fontStyle: 'bold'
+                        },
+                        columnStyles: {
+                            0: { cellWidth: 30 }, // Section
+                            1: { cellWidth: 18 }, // Question #
+                            2: { cellWidth: 50 }, // Your Answer
+                            3: { cellWidth: 50 }, // Correct Answer
+                            4: { cellWidth: 25, halign: 'center' } // Status
+                        },
+                        didDrawCell: (data) => {
+                            if (data.section === 'body' && data.column.index === 4) {
+                                const status = data.cell.text[0];
+                                if (status === 'Correct') {
+                                    doc.setFillColor(144, 238, 144); // Light green
+                                } else if (status === 'Incorrect') {
+                                    doc.setFillColor(255, 182, 193); // Light red
+                                } else {
+                                    doc.setFillColor(240, 240, 240); // Neutral for "Requires manual review"
+                                }
+                                doc.rect(data.cell.x + data.cell.padding('left'), data.cell.y + data.cell.padding('top'), data.cell.width - data.cell.padding('left') - data.cell.padding('right'), data.cell.height - data.cell.padding('top') - data.cell.padding('bottom'), 'F');
+                                doc.setTextColor(0, 0, 0);
+                                doc.text(status, data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2, { align: 'center', baseline: 'middle' });
+                            }
+                        }
+                    });
+
+                    let finalY = doc.lastAutoTable.finalY + 15;
+                    doc.setFontSize(16);
+                    doc.text("Your Highlights", 10, finalY);
+                    finalY += 10;
+
+                    if (currentHighlights.length > 0) {
+                        doc.setFontSize(12);
+                        currentHighlights.forEach((h) => {
+                            const textLines = doc.splitTextToSize(`- "${h.text}" (Color: ${h.color})`, doc.internal.pageSize.width - 25);
+                            doc.text(textLines, 15, finalY);
+                            finalY += (textLines.length * 7);
+                        });
+                    } else {
+                        doc.setFontSize(12);
+                        doc.setTextColor(150, 150, 150);
+                        doc.text("No highlights were made.", 15, finalY);
+                    }
+
+                    const filename = `interactive_handout_results_${new Date().toISOString().slice(0,10)}.pdf`;
+                    doc.save(filename);
+
+                    feedbackDiv.textContent = "Results PDF generated and downloaded!";
+                    feedbackDiv.classList.remove('text-blue-600');
+                    feedbackDiv.classList.add('text-green-600');
+
+                } catch (error) {
+                    feedbackDiv.textContent = `An error occurred during PDF generation: ${error.message}`;
+                    feedbackDiv.classList.remove('text-blue-600');
+                    feedbackDiv.classList.add('text-red-600');
+                    console.error('Error generating PDF:', error);
+                }
+            });
+
+            // Event listeners to update button states when input changes
+            const allInputs = document.querySelectorAll('input[type="text"], input[type="radio"], textarea');
+            allInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    feedbackDiv.textContent = '';
+                    answersCheckedFlag = false;
+                    updateButtonStates();
+                });
+                input.addEventListener('change', () => { // For radio buttons
+                    feedbackDiv.textContent = '';
+                    answersCheckedFlag = false;
+                    updateButtonStates();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
