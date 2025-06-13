@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B1.2 Listening Final Test</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- jsPDF CDN for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF Autotable plugin for table generation -->
+    <script src="https://unpkg.com/jspdf-autotable@3.5.20/dist/jspdf.plugin.autotable.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .container {
+            max-width: 960px;
+        }
+        /* Custom styles for disabled buttons */
+        .btn-disabled {
+            @apply bg-gray-400 cursor-not-allowed;
+        }
+        /* Style for correct answers */
+        .correct-answer {
+            @apply text-green-600 font-semibold;
+        }
+        /* Style for incorrect answers */
+        .incorrect-answer {
+            @apply text-red-600 font-semibold;
+        }
+        /* Style for user's selected answer in MCQs */
+        .selected-option {
+            @apply ring-2 ring-blue-500;
+        }
+        /* Base button styles */
+        .btn {
+            @apply py-2 px-4 rounded-lg font-semibold transition-all duration-300;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-md;
+        }
+        .btn-secondary {
+            @apply bg-gray-200 text-gray-800 hover:bg-gray-300 shadow-sm;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="container mx-auto bg-white shadow-xl rounded-2xl p-8 md:p-12 border border-gray-200">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">B1.2 Listening Final Test</h1>
+
+        <!-- Audio Player -->
+        <div class="mb-8 p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col items-center">
+            <p class="text-lg font-semibold text-gray-700 mb-2">Listen to the audio for the test:</p>
+            <div>
+                <iframe width="300" height="60" src="https://vocaroo.com/embed/1gOjEa5G2sVu?autoplay=0" frameborder="0" allow="autoplay"></iframe><br>
+                <a href="https://voca.ro/1gOjEa5G2sVu" title="Vocaroo Voice Recorder" target="_blank" class="text-blue-600 hover:underline text-sm">View on Vocaroo &gt;&gt;</a>
+            </div>
+            <p class="text-sm text-gray-600 mt-2 text-center">
+                Note: If the audio doesn't play directly, you can click "View on Vocaroo" to open it in a new tab.
+            </p>
+        </div>
+
+        <!-- Test Sections -->
+        <div id="test-sections" class="space-y-8">
+            <!-- Part 1 -->
+            <div id="part1" class="test-part p-6 bg-blue-50 rounded-xl shadow-inner border border-blue-200">
+                <h2 class="text-2xl font-semibold text-blue-700 mb-6">Part 1: Multiple Choice (Questions 1-5)</h2>
+                <p class="text-gray-700 mb-6">Directions: In this part, you will hear five short announcements or instructions. You will hear each announcement or instruction TWICE. For each question, choose the correct answer A, B, or C.</p>
+                <div id="questions-part1" class="space-y-6"></div>
+                <div class="flex justify-end mt-8">
+                    <button id="nextPart1" class="btn btn-primary">Next Part</button>
+                </div>
+            </div>
+
+            <!-- Part 2 -->
+            <div id="part2" class="test-part p-6 bg-green-50 rounded-xl shadow-inner border border-green-200 hidden">
+                <h2 class="text-2xl font-semibold text-green-700 mb-6">Part 2: Multiple Choice (Questions 6-10)</h2>
+                <p class="text-gray-700 mb-6">Directions: In this part, you will hear five short conversations. You will hear each conversation TWICE. There is one question for each conversation. For each question, choose the correct answer A, B, or C.</p>
+                <div id="questions-part2" class="space-y-6"></div>
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backPart2" class="btn btn-secondary">Back</button>
+                    <button id="nextPart2" class="btn btn-primary">Next Part</button>
+                </div>
+            </div>
+
+            <!-- Part 3 -->
+            <div id="part3" class="test-part p-6 bg-purple-50 rounded-xl shadow-inner border border-purple-200 hidden">
+                <h2 class="text-2xl font-semibold text-purple-700 mb-6">Part 3: Fill in the Blanks (Questions 11-15)</h2>
+                <p class="text-gray-700 mb-6">Directions: In this part, you will hear a longer conversation. You will hear the conversation TWICE. Fill in the form with NO MORE THAN 3 WORDS and/or a NUMBER. Write down the correct answers.</p>
+                <div id="questions-part3" class="space-y-6"></div>
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backPart3" class="btn btn-secondary">Back</button>
+                    <button id="nextPart3" class="btn btn-primary">Next Part</button>
+                </div>
+            </div>
+
+            <!-- Part 4 -->
+            <div id="part4" class="test-part p-6 bg-yellow-50 rounded-xl shadow-inner border border-yellow-200 hidden">
+                <h2 class="text-2xl font-semibold text-yellow-700 mb-6">Part 4: Multiple Choice (Questions 16-20)</h2>
+                <p class="text-gray-700 mb-6">Directions: In this part, you will hear a longer conversation and answer questions 16 to 20. You will hear the conversation TWICE. For each question, choose the correct answer A, B, or C.</p>
+                <div id="questions-part4" class="space-y-6"></div>
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backPart4" class="btn btn-secondary">Back</button>
+                    <button id="nextPart4" class="btn btn-primary">Next Part</button>
+                </div>
+            </div>
+
+            <!-- Part 5 -->
+            <div id="part5" class="test-part p-6 bg-red-50 rounded-xl shadow-inner border border-red-200 hidden">
+                <h2 class="text-2xl font-semibold text-red-700 mb-6">Part 5: Fill in the Blanks (Questions 21-25)</h2>
+                <p class="text-gray-700 mb-6">Directions: In this part, you will hear a short talk and answer questions 21 to 25. You will hear the talk TWICE. Fill in the form with NO MORE THAN 3 WORDS and/or a NUMBER. Write down the correct answer.</p>
+                <div id="questions-part5" class="space-y-6"></div>
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backPart5" class="btn btn-secondary">Back</button>
+                    <button id="submitTest" class="btn btn-primary">Submit Test</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="p-6 bg-gray-50 rounded-xl shadow-inner border border-gray-200 hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Test Results</h2>
+                <p id="total-score" class="text-xl font-bold text-center mb-8"></p>
+                <div id="detailed-results" class="space-y-4"></div>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
+                    <button id="restartTest" class="btn btn-secondary">Restart Test</button>
+                    <button id="downloadPdf" class="btn btn-primary">Download PDF Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Move all the main JavaScript code inside window.onload to ensure all external scripts are loaded
+        window.onload = function() {
+            // Data for the test questions and answers
+            const testData = {
+                part1: [
+                    {
+                        question: "What was stolen on Saturday?",
+                        options: ["A painting", "A cellphone", "A ring"],
+                        correctAnswer: "A"
+                    },
+                    {
+                        question: "What time are they meeting?",
+                        options: ["6:00", "7:15", "7:30"],
+                        correctAnswer: "B"
+                    },
+                    {
+                        question: "What is the weather like today?",
+                        options: ["sunny", "rainy", "windy"],
+                        correctAnswer: "C"
+                    },
+                    {
+                        question: "What can you buy during the interval?",
+                        options: ["chicken and fish", "sandwiches and cakes", "hamburgers"],
+                        correctAnswer: "B"
+                    },
+                    {
+                        question: "Where is the mobile phone?",
+                        options: ["in the bag", "on the floor", "on the table"],
+                        correctAnswer: "A"
+                    }
+                ],
+                part2: [
+                    {
+                        question: "What will they eat for dinner this evening?",
+                        options: ["pizza", "fish", "chicken"],
+                        correctAnswer: "B"
+                    },
+                    {
+                        question: "What time is it?",
+                        options: ["Ten o'clock", "Two thirty", "Ten twenty"],
+                        correctAnswer: "B"
+                    },
+                    {
+                        question: "What's Michelle going to read?",
+                        options: ["The newspaper", "The interesting news", "A letter from John"],
+                        correctAnswer: "C"
+                    },
+                    {
+                        question: "How much did the tickets cost?",
+                        options: ["9 dollars", "19 dollars", "90 dollars"],
+                        correctAnswer: "C"
+                    },
+                    {
+                        question: "Where is the chemist's?",
+                        options: ["Next to the post office", "Near the supermarket", "Past the market"],
+                        correctAnswer: "B"
+                    }
+                ],
+                part3: [
+                    {
+                        question: "Morning: Go to the _______ and then eat lunch.",
+                        correctAnswer: "museum"
+                    },
+                    {
+                        question: "Afternoon: There's a good _______ match.",
+                        correctAnswer: "football"
+                    },
+                    {
+                        question: "What language will they study on Saturday?", // Placeholder question as original was missing from PDF but answer key was present.
+                        correctAnswer: "Chinese"
+                    },
+                    {
+                        question: "Morning: Go for a drive in the _______.",
+                        correctAnswer: "Countryside"
+                    },
+                    {
+                        question: "Afternoon: Go back to the train _______.",
+                        correctAnswer: "station"
+                    }
+                ],
+                part4: [
+                    {
+                        question: "What musical instrument does Nick play?",
+                        options: ["drums", "guitar", "piano"],
+                        correctAnswer: "A"
+                    },
+                    {
+                        question: "When will Sam meet Nick's band?",
+                        options: ["Wednesday", "Thursday", "Friday"],
+                        correctAnswer: "B"
+                    },
+                    {
+                        question: "Where does Nick's band practice playing music?",
+                        options: ["At school", "In his room", "In the garage"],
+                        correctAnswer: "C"
+                    },
+                    {
+                        question: "What does Helen always bring to the music practice?",
+                        options: ["Food", "CDs", "Nothing"],
+                        correctAnswer: "B"
+                    },
+                    {
+                        question: "How much each member earn per night for their performance?",
+                        options: ["25 pounds", "35 pounds", "110 pounds"],
+                        correctAnswer: "A"
+                    }
+                ],
+                part5: [
+                    {
+                        question: "Parents can take their kids to the mini _______.",
+                        correctAnswer: "zoo"
+                    },
+                    {
+                        question: "Have a snack or a _______.",
+                        correctAnswer: "Drink"
+                    },
+                    {
+                        question: "What is the discounted children's ticket price for younger kids?", // Placeholder for Q23 based on answer key.
+                        correctAnswer: "4 pounds" // Accepting "£4" or "4 pounds"
+                    },
+                    {
+                        question: "Remember _______ are not allowed on the farm.",
+                        correctAnswer: "Dogs"
+                    },
+                    {
+                        question: "Park Farm is close to the _______.",
+                        correctAnswer: "River"
+                    }
+                ]
+            };
+
+            // User's answers storage
+            const userAnswers = {
+                part1: [],
+                part2: [],
+                part3: [],
+                part4: [],
+                part5: []
+            };
+
+            // Total score
+            let score = 0;
+
+            // --- Helper Functions ---
+
+            /**
+             * Hides all test parts.
+             */
+            function hideAllParts() {
+                document.querySelectorAll('.test-part').forEach(part => {
+                    part.classList.add('hidden');
+                });
+            }
+
+            /**
+             * Displays a specific test part.
+             * @param {string} partId - The ID of the part to display (e.g., 'part1').
+             */
+            function showPart(partId) {
+                hideAllParts();
+                document.getElementById(partId).classList.remove('hidden');
+            }
+
+            /**
+             * Renders multiple choice questions for a given part.
+             * @param {string} partId - The ID of the part (e.g., 'part1', 'part2', 'part4').
+             * @param {Array<Object>} questions - An array of question objects.
+             */
+            function renderMultipleChoiceQuestions(partId, questions) {
+                const container = document.getElementById(`questions-${partId}`);
+                container.innerHTML = ''; // Clear previous questions
+
+                questions.forEach((q, qIndex) => {
+                    const questionNumber = parseInt(partId.replace('part', '')) * 5 - 5 + qIndex + 1; // Calculate global question number
+                    const questionDiv = document.createElement('div');
+                    questionDiv.classList.add('mb-4', 'p-4', 'bg-white', 'rounded-lg', 'shadow-sm', 'border', 'border-gray-100');
+                    questionDiv.innerHTML = `
+                        <p class="font-semibold text-lg mb-3 text-gray-800">Question ${questionNumber}. ${q.question}</p>
+                        <div class="space-y-2">
+                            ${q.options.map((option, oIndex) => {
+                                const optionLetter = String.fromCharCode(65 + oIndex); // A, B, C
+                                return `
+                                    <label class="flex items-center p-3 rounded-md cursor-pointer hover:bg-gray-50 transition-colors duration-200 border border-gray-200">
+                                        <input type="radio" name="question${questionNumber}" value="${optionLetter}" class="form-radio h-5 w-5 text-blue-600">
+                                        <span class="ml-3 text-gray-700">${optionLetter}. ${option}</span>
+                                    </label>
+                                `;
+                            }).join('')}
+                        </div>
+                        <div id="feedback-${questionNumber}" class="mt-2 text-sm"></div>
+                    `;
+                    container.appendChild(questionDiv);
+
+                    // Add event listener to store selected answer
+                    questionDiv.querySelectorAll(`input[name="question${questionNumber}"]`).forEach(input => {
+                        input.addEventListener('change', (event) => {
+                            const selectedOption = event.target.value;
+                            userAnswers[partId][qIndex] = selectedOption; // Store only the letter
+                            // Visually highlight the selected option
+                            questionDiv.querySelectorAll('label').forEach(label => {
+                                label.classList.remove('selected-option');
+                            });
+                            event.target.closest('label').classList.add('selected-option');
+                        });
+                    });
+                });
+            }
+
+            /**
+             * Renders fill-in-the-blank questions for a given part.
+             * @param {string} partId - The ID of the part (e.g., 'part3', 'part5').
+             * @param {Array<Object>} questions - An array of question objects.
+             */
+            function renderFillInTheBlankQuestions(partId, questions) {
+                const container = document.getElementById(`questions-${partId}`);
+                container.innerHTML = ''; // Clear previous questions
+
+                questions.forEach((q, qIndex) => {
+                    const questionNumber = parseInt(partId.replace('part', '')) * 5 - 5 + qIndex + 1; // Calculate global question number
+                    const questionDiv = document.createElement('div');
+                    questionDiv.classList.add('mb-4', 'p-4', 'bg-white', 'rounded-lg', 'shadow-sm', 'border', 'border-gray-100');
+                    questionDiv.innerHTML = `
+                        <p class="font-semibold text-lg mb-3 text-gray-800">Question ${questionNumber}. ${q.question.replace('_______', '_____')}</p>
+                        <input type="text" id="answer-${questionNumber}" placeholder="Type your answer here..." class="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                        <div id="feedback-${questionNumber}" class="mt-2 text-sm"></div>
+                    `;
+                    container.appendChild(questionDiv);
+
+                    // Store answer on input change
+                    document.getElementById(`answer-${questionNumber}`).addEventListener('input', (event) => {
+                        userAnswers[partId][qIndex] = event.target.value.trim();
+                    });
+                });
+            }
+
+            /**
+             * Checks answers for a multiple choice part and updates score and feedback.
+             * @param {string} partId - The ID of the part.
+             */
+            function checkMultipleChoiceAnswers(partId) {
+                const questions = testData[partId];
+                questions.forEach((q, qIndex) => {
+                    const questionNumber = parseInt(partId.replace('part', '')) * 5 - 5 + qIndex + 1;
+                    const userAnswer = userAnswers[partId][qIndex];
+                    const correctAnswer = q.correctAnswer;
+                    const feedbackDiv = document.getElementById(`feedback-${questionNumber}`);
+                    const radioInputs = document.querySelectorAll(`input[name="question${questionNumber}"]`);
+
+                    feedbackDiv.innerHTML = ''; // Clear previous feedback
+
+                    // Disable radio buttons after checking
+                    radioInputs.forEach(input => input.disabled = true);
+
+                    if (userAnswer && userAnswer.toUpperCase() === correctAnswer.toUpperCase()) {
+                        feedbackDiv.classList.remove('incorrect-answer');
+                        feedbackDiv.classList.add('correct-answer');
+                        feedbackDiv.textContent = `Correct!`;
+                        score++;
+                    } else {
+                        feedbackDiv.classList.remove('correct-answer');
+                        feedbackDiv.classList.add('incorrect-answer');
+                        feedbackDiv.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    }
+                });
+            }
+
+            /**
+             * Checks answers for a fill-in-the-blank part and updates score and feedback.
+             * @param {string} partId - The ID of the part.
+             */
+            function checkFillInTheBlankAnswers(partId) {
+                const questions = testData[partId];
+                questions.forEach((q, qIndex) => {
+                    const questionNumber = parseInt(partId.replace('part', '')) * 5 - 5 + qIndex + 1;
+                    const userAnswer = (userAnswers[partId][qIndex] || '').toLowerCase(); // Ensure it's a string
+                    const correctAnswer = q.correctAnswer.toLowerCase();
+                    const feedbackDiv = document.getElementById(`feedback-${questionNumber}`);
+                    const inputField = document.getElementById(`answer-${questionNumber}`);
+
+                    feedbackDiv.innerHTML = ''; // Clear previous feedback
+                    inputField.disabled = true; // Disable input after checking
+
+                    // Handle special case for Q23 (4 pounds/£4)
+                    let isCorrect = false;
+                    if (questionNumber === 23) {
+                        isCorrect = userAnswer === '4 pounds' || userAnswer === '£4' || userAnswer === '4';
+                    } else {
+                        isCorrect = userAnswer === correctAnswer;
+                    }
+
+                    if (isCorrect) {
+                        feedbackDiv.classList.remove('incorrect-answer');
+                        feedbackDiv.classList.add('correct-answer');
+                        feedbackDiv.textContent = `Correct!`;
+                        score++;
+                    } else {
+                        feedbackDiv.classList.remove('correct-answer');
+                        feedbackDiv.classList.add('incorrect-answer');
+                        feedbackDiv.textContent = `Incorrect. The correct answer is "${q.correctAnswer}".`;
+                    }
+                });
+            }
+
+
+            /**
+             * Displays the final results.
+             */
+            function showResults() {
+                hideAllParts();
+                document.getElementById('results').classList.remove('hidden');
+
+                const totalQuestions = Object.values(testData).flat().length;
+                document.getElementById('total-score').textContent = `Your total score: ${score} out of ${totalQuestions}`;
+
+                const detailedResults = document.getElementById('detailed-results');
+                detailedResults.innerHTML = ''; // Clear previous results
+
+                let currentQuestionNumber = 1;
+                for (const partKey in testData) {
+                    const questions = testData[partKey];
+                    questions.forEach((q, qIndex) => {
+                        const userAnswer = userAnswers[partKey][qIndex];
+                        let isCorrect = false;
+                        let correctValue = q.correctAnswer;
+
+                        if (q.options) { // Multiple choice
+                            isCorrect = (userAnswer && userAnswer.toUpperCase() === q.correctAnswer.toUpperCase());
+                            correctValue = q.options[q.correctAnswer.charCodeAt(0) - 65]; // Convert letter back to full option text
+                        } else { // Fill-in-the-blank
+                            // Handle special case for Q23 (4 pounds/£4) in results
+                            if (currentQuestionNumber === 23) {
+                                const normalizedUserAnswer = (userAnswer || '').toLowerCase();
+                                isCorrect = normalizedUserAnswer === '4 pounds' || normalizedUserAnswer === '£4' || normalizedUserAnswer === '4';
+                            } else {
+                                isCorrect = ((userAnswer || '').toLowerCase() === q.correctAnswer.toLowerCase());
+                            }
+                        }
+
+                        const resultItem = document.createElement('div');
+                        resultItem.classList.add('p-3', 'rounded-lg', 'border', ...(isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50').split(' '));
+                        resultItem.innerHTML = `
+                            <p class="font-medium text-gray-900">Question ${currentQuestionNumber}: ${q.question}</p>
+                            <p class="text-sm">Your Answer: <span class="${isCorrect ? 'text-green-700' : 'text-red-700 font-semibold'}">${userAnswer || 'Not answered'}</span></p>
+                            <p class="text-sm">Correct Answer: <span class="text-green-700 font-semibold">${correctValue}</span></p>
+                        `;
+                        detailedResults.appendChild(resultItem);
+                        currentQuestionNumber++;
+                    });
+                }
+            }
+
+            /**
+             * Generates and downloads a PDF report of the test results.
+             */
+            function generatePdfReport() {
+                // Check if jsPDF is available globally (it should be if the CDN loads correctly)
+                // Added a more specific check for window.jspdf.jsPDF as that's the constructor.
+                if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                    console.error("jsPDF library (window.jspdf.jsPDF) not loaded. Cannot generate PDF.");
+                    alert("PDF generation is not available. Please ensure your browser allows scripts from CDNs.");
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf; // Get jsPDF from window object
+                const doc = new jsPDF(); // Initialize a new PDF document
+
+                // --- PDF Header ---
+                doc.setFontSize(22);
+                doc.text("Results", 105, 20, { align: 'center' }); // Changed PDF title
+                doc.setFontSize(10);
+                const now = new Date();
+                const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                doc.text(`Report generated on: ${now.toLocaleDateString('en-US', dateOptions)}`, 105, 30, { align: 'center' });
+
+                doc.setFontSize(14);
+                const totalQuestions = Object.values(testData).flat().length;
+                doc.text(`Total Score: ${score} out of ${totalQuestions} correct!`, 105, 45, { align: 'center' });
+
+                // --- Your Answers Section ---
+                doc.setFontSize(16);
+                doc.text("Your Answers", 14, 65);
+
+                // Prepare data for autoTable
+                const headers = [["Question #", "Your Answer", "Correct Answer", "Status"]];
+                const data = [];
+
+                let currentQuestionNumber = 1;
+                for (const partKey in testData) {
+                    const questions = testData[partKey];
+                    questions.forEach((q, qIndex) => {
+                        const userAnswer = userAnswers[partKey][qIndex];
+                        let status = "Not Answered";
+                        let correctValue = q.correctAnswer;
+                        let displayUserAnswer = userAnswer || "";
+
+                        let isCorrect = false;
+
+                        if (q.options) { // Multiple choice
+                            isCorrect = (userAnswer && userAnswer.toUpperCase() === q.correctAnswer.toUpperCase());
+                            correctValue = q.options[q.correctAnswer.charCodeAt(0) - 65]; // Convert letter back to full option text
+                            if (userAnswer) {
+                                displayUserAnswer = `${userAnswer}. ${q.options[userAnswer.charCodeAt(0) - 65]}`;
+                            } else {
+                                displayUserAnswer = 'N/A';
+                            }
+
+                        } else { // Fill-in-the-blank
+                            const normalizedUserAnswer = (userAnswer || '').toLowerCase();
+                            if (currentQuestionNumber === 23) {
+                                isCorrect = normalizedUserAnswer === '4 pounds' || normalizedUserAnswer === '£4' || normalizedUserAnswer === '4';
+                            } else {
+                                isCorrect = (normalizedUserAnswer === q.correctAnswer.toLowerCase());
+                            }
+                            displayUserAnswer = userAnswer || 'N/A';
+                        }
+
+                        if (isCorrect) {
+                            status = "Correct";
+                        } else if (userAnswer) {
+                            status = "Incorrect";
+                        }
+
+                        data.push([
+                            currentQuestionNumber.toString(),
+                            displayUserAnswer,
+                            correctValue,
+                            status
+                        ]);
+                        currentQuestionNumber++;
+                    });
+                }
+
+                // Generate table using jspdf-autotable
+                doc.autoTable({
+                    startY: 75, // Start position of the table
+                    head: headers,
+                    body: data,
+                    theme: 'striped',
+                    styles: {
+                        font: 'Inter', // Use Inter font if available
+                        fontSize: 9,
+                        cellPadding: 2,
+                        valign: 'middle'
+                    },
+                    headStyles: {
+                        fillColor: [30, 58, 138], // Dark blue header
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold'
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 20 }, // Question #
+                        1: { cellWidth: 50 }, // Your Answer
+                        2: { cellWidth: 50 }, // Correct Answer
+                        3: { cellWidth: 30 }  // Status
+                    },
+                    didParseCell: function (data) {
+                        if (data.section === 'body') {
+                            if (data.column.index === 3) { // Status column
+                                if (data.cell.raw === 'Correct') {
+                                    data.cell.styles.textColor = [34, 139, 34]; // Forest green
+                                } else if (data.cell.raw === 'Incorrect') {
+                                    data.cell.styles.textColor = [220, 20, 60]; // Crimson red
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Save the PDF
+                doc.save("Results.pdf"); // Changed PDF filename
+            }
+
+
+            // --- Event Listeners ---
+
+            // Initialize the test by showing Part 1
+            showPart('part1');
+            renderMultipleChoiceQuestions('part1', testData.part1);
+
+            // Navigate to Part 2
+            document.getElementById('nextPart1').addEventListener('click', () => {
+                checkMultipleChoiceAnswers('part1'); // Check answers for Part 1 before moving
+                showPart('part2');
+                renderMultipleChoiceQuestions('part2', testData.part2);
+            });
+
+            // Navigate to Part 3
+            document.getElementById('nextPart2').addEventListener('click', () => {
+                checkMultipleChoiceAnswers('part2'); // Check answers for Part 2
+                showPart('part3');
+                renderFillInTheBlankQuestions('part3', testData.part3);
+            });
+
+            // Navigate to Part 4 (Part 3 answers are checked automatically)
+            document.getElementById('nextPart3').addEventListener('click', () => {
+                checkFillInTheBlankAnswers('part3'); // Check answers for Part 3
+                showPart('part4');
+                renderMultipleChoiceQuestions('part4', testData.part4);
+            });
+
+            // Navigate to Part 5
+            document.getElementById('nextPart4').addEventListener('click', () => {
+                checkMultipleChoiceAnswers('part4'); // Check answers for Part 4
+                showPart('part5');
+                renderFillInTheBlankQuestions('part5', testData.part5);
+            });
+
+            // Submit test (Part 5 answers are checked automatically)
+            document.getElementById('submitTest').addEventListener('click', () => {
+                checkFillInTheBlankAnswers('part5'); // Check answers for Part 5
+                showResults();
+            });
+
+            // Restart Test
+            document.getElementById('restartTest').addEventListener('click', () => {
+                // Reset user answers and score
+                for (const part in userAnswers) {
+                    userAnswers[part] = [];
+                }
+                score = 0;
+                // Re-render Part 1 to start over
+                showPart('part1');
+                renderMultipleChoiceQuestions('part1', testData.part1);
+            });
+
+            // Download PDF Report
+            document.getElementById('downloadPdf').addEventListener('click', generatePdfReport);
+
+            // Back buttons navigation
+            document.getElementById('backPart2').addEventListener('click', () => {
+                showPart('part1');
+            });
+
+            document.getElementById('backPart3').addEventListener('click', () => {
+                showPart('part2');
+            });
+
+            document.getElementById('backPart4').addEventListener('click', () => {
+                showPart('part3');
+            });
+
+            document.getElementById('backPart5').addEventListener('click', () => {
+                showPart('part4');
+            });
+
+        }; // End of window.onload
+    </script>
+</body>
+</html>

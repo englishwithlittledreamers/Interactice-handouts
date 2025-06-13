@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive B1 Model Test</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        /* Style for disabled inputs */
+        input[type='radio']:disabled,
+        input[type='text']:read-only,
+        textarea:read-only {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background-color: #e5e7eb; /* gray-200 */
+        }
+        .highlight-yellow { background-color: #fef9c3; } /* Yellow-100 */
+        .highlight-blue { background-color: #dbeafe; } /* Blue-100 */
+        .highlight-green { background-color: #d1fae5; } /* Green-100 */
+        .highlight-pink { background-color: #fce7f3; } /* Pink-100 */
+        .highlighted-text {
+            display: inline;
+        }
+        .question-container {
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #ffffff;
+            margin-bottom: 1.5rem;
+        }
+        .question-box {
+             background-color: #f9fafb;
+             border: 1px dashed #d1d5db;
+             padding: 1rem;
+             border-radius: 0.5rem;
+             margin-bottom: 1rem;
+        }
+        .feedback-correct {
+            color: #16a34a; /* green-600 */
+        }
+        .feedback-incorrect {
+            color: #dc2626; /* red-600 */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">B1.2 Final Test</h1>
+            <p class="text-gray-600 mt-2">Reading Test.</p>
+        </header>
+
+        <div id="handoutContent" class="space-y-8 text-gray-700 text-base sm:text-lg leading-relaxed select-text">
+
+            <!-- PART 1: Multiple Choice Questions -->
+            <section id="part1">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Part 1: Reading Comprehension</h2>
+                <div class="space-y-6">
+                    <!-- Question 1 -->
+                    <div class="question-container">
+                        <p class="font-semibold mb-2">1. Read the email from Jack.</p>
+                        <div class="question-box">
+                            <p class="font-mono text-sm"><strong>From:</strong> Jack<br><strong>To:</strong> Football coach</p>
+                            <p class="mt-2">I'm at the dentist's, so I won't be at football practice at 4 o'clock. I can get there for 4:30 - sorry.</p>
+                        </div>
+                        <div id="q1" class="space-y-2">
+                            <label class="flex items-center"><input type="radio" name="q1" value="A" class="form-radio mr-3"> A. Jack doesn't want to go to football practice today.</label>
+                            <label class="flex items-center"><input type="radio" name="q1" value="B" class="form-radio mr-3"> B. Jack won't be on time for today's football practice.</label>
+                            <label class="flex items-center"><input type="radio" name="q1" value="C" class="form-radio mr-3"> C. Jack can't go to football practice today because he's at the dentist's.</label>
+                        </div>
+                        <div id="feedback-q1" class="mt-2 font-semibold"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-container">
+                        <p class="font-semibold mb-2">2. What is Leo doing in this message?</p>
+                        <div class="question-box">
+                            <p>Ollie, I was late this morning, so I took your bike to go to college. I'll be back at 4 o'clock. I hope that's OK? Leo</p>
+                        </div>
+                        <div id="q2" class="space-y-2">
+                             <label class="flex items-center"><input type="radio" name="q2" value="A" class="form-radio mr-3"> A. to ask Ollie what time they need to do something.</label>
+                             <label class="flex items-center"><input type="radio" name="q2" value="B" class="form-radio mr-3"> B. to thank Ollie for doing something for him.</label>
+                             <label class="flex items-center"><input type="radio" name="q2" value="C" class="form-radio mr-3"> C. to explain to Ollie why he has done something.</label>
+                        </div>
+                        <div id="feedback-q2" class="mt-2 font-semibold"></div>
+                    </div>
+                     <!-- Question 3 -->
+                    <div class="question-container">
+                        <p class="font-semibold mb-2">3. Read the sign from the restaurant.</p>
+                        <div class="question-box">
+                            <p class="font-bold">Castle Restaurant</p>
+                            <p>These outside tables are for restaurant customers only. Picnic tables by lake.</p>
+                        </div>
+                        <div id="q3" class="space-y-2">
+                            <label class="flex items-center"><input type="radio" name="q3" value="A" class="form-radio mr-3"> A. People must buy their food and drinks inside before they choose a table.</label>
+                            <label class="flex items-center"><input type="radio" name="q3" value="B" class="form-radio mr-3"> B. People may sit here if they are eating food bought in this place.</label>
+                            <label class="flex items-center"><input type="radio" name="q3" value="C" class="form-radio mr-3"> C. If you have brought your own sandwiches, you can eat them here.</label>
+                        </div>
+                        <div id="feedback-q3" class="mt-2 font-semibold"></div>
+                    </div>
+                     <!-- Question 4 -->
+                    <div class="question-container">
+                        <p class="font-semibold mb-2">4. What does the notice about College Clubs say?</p>
+                        <div class="question-box">
+                             <p class="font-bold">College Clubs</p>
+                            <p>Please see college website for details of all free clubs this term. Book online or speak to college secretary before Friday.</p>
+                        </div>
+                        <div id="q4" class="space-y-2">
+                            <label class="flex items-center"><input type="radio" name="q4" value="A" class="form-radio mr-3"> A. Students can check the cost of joining a club by going online.</label>
+                            <label class="flex items-center"><input type="radio" name="q4" value="B" class="form-radio mr-3"> B. Students must decide what they want to do by the end of the week.</label>
+                            <label class="flex items-center"><input type="radio" name="q4" value="C" class="form-radio mr-3"> C. Students must not book a club before speaking to the college secretary.</label>
+                        </div>
+                        <div id="feedback-q4" class="mt-2 font-semibold"></div>
+                    </div>
+
+                     <!-- Question 5 -->
+                    <div class="question-container">
+                        <p class="font-semibold mb-2">5. Read the sign at the music festival.</p>
+                        <div class="question-box">
+                             <p class="font-bold">Weekend music festival</p>
+                            <p>This entrance for people with tickets. Tickets for Sunday available online.</p>
+                        </div>
+                        <div id="q5" class="space-y-2">
+                             <label class="flex items-center"><input type="radio" name="q5" value="A" class="form-radio mr-3"> A. If you don't have a ticket, you can't get in here.</label>
+                             <label class="flex items-center"><input type="radio" name="q5" value="B" class="form-radio mr-3"> B. If you want a ticket for Sunday, you must wait here.</label>
+                             <label class="flex items-center"><input type="radio" name="q5" value="C" class="form-radio mr-3"> C. If you go to another entrance, you can get a ticket.</label>
+                        </div>
+                        <div id="feedback-q5" class="mt-2 font-semibold"></div>
+                    </div>
+                     <!-- Question 6 -->
+                    <div class="question-container">
+                        <p class="font-semibold mb-2">6. What is Laura doing in this message?</p>
+                        <div class="question-box">
+                            <p>Sophia, I have to work late, so I can't see you at 7 o'clock for dinner. But I can still be at the cinema at 9 p.m. Laura</p>
+                        </div>
+                        <div id="q6" class="space-y-2">
+                            <label class="flex items-center"><input type="radio" name="q6" value="A" class="form-radio mr-3"> A. to invite Sophia to see a film with her.</label>
+                            <label class="flex items-center"><input type="radio" name="q6" value="B" class="form-radio mr-3"> B. to check when she needs to meet Sophia.</label>
+                            <label class="flex items-center"><input type="radio" name="q6" value="C" class="form-radio mr-3"> C. to let Sophia know about a change of plan.</label>
+                        </div>
+                        <div id="feedback-q6" class="mt-2 font-semibold"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PART 2: Matching Questions -->
+            <section id="part2">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Part 2: Learning for fun</h2>
+                <div class="question-container">
+                    <p class="mb-4">Read the text about three women and their hobbies. For questions 7-13, choose the correct person (A, B, or C).</p>
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div id="paula-text" class="p-4 bg-gray-50 rounded-lg border">
+                            <h3 class="font-bold text-lg mb-2">Paula (A)</h3>
+                            <p>I work full time as a nurse, and don't have much time for hobbies, but I've been interested in photography since I was a child. On my last holiday to India, I took lots of pictures, and everyone I showed them to said they were great. So I decided to do a course. At first, I was afraid I might not be good enough. After all, it was my first time as a student for ten years! But I loved it from the very first lesson.</p>
+                        </div>
+                        <div id="sally-text" class="p-4 bg-gray-50 rounded-lg border">
+                            <h3 class="font-bold text-lg mb-2">Sally (B)</h3>
+                            <p>When I was still at school, I started learning the violin. It was fun and I was quite good at it, but I didn't do it for long, because I had so many other hobbies. Then last year, I was having a hard time in my job, and my husband bought me a violin as a present. I started learning with a teacher again. All three of my children are learning to play instruments too, so now we can practise with each other!</p>
+                        </div>
+                        <div id="kim-text" class="p-4 bg-gray-50 rounded-lg border">
+                            <h3 class="font-bold text-lg mb-2">Kim (C)</h3>
+                            <p>Last year I moved to a new city because of my job. I didn't have anything to do in the evenings, so one of my colleagues said I should try a class at the local college. I immediately thought of cooking. My mum was a fantastic cook, and when I was a child I loved watching her in the kitchen, but I never learned how to cook myself. The other students on the course are around my age, and sometimes we go to restaurants together, or even the cinema.</p>
+                        </div>
+                    </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-3 border">Question</th>
+                                <th class="p-3 border text-center">A (Paula)</th>
+                                <th class="p-3 border text-center">B (Sally)</th>
+                                <th class="p-3 border text-center">C (Kim)</th>
+                                <th class="p-3 border text-center">Feedback</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr id="q7-row">
+                                <td class="p-3 border">7. Who does her hobby with people in her family?</td>
+                                <td class="p-3 border text-center"><input type="radio" name="q7" value="A"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q7" value="B"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q7" value="C"></td>
+                                <td id="feedback-q7" class="p-3 border text-center font-semibold"></td>
+                            </tr>
+                             <tr id="q8-row">
+                                <td class="p-3 border">8. Who started classes after getting some good advice?</td>
+                                <td class="p-3 border text-center"><input type="radio" name="q8" value="A"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q8" value="B"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q8" value="C"></td>
+                                <td id="feedback-q8" class="p-3 border text-center font-semibold"></td>
+                            </tr>
+                             <tr id="q9-row">
+                                <td class="p-3 border">9. Who began her hobby after feeling unhappy at work?</td>
+                                <td class="p-3 border text-center"><input type="radio" name="q9" value="A"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q9" value="B"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q9" value="C"></td>
+                                <td id="feedback-q9" class="p-3 border text-center font-semibold"></td>
+                            </tr>
+                             <tr id="q10-row">
+                                <td class="p-3 border">10. Who did her hobby for a long time before starting classes?</td>
+                                <td class="p-3 border text-center"><input type="radio" name="q10" value="A"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q10" value="B"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q10" value="C"></td>
+                                <td id="feedback-q10" class="p-3 border text-center font-semibold"></td>
+                            </tr>
+                            <tr id="q11-row">
+                                <td class="p-3 border">11. Who has made new friends at her classes?</td>
+                                <td class="p-3 border text-center"><input type="radio" name="q11" value="A"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q11" value="B"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q11" value="C"></td>
+                                <td id="feedback-q11" class="p-3 border text-center font-semibold"></td>
+                            </tr>
+                             <tr id="q12-row">
+                                <td class="p-3 border">12. Who felt worried before starting her classes?</td>
+                                <td class="p-3 border text-center"><input type="radio" name="q12" value="A"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q12" value="B"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q12" value="C"></td>
+                                <td id="feedback-q12" class="p-3 border text-center font-semibold"></td>
+                            </tr>
+                            <tr id="q13-row">
+                                <td class="p-3 border">13. Who first had classes in her hobby as a child?</td>
+                                <td class="p-3 border text-center"><input type="radio" name="q13" value="A"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q13" value="B"></td>
+                                <td class="p-3 border text-center"><input type="radio" name="q13" value="C"></td>
+                                <td id="feedback-q13" class="p-3 border text-center font-semibold"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+             <!-- PART 3: Reading Passage & Questions -->
+            <section id="part3">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Part 3: Tim Greenwood, Travel Writer</h2>
+                <div class="question-container">
+                    <p class="mb-4">Read the interview with travel writer Tim Greenwood and answer the questions that follow.</p>
+                    <div class="p-4 bg-gray-50 rounded-lg border space-y-3 mb-6">
+                         <p>Tim Greenwood is a travel writer who lives in Oakland, USA. He has written about Cambodia, Thailand, and India, and is currently working on a book about Nepal.</p>
+                         <p><span class="font-semibold">Tim, how did you start travelling?</span><br>
+                         We never travelled as a family, but when I was a teenager, I saw movies like Lawrence of Arabia, and they made me want to travel. I left college at the age of 21 and went to Europe alone. That trip didn't go well. I was too young and didn't know how to look after myself.</p>
+                         <p><span class="font-semibold">How did you start writing?</span><br>
+                         I've loved writing since I was ten - I've never wanted any other career. At 21, I wrote for my weekly college paper and then started writing travel articles. At first, none of the travel magazines I sent them to wanted to buy them, but that slowly changed. It took two or three years, I guess.</p>
+                         <p><span class="font-semibold">What do you find difficult about writing?</span><br>
+                         It is easy to spend all my time travelling and then not have time to open up my laptop and work! Also, it's hard to earn enough money. I'll never stop writing, but one day I may have to do a few hours a week teaching just to pay the bills.</p>
+                         <p><span class="font-semibold">What's the best thing about being a travel writer?</span><br>
+                         I get letters from young people who've read my books and articles and enjoy my work. I just love that!</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Question 14 -->
+                        <div class="question-box">
+                            <p class="font-semibold mb-2">14. As a teenager, Tim...</p>
+                            <div id="q14" class="space-y-2">
+                                <label class="flex items-center"><input type="radio" name="q14" value="A" class="form-radio mr-3"> A. went on trips with his parents.</label>
+                                <label class="flex items-center"><input type="radio" name="q14" value="B" class="form-radio mr-3"> B. became interested in seeing the world.</label>
+                                <label class="flex items-center"><input type="radio" name="q14" value="C" class="form-radio mr-3"> C. spent too much time watching TV.</label>
+                            </div>
+                            <div id="feedback-q14" class="mt-2 font-semibold"></div>
+                        </div>
+                        <!-- Question 15 -->
+                        <div class="question-box">
+                            <p class="font-semibold mb-2">15. What does Tim say about his trip to Europe?</p>
+                            <div id="q15" class="space-y-2">
+                                <label class="flex items-center"><input type="radio" name="q15" value="A" class="form-radio mr-3"> A. He didn't have time to see everything.</label>
+                                <label class="flex items-center"><input type="radio" name="q15" value="B" class="form-radio mr-3"> B. It was more fun than college.</label>
+                                <label class="flex items-center"><input type="radio" name="q15" value="C" class="form-radio mr-3"> C. It was not a great success.</label>
+                            </div>
+                            <div id="feedback-q15" class="mt-2 font-semibold"></div>
+                        </div>
+                         <!-- Question 16 -->
+                        <div class="question-box">
+                            <p class="font-semibold mb-2">16. When Tim was 21, he couldn't...</p>
+                            <div id="q16" class="space-y-2">
+                                <label class="flex items-center"><input type="radio" name="q16" value="A" class="form-radio mr-3"> A. travel as much as he wanted to.</label>
+                                <label class="flex items-center"><input type="radio" name="q16" value="B" class="form-radio mr-3"> B. decide what to write about.</label>
+                                <label class="flex items-center"><input type="radio" name="q16" value="C" class="form-radio mr-3"> C. sell many of his articles.</label>
+                            </div>
+                            <div id="feedback-q16" class="mt-2 font-semibold"></div>
+                        </div>
+                         <!-- Question 17 -->
+                        <div class="question-box">
+                            <p class="font-semibold mb-2">17. In the future, Tim thinks he might...</p>
+                            <div id="q17" class="space-y-2">
+                                <label class="flex items-center"><input type="radio" name="q17" value="A" class="form-radio mr-3"> A. do some extra work.</label>
+                                <label class="flex items-center"><input type="radio" name="q17" value="B" class="form-radio mr-3"> B. earn more from writing.</label>
+                                <label class="flex items-center"><input type="radio" name="q17" value="C" class="form-radio mr-3"> C. change his job.</label>
+                            </div>
+                            <div id="feedback-q17" class="mt-2 font-semibold"></div>
+                        </div>
+                         <!-- Question 18 -->
+                        <div class="question-box">
+                            <p class="font-semibold mb-2">18. What does Tim like about being a travel writer?</p>
+                            <div id="q18" class="space-y-2">
+                                <label class="flex items-center"><input type="radio" name="q18" value="A" class="form-radio mr-3"> A. hearing from his fans.</label>
+                                <label class="flex items-center"><input type="radio" name="q18" value="B" class="form-radio mr-3"> B. giving advice to people.</label>
+                                <label class="flex items-center"><input type="radio" name="q18" value="C" class="form-radio mr-3"> C. meeting other young writers.</label>
+                            </div>
+                            <div id="feedback-q18" class="mt-2 font-semibold"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <button id="checkAnswersBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                Check Answers
+            </button>
+            <button id="saveResultsBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" disabled>
+                Download Results (PDF)
+            </button>
+        </div>
+
+        <div id="finalFeedback" class="mt-6 text-center text-xl font-bold"></div>
+
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" /></svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500" data-color="highlight-pink"></div>
+    </div>
+
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Correct Answers ---
+            const correctAnswers = {
+                q1: 'B', q2: 'C', q3: 'B', q4: 'B', q5: 'A', q6: 'C',
+                q7: 'B', q8: 'C', q9: 'B', q10: 'A', q11: 'C', q12: 'A', q13: 'B',
+                q14: 'B', q15: 'C', q16: 'C', q17: 'A', q18: 'A'
+            };
+
+            // --- Core Logic ---
+            const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+            const saveResultsBtn = document.getElementById('saveResultsBtn');
+            const finalFeedback = document.getElementById('finalFeedback');
+            let score = 0;
+            let totalQuestions = 0;
+            let allResultsForPDF = [];
+
+            function checkAllAnswers() {
+                 score = 0;
+                 totalQuestions = 0;
+                 allResultsForPDF = [];
+
+                 // Part 1-3: Radio button questions
+                for (let i = 1; i <= 18; i++) {
+                    totalQuestions++;
+                    const radios = document.getElementsByName(`q${i}`);
+                    const feedbackEl = document.getElementById(`feedback-q${i}`);
+                    let userAnswer = null;
+                    radios.forEach(radio => {
+                        if (radio.checked) userAnswer = radio.value;
+                        radio.disabled = true;
+                    });
+
+                    const isCorrect = userAnswer === correctAnswers[`q${i}`];
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.textContent = 'Correct!';
+                        feedbackEl.className = 'mt-2 font-semibold feedback-correct';
+                    } else {
+                        feedbackEl.textContent = `Incorrect. The correct answer is ${correctAnswers[`q${i}`]}.`;
+                        feedbackEl.className = 'mt-2 font-semibold feedback-incorrect';
+                    }
+                    
+                    let partName = '';
+                    if (i <= 6) partName = "Part 1";
+                    else if (i <= 13) partName = "Part 2";
+                    else partName = "Part 3";
+
+                    allResultsForPDF.push({ part: partName, q: i, user: userAnswer, correct: correctAnswers[`q${i}`], status: isCorrect });
+                }
+
+                finalFeedback.textContent = `You scored ${score} out of ${totalQuestions}!`;
+                saveResultsBtn.disabled = false;
+                checkAnswersBtn.disabled = true;
+            }
+
+            checkAnswersBtn.addEventListener('click', checkAllAnswers);
+
+            // --- Highlighting Logic ---
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const handoutContent = document.getElementById('handoutContent');
+            let currentHighlights = [];
+            let lastSelectionRange = null;
+
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    const range = selection.getRangeAt(0);
+                    const selectedText = range.toString().trim();
+                    if (!selectedText) return;
+
+                    const span = document.createElement('span');
+                    span.className = `${colorClass} highlighted-text`;
+
+                    try {
+                        span.appendChild(range.extractContents());
+                        range.insertNode(span);
+                        currentHighlights.push({ text: selectedText, color: colorClass.replace('highlight-', '') });
+                        selection.removeAllRanges();
+                        floatingToolbar.classList.add('hidden');
+                    } catch (e) {
+                        console.error("Highlighting error:", e);
+                    }
+                }
+            }
+             function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                 if (!selection.rangeCount || selection.isCollapsed) return;
+
+                const range = selection.getRangeAt(0);
+                let container = range.commonAncestorContainer;
+
+                // Find the parent highlight span
+                while(container && (!container.classList || !container.classList.contains('highlighted-text'))) {
+                    if (container.nodeName === 'BODY') { // Don't go past the body
+                        container = null;
+                        break;
+                    }
+                    container = container.parentElement;
+                }
+
+                if (container && container.classList.contains('highlighted-text')) {
+                    const parent = container.parentNode;
+                    // Move all children of the container out
+                    while (container.firstChild) {
+                        parent.insertBefore(container.firstChild, container);
+                    }
+                    parent.removeChild(container);
+                    parent.normalize(); // Merges adjacent text nodes
+                }
+                 selection.removeAllRanges();
+                 floatingToolbar.classList.add('hidden');
+            }
+
+
+            floatingToolbar.addEventListener('click', (e) => {
+                if (e.target.id === 'toolbarClearBtn' || e.target.closest('#toolbarClearBtn')) {
+                    clearSelectedHighlight();
+                } else if (e.target.dataset.color) {
+                    applyHighlight(e.target.dataset.color);
+                }
+            });
+
+
+            handoutContent.addEventListener('mouseup', (event) => {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0).cloneRange();
+                    const rect = lastSelectionRange.getBoundingClientRect();
+                    floatingToolbar.style.top = `${rect.top + window.scrollY - floatingToolbar.offsetHeight - 10}px`;
+                    floatingToolbar.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (floatingToolbar.offsetWidth / 2)}px`;
+                    floatingToolbar.classList.remove('hidden');
+                } else {
+                    floatingToolbar.classList.add('hidden');
+                }
+            });
+
+             document.addEventListener('mousedown', (e) => {
+                if (!floatingToolbar.contains(e.target) && !handoutContent.contains(e.target)) {
+                    floatingToolbar.classList.add('hidden');
+                }
+            });
+
+
+            // --- PDF Generation ---
+             saveResultsBtn.addEventListener('click', () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                finalFeedback.textContent = "Generating PDF...";
+
+                doc.setFontSize(20);
+                doc.text("B1.2 Test Results", 105, 20, { align: 'center' });
+                doc.setFontSize(14);
+                doc.text(`Final Score: ${score} / ${totalQuestions}`, 10, 35);
+
+                const tableColumn = ["Part", "Question", "Your Answer", "Correct Answer", "Status"];
+                const tableRows = [];
+
+                allResultsForPDF.forEach(res => {
+                    const row = [
+                        res.part,
+                        res.q.toString(),
+                        res.user || "N/A",
+                        res.correct || "N/A",
+                        res.status ? "Correct" : "Incorrect"
+                    ];
+                    tableRows.push(row);
+                });
+
+                doc.autoTable({
+                    head: [tableColumn],
+                    body: tableRows,
+                    startY: 45,
+                    theme: 'striped',
+                    didDrawCell: (data) => {
+                         if (data.section === 'body' && data.column.index === 4) {
+                            const status = data.cell.text[0];
+                            let color = [255, 255, 255]; // white
+                            if (status === 'Correct') color = [220, 255, 220]; // light green
+                            else if (status === 'Incorrect') color = [255, 220, 220]; // light red
+                            doc.setFillColor(color[0], color[1], color[2]);
+                         }
+                    }
+                });
+
+                let finalY = doc.lastAutoTable.finalY + 15;
+                 if (currentHighlights.length > 0) {
+                     doc.addPage();
+                     doc.setFontSize(16);
+                     doc.text("Your Highlights", 10, 20);
+                     let yPos = 30;
+                     currentHighlights.forEach(h => {
+                         const textLines = doc.splitTextToSize(`- "${h.text}" (Color: ${h.color})`, doc.internal.pageSize.width - 20);
+                         doc.text(textLines, 10, yPos);
+                         yPos += (textLines.length * 7) + 5;
+                     });
+                 }
+
+
+                doc.save(`b1_model_test_results_${new Date().toISOString().slice(0,10)}.pdf`);
+                finalFeedback.textContent = "Results PDF downloaded!";
+            });
+        });
+
+    </script>
+</body>
+</html>
