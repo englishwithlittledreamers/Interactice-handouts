@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Test - Listening Final Test</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- jsPDF CDN for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF Autotable plugin for table generation -->
+    <script src="https://unpkg.com/jspdf-autotable@3.5.20/dist/jspdf.plugin.autotable.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .container {
+            max-width: 960px;
+        }
+        /* Custom styles for disabled buttons */
+        .btn-disabled {
+            @apply bg-gray-400 cursor-not-allowed;
+        }
+        /* Style for correct answers */
+        .correct-answer {
+            @apply text-green-600 font-semibold;
+        }
+        /* Style for incorrect answers */
+        .incorrect-answer {
+            @apply text-red-600 font-semibold;
+        }
+        /* Style for user's selected option in MCQs (radio/checkbox) */
+        .selected-option {
+            @apply ring-2 ring-blue-500;
+        }
+        /* Base button styles */
+        .btn {
+            @apply py-2 px-4 rounded-lg font-semibold transition-all duration-300;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-md;
+        }
+        .btn-secondary {
+            @apply bg-gray-200 text-gray-800 hover:bg-gray-300 shadow-sm;
+        }
+
+        /* Highlight styles - Copied from the provided HTML */
+        .highlight-yellow { background-color: #FEF9C3; } /* Yellow-100 */
+        .highlight-blue { background-color: #DBEAFE; } /* Blue-100 */
+        .highlight-green { background-color: #D1FAE5; } /* Green-100 */
+        .highlight-pink { background-color: #FCE7F3; } /* Pink-100 */
+        .highlighted-text {
+            /* Ensures highlighted text is treated as a single unit for selection */
+            display: inline;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="container mx-auto bg-white shadow-xl rounded-2xl p-8 md:p-12 border border-gray-200">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">IELTS Test - Listening Final Test</h1>
+
+        <!-- Audio Player -->
+        <div class="mb-8 p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col items-center">
+            <p class="text-lg font-semibold text-gray-700 mb-2">Listen to the audio for the test:</p>
+            <div>
+                <iframe width="300" height="60" src="https://vocaroo.com/embed/186AOrbRpx4Z?autoplay=0" frameborder="0" allow="autoplay"></iframe><br>
+                <a href="https://voca.ro/1gOjEa5G2sVu" title="Vocaroo Voice Recorder" target="_blank" class="text-blue-600 hover:underline text-sm">View on Vocaroo &gt;&gt;</a>
+            </div>
+            <p class="text-sm text-gray-600 mt-2 text-center">
+                Note: If the audio doesn't play directly, you can click "View on Vocaroo" to open it in a new tab.
+            </p>
+        </div>
+
+        <!-- Test Sections -->
+        <div id="test-sections" class="space-y-8">
+            <!-- Section 1 -->
+            <div id="section1" class="test-part p-6 bg-blue-50 rounded-xl shadow-inner border border-blue-200">
+                <h2 class="text-2xl font-semibold text-blue-700 mb-6">SECTION 1: Questions 1–10</h2>
+                <h3 class="text-xl font-semibold text-blue-600 mb-4">Questions 1–7: Complete the form below.</h3>
+                <p class="text-gray-700 mb-2">Write NO MORE THAN TWO WORDS for each answer.</p>
+                <p class="text-gray-700 mb-4">Write your answers in boxes 1–7 on your answer sheet.</p>
+
+                <h4 class="text-lg font-semibold text-blue-600 mt-6 mb-2">CLINIC REGISTRATION FORM</h4>
+                <p class="text-gray-700"><strong>Example</strong></p>
+                <p class="text-gray-700">Name: Alan Macfee</p>
+                <p class="text-gray-700">Date of birth: 24/8/1972</p>
+
+                <p class="text-gray-700 font-semibold mt-4">Present address:</p>
+                <p class="text-gray-700 ml-4">Flat A,</p>
+                <p class="text-gray-700 ml-4">37, <span class="font-bold">1 _______</span> House</p>
+                <p class="text-gray-700 ml-4">Plympton</p>
+                <p class="text-gray-700 ml-4">PL7 8BH</p>
+
+                <p class="text-gray-700 font-semibold mt-4">Contact phone number: 0774376521</p>
+
+                <p class="text-gray-700 font-semibold mt-4">Current occupation: <span class="font-bold">2 _______</span></p>
+
+                <p class="text-gray-700 font-semibold mt-4">General health</p>
+                <p class="text-gray-700 ml-4">Special needs: Partially <span class="font-bold">3 _______</span></p>
+                <p class="text-gray-700 ml-4">Current medications: None</p>
+
+                <p class="text-gray-700 font-semibold mt-4">Medical history (last 12 months)</p>
+                <p class="text-gray-700 ml-4">A stay in <span class="font-bold">4 _______</span> (June, one day)</p>
+                <p class="text-gray-700 ml-4">Injury: a <span class="font-bold">5 _______</span></p>
+
+                <p class="text-gray-700 font-semibold mt-4">Additional notes</p>
+                <p class="text-gray-700 ml-4">Requested patient should bring in:</p>
+                <p class="text-gray-700 ml-8">a <span class="font-bold">6 _______</span> (recent)</p>
+                <p class="text-gray-700 ml-8">one <span class="font-bold">7 _______</span> (e.g. water)</p>
+
+                <div id="questions-section1-part1" class="space-y-6"></div> <!-- Questions 1-7 will be rendered here -->
+
+
+                <h3 class="text-xl font-semibold text-blue-600 mt-8 mb-4">Questions 8–10: Choose the correct letter A, B or C.</h3>
+                <p class="text-gray-700 mb-4">Write your answers in boxes 8–10 on your answer sheet.</p>
+                <div id="questions-section1-part2" class="space-y-6"></div>
+                <div class="flex justify-end mt-8">
+                    <button id="nextSection1" class="btn btn-primary">Next Section</button>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div id="section2" class="test-part p-6 bg-green-50 rounded-xl shadow-inner border border-green-200 hidden">
+                <h2 class="text-2xl font-semibold text-green-700 mb-6">SECTION 2: Questions 11–20</h2>
+                <h3 class="text-xl font-semibold text-green-600 mb-4">Science Fair</h3>
+                <h3 class="text-lg font-semibold text-green-600 mb-4">Questions 11–12: According to the speaker, what are the TWO reasons why the fair was first organised?</h3>
+                <p class="text-gray-700 mb-6">Choose TWO answers and write the correct letters A–E.</p>
+                <div id="questions-section2-part1" class="space-y-6"></div>
+
+                <h3 class="text-lg font-semibold text-green-600 mt-8 mb-4">Questions 13–14: What TWO things do people often forget to include in their displays?</h3>
+                <p class="text-gray-700 mb-6">Choose TWO answers and write the correct letters A–E.</p>
+                <div id="questions-section2-part2" class="space-y-6"></div>
+
+                <h3 class="text-lg font-semibold text-green-600 mt-8 mb-4">Questions 15–16: What are the TWO biggest growth areas at the fair?</h3>
+                <p class="text-gray-700 mb-6">Choose TWO answers and write the correct letters A–E.</p>
+                <div id="questions-section2-part3" class="space-y-6"></div>
+
+                <h3 class="text-lg font-semibold text-green-600 mt-8 mb-4">Questions 17–20: Label the plan below.</h3>
+                <p class="text-gray-700 mb-2">Where in the exhibition hall are the following places? Write the correct letter, A–I.</p>
+                <p class="text-sm text-gray-500 mb-6"><em>(Please refer to the original plan diagram for the positions/labels A–I.)</em></p>
+                <div id="questions-section2-part4" class="space-y-6"></div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backSection2" class="btn btn-secondary">Back</button>
+                    <button id="nextSection2" class="btn btn-primary">Next Section</button>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div id="section3" class="test-part p-6 bg-purple-50 rounded-xl shadow-inner border border-purple-200 hidden">
+                <h2 class="text-2xl font-semibold text-purple-700 mb-6">SECTION 3: Questions 21–30</h2>
+                <h3 class="text-xl font-semibold text-purple-600 mb-4">The history of the word ‘nice’</h3>
+                <h3 class="text-lg font-semibold text-purple-600 mb-4">Questions 21–24: Choose the correct letter, A, B or C.</h3>
+                <div id="questions-section3-part1" class="space-y-6"></div>
+
+                <h3 class="text-lg font-semibold text-purple-600 mt-8 mb-4">Questions 25–30: What action do Tom and Ruby agree they will need to take for each part of their presentation?</h3>
+                <p class="text-gray-700 mb-6">Choose SIX answers from the box and write the correct letter, A–I.</p>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-6">
+                    <p class="font-semibold text-gray-800 mb-2">Agreed actions:</p>
+                    <ul class="list-disc list-inside text-gray-700 text-sm grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                        <li>A. act out a scene</li>
+                        <li>B. make it longer</li>
+                        <li>C. explain a selection of sample texts</li>
+                        <li>D. get the audience to do a task</li>
+                        <li>E. make it substantially shorter</li>
+                        <li>F. consider omitting something if insufficient time</li>
+                        <li>G. use some visuals</li>
+                        <li>H. present some research findings</li>
+                        <li>I. play an audio recording</li>
+                    </ul>
+                </div>
+                <div id="questions-section3-part2" class="space-y-6"></div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backSection3" class="btn btn-secondary">Back</button>
+                    <button id="nextSection3" class="btn btn-primary">Next Section</button>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div id="section4" class="test-part p-6 bg-yellow-50 rounded-xl shadow-inner border border-yellow-200 hidden">
+                <h2 class="text-2xl font-semibold text-yellow-700 mb-6">SECTION 4: Questions 31–40</h2>
+                <h3 class="text-xl font-semibold text-yellow-600 mb-4">Threats to UK trees</h3>
+                <h3 class="text-lg font-semibold text-yellow-600 mt-8 mb-4">Questions 31–32: According to the speaker, what TWO benefits of forests make them so important?</h3>
+                <p class="text-gray-700 mb-6">Choose TWO answers and write the correct letters A–E.</p>
+                <div id="questions-section4-part1" class="space-y-6"></div>
+
+                <h3 class="text-lg font-semibold text-yellow-600 mt-8 mb-4">Questions 33–34: What TWO things prompted the speaker to choose the issue of tree loss for her presentation?</h3>
+                <p class="text-gray-700 mb-6">Choose TWO answers and write the correct letters A–E.</p>
+                <div id="questions-section4-part2" class="space-y-6"></div>
+
+                <h3 class="text-lg font-semibold text-yellow-600 mt-8 mb-4">Questions 35–36: What TWO things does the speaker feel will best help us tackle tree diseases?</h3>
+                <p class="text-gray-700 mb-6">Choose TWO answers and write the correct letters A–E.</p>
+                <div id="questions-section4-part3" class="space-y-6"></div>
+
+                <h3 class="text-lg font-semibold text-yellow-600 mt-8 mb-4">Questions 37–40: Complete the table.</h3>
+                <p class="text-gray-700 mb-6">Write ONE WORD ONLY for each answer.</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-700">
+                                <th class="py-2 px-4 border-b text-left">Type of pest</th>
+                                <th class="py-2 px-4 border-b text-left">Tree affected</th>
+                                <th class="py-2 px-4 border-b text-left">Main means of spread</th>
+                                <th class="py-2 px-4 border-b text-left">Knowledge gaps</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Beetle<br>(Dendroctonus micans)<br>Origin: Eurasia</td>
+                                <td class="py-2 px-4 border-b">Spruce</td>
+                                <td class="py-2 px-4 border-b">
+                                    - Import of logs<br>
+                                    - <input type="text" id="answer-37" placeholder="Q37" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> of adult beetles
+                                </td>
+                                <td class="py-2 px-4 border-b">
+                                    Influence of changes in<br>
+                                    <input type="text" id="answer-38" placeholder="Q38" class="w-24 p-1 border border-gray-300 rounded-md text-sm">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Moth<br>(Thaumetopoea processionea)<br>Origin: Central and Southern Europe</td>
+                                <td class="py-2 px-4 border-b">Oak</td>
+                                <td class="py-2 px-4 border-b">
+                                    - Import of live saplings for<br>
+                                    <input type="text" id="answer-39" placeholder="Q39" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> e.g. in gardens<br>
+                                    - Material from tree cutting
+                                </td>
+                                <td class="py-2 px-4 border-b">
+                                    - Biology of the moth e.g. timing of egg hatch<br>
+                                    - Best methods of<br>
+                                    <input type="text" id="answer-40" placeholder="Q40" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> movement
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backSection4" class="btn btn-secondary">Back</button>
+                    <button id="submitTest" class="btn btn-primary">Submit Test</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="p-6 bg-gray-50 rounded-xl shadow-inner border border-gray-200 hidden text-center">
+                <p id="submission-message" class="text-xl font-bold text-gray-700 mb-8">Your answers have been submitted, click the button below to download your result!</p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
+                    <button id="downloadPdf" class="btn btn-primary">Download PDF Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500 transition-colors duration-200" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500 transition-colors duration-200" data-color="highlight-pink"></div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const testData = {
+                section1: {
+                    part1: [ // Q1-7 Fill-in-the-blank
+                        { question: "Flat A, 37, 1 _______ House", correctAnswer: "Park" },
+                        { question: "Current occupation: 2 _______", correctAnswer: "gardener" },
+                        { question: "Special needs: Partially 3 _______", correctAnswer: "deaf" },
+                        { question: "A stay in 4 _______ (June, one day)", correctAnswer: "hospital" },
+                        { question: "Injury: a 5 _______", correctAnswer: "broken arm" },
+                        { question: "Requested patient should bring in: a 6 _______ (recent)", correctAnswer: "photo" },
+                        { question: "Requested patient should bring in: one 7 _______ (e.g. water)", correctAnswer: "bill" }
+                    ],
+                    part2: [ // Q8-10 Multiple Choice
+                        {
+                            question: "8. When will Alan have his clinic appointment?",
+                            options: ["A Tuesday", "B Wednesday", "C Thursday"],
+                            correctAnswer: "B"
+                        },
+                        {
+                            question: "9. What transport does Alan decide to use to get to the clinic?",
+                            options: ["A own car", "B bus", "C taxi"],
+                            correctAnswer: "B"
+                        },
+                        {
+                            question: "10. Alan found out about the clinic from",
+                            options: ["A the Internet", "B a list in the library", "C a colleague"],
+                            correctAnswer: "A"
+                        }
+                    ]
+                },
+                section2: {
+                    part1: [ // Q11-12 Choose TWO
+                        {
+                            question: "11-12. According to the speaker, what are the TWO reasons why the fair was first organised?",
+                            options: [
+                                "A. Science was well taught in local schools.",
+                                "B. A local factory gave generous sponsorship.",
+                                "C. Exam performance needed improvement.",
+                                "D. Another fair stopped running.",
+                                "E. A good site for the fair became available."
+                            ],
+                            correctAnswer: ["C", "E"], // Correct letters
+                            type: "checkbox"
+                        }
+                    ],
+                    part2: [ // Q13-14 Choose TWO
+                        {
+                            question: "13-14. What TWO things do people often forget to include in their displays?",
+                            options: [
+                                "A. procedures followed",
+                                "B. materials used",
+                                "C. a summary of the whole project",
+                                "D. conclusions drawn",
+                                "E. photos of work in progress"
+                            ],
+                            correctAnswer: ["A", "D"],
+                            type: "checkbox"
+                        }
+                    ],
+                    part3: [ // Q15-16 Choose TWO
+                        {
+                            question: "15-16. What are the TWO biggest growth areas at the fair?",
+                            options: [
+                                "A. interactive displays",
+                                "B. pre-school projects",
+                                "C. energy conservation projects",
+                                "D. the number of people attending",
+                                "E. cutting-edge research projects"
+                            ],
+                            correctAnswer: ["B", "E"],
+                            type: "checkbox"
+                        }
+                    ],
+                    part4: [ // Q17-20 Label the plan (Fill-in-the-blank)
+                        { question: "Registration", correctAnswer: "I" }, // Removed "17."
+                        { question: "Gaming zone", correctAnswer: "E" },   // Removed "18."
+                        { question: "Commercial displays", correctAnswer: "D" }, // Removed "19."
+                        { question: "Video room", correctAnswer: "B" }      // Removed "20."
+                    ]
+                },
+                section3: {
+                    part1: [ // Q21-24 Multiple Choice
+                        {
+                            question: "21. Tom and Ruby choose to focus on the word ‘nice’ because",
+                            options: ["A it has so many different usages.", "B it’s so well known by many people.", "C its meaning has changed a lot over time."],
+                            correctAnswer: "C"
+                        },
+                        {
+                            question: "22. What inspired Tom and Ruby to research the history of words?",
+                            options: ["A thinking about the content of a novel", "B talking to classmates about their plans", "C listening to a particularly interesting lecture"],
+                            correctAnswer: "A"
+                        },
+                        {
+                            question: "23. What resource do Tom and Ruby agree they need to add to their presentation?",
+                            options: ["A interview data", "B computer software", "C journal articles"],
+                            correctAnswer: "B"
+                        },
+                        {
+                            question: "24. What is Ruby most worried about the reading they have done for the presentation?",
+                            options: ["A its relevance to the course", "B overlap with other modules", "C the date of references"],
+                            correctAnswer: "B"
+                        }
+                    ],
+                    part2: [ // Q25-30 Matching (Fill-in-the-blank mapping to action letter)
+                        { question: "Title", correctAnswer: "G" }, // Removed "25."
+                        { question: "Introduction", correctAnswer: "A" }, // Removed "26."
+                        { question: "Historical background", correctAnswer: "C" }, // Removed "27."
+                        { question: "Current usage", correctAnswer: "H" }, // Removed "28."
+                        { question: "Additional meanings", correctAnswer: "F" }, // Removed "29."
+                        { question: "Future directions", correctAnswer: "D" }  // Removed "30."
+                    ]
+                },
+                section4: {
+                    part1: [ // Q31-32 Choose TWO
+                        {
+                            question: "31-32. According to the speaker, what are the TWO benefits of forests make them so important?",
+                            options: [
+                                "A. They provide a good return on investment.",
+                                "B. They improve the health of the environment.",
+                                "C. They give employment in local communities.",
+                                "D. They produce numerous different commodities.",
+                                "E. They provide recreational space for humans."
+                            ],
+                            correctAnswer: ["B", "C"],
+                            type: "checkbox"
+                        }
+                    ],
+                    part2: [ // Q33-34 Choose TWO
+                        {
+                            question: "33-34. What TWO things prompted the speaker to choose the issue of tree loss for her presentation?",
+                            options: [
+                                "A. She saw the effects of an earlier tree disease.",
+                                "B. She was worried by tree loss in her local area.",
+                                "C. She learned of a serious new threat to UK trees.",
+                                "D. She contributed to a recent research project.",
+                                "E. She read a government publication."
+                            ],
+                            correctAnswer: ["C", "E"],
+                            type: "checkbox"
+                        }
+                    ],
+                    part3: [ // Q35-36 Choose TWO
+                        {
+                            question: "35-36. What TWO things does the speaker feel will best help us tackle tree diseases?",
+                            options: [
+                                "A. understanding how different trees get the disease",
+                                "B. reducing the amount of international trade",
+                                "C. improving communication between scientists",
+                                "D. involving the public in research initiatives",
+                                "E. training more people to work in the forestry industry"
+                            ],
+                            correctAnswer: ["A", "D"],
+                            type: "checkbox"
+                        }
+                    ],
+                    part4: [ // Q37-40 Table Fill-in-the-blank
+                        { question: "37", correctAnswer: "flight" }, // Main means of spread: 37 _______ of adult beetles
+                        { question: "38", correctAnswer: "climate" }, // Knowledge gaps: Influence of changes in 38 _______
+                        { question: "39", correctAnswer: "planting" }, // Main means of spread: Import of live saplings for 39 _______ e.g. in gardens
+                        { question: "40", correctAnswer: "monitoring" } // Knowledge gaps: Best methods of 40 _______ movement
+                    ]
+                }
+            };
+
+            // User's answers storage, initialized with empty arrays for each part
+            const userAnswers = {
+                section1: { part1: Array(7).fill(""), part2: Array(3).fill("") },
+                section2: { part1: Array(1).fill([]), part2: Array(1).fill([]), part3: Array(1).fill([]), part4: Array(4).fill("") },
+                section3: { part1: Array(4).fill(""), part2: Array(6).fill("") },
+                section4: { part1: Array(1).fill([]), part2: Array(1).fill([]), part3: Array(1).fill([]), part4: Array(4).fill("") }
+            };
+
+            // Total score
+            let score = 0;
+
+            // --- Helper Functions ---
+
+            /**
+             * Hides all test parts.
+             */
+            function hideAllParts() {
+                document.querySelectorAll('.test-part').forEach(part => {
+                    part.classList.add('hidden');
+                });
+            }
+
+            /**
+             * Displays a specific test part.
+             * @param {string} sectionId - The ID of the section to display (e.g., 'section1').
+             */
+            function showSection(sectionId) {
+                hideAllParts();
+                document.getElementById(sectionId).classList.remove('hidden');
+            }
+
+            /**
+             * Calculates the global question number for a specific question within a section and part.
+             * @param {string} sectionId - The ID of the section.
+             * @param {string} partId - The ID of the part within the section.
+             * @param {number} qIndex - The zero-based index of the question within its part.
+             * @returns {number} The global question number.
+             */
+            function getGlobalQuestionNumber(sectionId, partId, qIndex) {
+                let currentQuestionCount = 0;
+                for (const sec in testData) {
+                    if (!testData[sec]) {
+                        console.warn(`Skipping undefined/null section: ${sec}`);
+                        continue;
+                    }
+                    // Sum up questions from previous sections
+                    if (sec === sectionId) {
+                        for (const p in testData[sec]) {
+                            if (!testData[sec][p]) {
+                                console.warn(`Skipping undefined/null part: ${p} in section ${sec}`);
+                                continue;
+                            }
+                            if (p === partId) {
+                                // For "choose two" questions, they occupy 2 question numbers but are a single logical question object
+                                if (testData[sec][p][qIndex]?.type === "checkbox" && testData[sec][p][qIndex]?.correctAnswer.length === 2) {
+                                     return currentQuestionCount + 1;
+                                }
+                                return currentQuestionCount + qIndex + 1;
+                            }
+                            currentQuestionCount += testData[sec][p].length * (testData[sec][p][0]?.type === "checkbox" ? 2 : 1);
+                        }
+                    } else {
+                        for (const p in testData[sec]) {
+                            if (!testData[sec][p]) {
+                                console.warn(`Skipping undefined/null part: ${p} in section ${sec}`);
+                                continue;
+                            }
+                            currentQuestionCount += testData[sec][p].length * (testData[sec][p][0]?.type === "checkbox" ? 2 : 1);
+                        }
+                    }
+                }
+                return currentQuestionCount; // Fallback, should not happen if logic is correct
+            }
+
+
+            /**
+             * Renders questions (MCQ, Checkbox, or Fill-in-the-blank) for a given part.
+             * @param {string} sectionId - The ID of the section.
+             * @param {string} partId - The ID of the part (e.g., 'part1', 'part2').
+             * @param {Array<Object>} questions - An array of question objects.
+             */
+            function renderQuestions(sectionId, partId, questions) {
+                const container = document.getElementById(`questions-${sectionId}-${partId}`);
+                if (!container) return; // Guard clause
+                container.innerHTML = ''; // Clear previous questions
+
+                questions.forEach((q, qIndex) => {
+                    const globalQuestionNumber = getGlobalQuestionNumber(sectionId, partId, qIndex);
+
+                    const questionDiv = document.createElement('div');
+                    questionDiv.classList.add('mb-4', 'p-4', 'bg-white', 'rounded-lg', 'shadow-sm', 'border', 'border-gray-100');
+
+                    if (q.options) { // Multiple choice or Checkbox
+                        const inputType = q.type === "checkbox" ? "checkbox" : "radio";
+                        questionDiv.innerHTML = `
+                            <p class="font-semibold text-lg mb-3 text-gray-800">${q.question}</p>
+                            <div class="space-y-2">
+                                ${q.options.map((option, oIndex) => {
+                                    const optionLetter = String.fromCharCode(65 + oIndex); // A, B, C
+                                    const inputName = `${inputType}-q${globalQuestionNumber}`;
+                                    // Pre-select if answer exists (for back navigation)
+                                    const isChecked = Array.isArray(userAnswers[sectionId][partId][qIndex]) ?
+                                                      userAnswers[sectionId][partId][qIndex].includes(optionLetter) :
+                                                      userAnswers[sectionId][partId][qIndex] === optionLetter;
+
+                                    return `
+                                        <label class="flex items-center p-3 rounded-md cursor-pointer hover:bg-gray-50 transition-colors duration-200 border border-gray-200 ${isChecked ? 'selected-option' : ''}">
+                                            <input type="${inputType}" name="${inputName}" value="${optionLetter}" class="form-${inputType} h-5 w-5 text-blue-600" ${isChecked ? 'checked' : ''}>
+                                            <span class="ml-3 text-gray-700">${optionLetter}. ${option.replace(/^[A-E]\.\s*/, '')}</span>
+                                        </label>
+                                    `;
+                                }).join('')}
+                            </div>
+                            <div id="feedback-${globalQuestionNumber}" class="mt-2 text-sm"></div>
+                        `;
+                        container.appendChild(questionDiv);
+
+                        // Add event listener to store selected answer(s)
+                        questionDiv.querySelectorAll(`input[name="${inputType}-q${globalQuestionNumber}"]`).forEach(input => {
+                            input.addEventListener('change', (event) => {
+                                if (inputType === "radio") {
+                                    userAnswers[sectionId][partId][qIndex] = event.target.value;
+                                } else { // Checkbox
+                                    let currentSelections = userAnswers[sectionId][partId][qIndex] || [];
+                                    if (event.target.checked) {
+                                        currentSelections.push(event.target.value);
+                                    } else {
+                                        currentSelections = currentSelections.filter(val => val !== event.target.value);
+                                    }
+                                    userAnswers[sectionId][partId][qIndex] = currentSelections;
+                                }
+                                // Visually highlight the selected option(s)
+                                questionDiv.querySelectorAll('label').forEach(label => {
+                                    const checkbox = label.querySelector(`input[name="${inputType}-q${globalQuestionNumber}"]`);
+                                    if (checkbox && checkbox.checked) {
+                                        label.classList.add('selected-option');
+                                    } else {
+                                        label.classList.remove('selected-option');
+                                    }
+                                });
+                            });
+                        });
+                    } else { // Fill-in-the-blank or Matching (like Q25-30)
+                        let displayQuestionText = q.question;
+                        // For questions 25-30 and 17-20, ensure correct numbering without duplication
+                        const specificQsToHandleNumbering = [17, 18, 19, 20, 25, 26, 27, 28, 29, 30];
+
+                        if (specificQsToHandleNumbering.includes(globalQuestionNumber)) {
+                            // If the question text already has a number like "17. Registration", remove it for dynamic numbering
+                            displayQuestionText = q.question.replace(/^\d+\.\s*/, '');
+                            displayQuestionText = `${globalQuestionNumber}. ${displayQuestionText}`;
+                        } else if (!q.question.match(/^\d+\.\s*/)) {
+                            // For other fill-in-the-blank questions (like 1-7, 37-40) that don't start with a number
+                            // or are part of a table where numbering is implicit.
+                            // We only prepend the number if it's not already there and it's not a table question (37-40)
+                            if (globalQuestionNumber < 37 || globalQuestionNumber > 40) { // Exclude table questions from this prepending
+                                if (!q.question.includes('_______')) { // If it's a general instruction without a blank
+                                   // Don't add global number to instruction text that isn't a question itself.
+                                } else {
+                                    // For Q1-7 where "1 _______ House" exists, no need to prepend "Question X."
+                                    // The question property already contains the number as "1 _______"
+                                    // So, only replace the blank.
+                                }
+                            }
+                        }
+
+                        // Replace blank placeholder
+                        displayQuestionText = displayQuestionText.replace('_______', '<span class="inline-block w-24 border-b-2 border-dashed border-gray-400"></span>');
+
+                        questionDiv.innerHTML = `
+                            <p class="font-semibold text-lg mb-3 text-gray-800">${displayQuestionText}</p>
+                            <input type="text" id="answer-${globalQuestionNumber}" placeholder="Type your answer here..." class="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" value="${userAnswers[sectionId][partId][qIndex] || ''}">
+                            <div id="feedback-${globalQuestionNumber}" class="mt-2 text-sm"></div>
+                        `;
+                        container.appendChild(questionDiv);
+
+                        // Store answer on input change
+                        document.getElementById(`answer-${globalQuestionNumber}`).addEventListener('input', (event) => {
+                            userAnswers[sectionId][partId][qIndex] = event.target.value.trim();
+                        });
+                    }
+                });
+            }
+
+            /**
+             * Checks answers for a part and updates score and feedback.
+             * This function handles both single-choice and multiple-choice (checkbox) questions.
+             * @param {string} sectionId - The ID of the section.
+             * @param {string} partId - The ID of the part.
+             */
+            function checkAnswers(sectionId, partId) {
+                const questions = testData[sectionId][partId];
+
+                questions.forEach((q, qIndex) => {
+                    const globalQuestionNumber = getGlobalQuestionNumber(sectionId, partId, qIndex);
+                    const userAnswer = userAnswers[sectionId][partId][qIndex];
+                    const feedbackDiv = document.getElementById(`feedback-${globalQuestionNumber}`);
+                    let isCorrect = false;
+
+                    // Disable inputs
+                    if (q.options) { // MCQ or Checkbox
+                        document.querySelectorAll(`input[name="${q.type || 'radio'}-q${globalQuestionNumber}"]`).forEach(input => input.disabled = true);
+                    } else { // Fill-in-the-blank
+                        const inputField = document.getElementById(`answer-${globalQuestionNumber}`);
+                        if (inputField) inputField.disabled = true;
+                    }
+
+                    if (q.type === "checkbox") { // Choose TWO answers
+                        const correctAnswersSet = new Set(q.correctAnswer.map(ans => ans.toUpperCase()));
+                        const userAnswersSet = new Set((userAnswer || []).map(ans => ans.toUpperCase()));
+
+                        // Check if all correct answers are present in user's selection
+                        const allCorrectSelected = [...correctAnswersSet].every(ans => userAnswersSet.has(ans));
+                        // Check if user selected only correct answers (no extra incorrect ones)
+                        const noIncorrectSelected = [...userAnswersSet].every(ans => correctAnswersSet.has(ans));
+
+                        isCorrect = allCorrectSelected && noIncorrectSelected && userAnswersSet.size === correctAnswersSet.size;
+
+                        // Give partial score for checkboxes if some correct are chosen (optional, for IELTS style)
+                        if (!isCorrect && allCorrectSelected && userAnswersSet.size > correctAnswersSet.size) {
+                             // Selected correct answers + extra incorrect. Not fully correct.
+                        }
+
+                    } else if (q.options) { // Single choice MCQ (radio)
+                        isCorrect = (userAnswer && userAnswer.toUpperCase() === q.correctAnswer.toUpperCase());
+                    } else { // Fill-in-the-blank
+                        const normalizedUserAnswer = (userAnswer || '').toLowerCase();
+                        const normalizedCorrectAnswer = q.correctAnswer.toLowerCase();
+                        isCorrect = normalizedUserAnswer === normalizedCorrectAnswer;
+
+                        // Specific checks for Section 4, Q37-40 (table fill-in-the-blank)
+                        if (sectionId === 'section4' && partId === 'part4') {
+                             if (globalQuestionNumber === 37) isCorrect = normalizedUserAnswer === 'flight';
+                             if (globalQuestionNumber === 38) isCorrect = normalizedUserAnswer === 'climate';
+                             if (globalQuestionNumber === 39) isCorrect = normalizedUserAnswer === 'planting';
+                             if (globalQuestionNumber === 40) isCorrect = normalizedUserAnswer === 'monitoring';
+                        }
+                    }
+
+                    if (feedbackDiv) { // Ensure feedbackDiv exists
+                        if (isCorrect) {
+                            feedbackDiv.classList.remove('incorrect-answer');
+                            feedbackDiv.classList.add('correct-answer');
+                            feedbackDiv.textContent = `Correct!`;
+                            score++;
+                            // For checkbox questions with 2 correct answers, increment score twice
+                            if (q.type === "checkbox" && q.correctAnswer.length === 2) {
+                                score++;
+                            }
+                        } else {
+                            feedbackDiv.classList.remove('correct-answer');
+                            feedbackDiv.classList.add('incorrect-answer');
+                            let correctDisplay = q.options ? q.correctAnswer : `"${q.correctAnswer}"`;
+                            if (q.type === "checkbox") {
+                                correctDisplay = `"${q.correctAnswer.join(', ')}"`;
+                            }
+                            feedbackDiv.textContent = `Incorrect. The correct answer is ${correctDisplay}.`;
+                        }
+                    }
+                });
+            }
+
+            /**
+             * Displays the final results.
+             */
+            function showResults() {
+                hideAllParts();
+                document.getElementById('results').classList.remove('hidden');
+            }
+
+
+            /**
+             * Generates and downloads a PDF report of the test results.
+             */
+            function generatePdfReport() {
+                console.log("generatePdfReport called.");
+                if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                    console.error("jsPDF library (window.jspdf.jsPDF) not loaded. Cannot generate PDF.");
+                    alert("PDF generation is not available. Please ensure your browser allows scripts from CDNs.");
+                    return;
+                }
+                console.log("jsPDF is loaded.");
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                console.log("jsPDF document initialized.");
+
+                doc.setFontSize(22);
+                doc.text("Results", 105, 20, { align: 'center' });
+                doc.setFontSize(10);
+                const now = new Date();
+                const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                doc.text(`Report generated on: ${now.toLocaleDateString('en-US', dateOptions)}`, 105, 30, { align: 'center' });
+
+                let totalPossibleScore = 0;
+                for (const secKey in testData) {
+                    for (const partKey in testData[secKey]) {
+                        testData[secKey][partKey].forEach(q => {
+                            if (q.type === "checkbox" && q.correctAnswer.length === 2) {
+                                totalPossibleScore += 2;
+                            } else {
+                                totalPossibleScore += 1;
+                            }
+                        });
+                    }
+                }
+
+                doc.setFontSize(14);
+                doc.text(`Total Score: ${score} out of ${totalPossibleScore} correct!`, 105, 45, { align: 'center' });
+
+                doc.setFontSize(16);
+                doc.text("Your Answers", 14, 65);
+
+                const headers = [["Question #", "Your Answer", "Correct Answer", "Status"]];
+                const data = [];
+
+                let currentQuestionNumberForPdf = 1; // Use a separate counter for PDF to handle question ranges
+
+                for (const secKey in testData) {
+                    for (const partKey in testData[secKey]) {
+                        testData[secKey][partKey].forEach((q, qIndex) => {
+                            const userAnswer = userAnswers[secKey][partKey][qIndex];
+                            let status = "Not Answered";
+                            let correctValueDisplay;
+                            let userAnswerDisplay;
+                            let scoredPoints = 0;
+
+                            if (q.type === "checkbox") {
+                                const correctAnswersSet = new Set(q.correctAnswer.map(ans => ans.toUpperCase()));
+                                const userAnswersSet = new Set((userAnswer || []).map(ans => ans.toUpperCase()));
+
+                                scoredPoints = 0;
+                                if (userAnswer && Array.isArray(userAnswer)) {
+                                    userAnswer.forEach(ans => {
+                                        if (correctAnswersSet.has(ans.toUpperCase())) {
+                                            scoredPoints++;
+                                        }
+                                    });
+                                }
+
+                                if (scoredPoints === q.correctAnswer.length && userAnswersSet.size === correctAnswersSet.size) {
+                                    status = "Correct";
+                                } else if (scoredPoints > 0 || userAnswersSet.size > 0) {
+                                    status = "Incorrect"; // Even if partial, it's not fully correct
+                                }
+
+
+                                correctValueDisplay = q.correctAnswer.map(ans => {
+                                    const optionIndex = ans.charCodeAt(0) - 65;
+                                    return `${ans}. ${q.options[optionIndex].replace(/^[A-E]\.\s*/, '')}`;
+                                }).join(', ');
+
+                                userAnswerDisplay = (userAnswer && userAnswer.length > 0) ? userAnswer.map(ans => {
+                                    const optionIndex = ans.charCodeAt(0) - 65;
+                                    return `${ans}. ${q.options[optionIndex].replace(/^[A-E]\.\s*/, '')}`;
+                                }).join(', ') : 'N/A';
+
+                            } else if (q.options) { // Single choice MCQ (radio)
+                                const isCorrect = (userAnswer && userAnswer.toUpperCase() === q.correctAnswer.toUpperCase());
+                                status = isCorrect ? "Correct" : "Incorrect";
+                                if (!userAnswer) status = "Not Answered";
+
+                                correctValueDisplay = `${q.correctAnswer}. ${q.options[q.correctAnswer.charCodeAt(0) - 65]}`;
+                                userAnswerDisplay = userAnswer ? `${userAnswer}. ${q.options[userAnswer.charCodeAt(0) - 65]}` : 'N/A';
+                            } else { // Fill-in-the-blank
+                                const normalizedUserAnswer = (userAnswer || '').toLowerCase();
+                                const normalizedCorrectAnswer = q.correctAnswer.toLowerCase();
+                                let isCorrect = normalizedUserAnswer === normalizedCorrectAnswer; 
+
+                                // Specific checks for Section 4, Q37-40 (table fill-in-the-blank)
+                                // Rely solely on q.question (the stored ID like "37") for comparison.
+                                if (secKey === 'section4' && partKey === 'part4') {
+                                    if (q.question === '37') isCorrect = normalizedUserAnswer === 'flight';
+                                    else if (q.question === '38') isCorrect = normalizedUserAnswer === 'climate';
+                                    else if (q.question === '39') isCorrect = normalizedUserAnswer === 'planting';
+                                    else if (q.question === '40') isCorrect = normalizedUserAnswer === 'monitoring';
+                                }
+
+                                status = isCorrect ? "Correct" : "Incorrect";
+                                if (!userAnswer) status = "Not Answered";
+
+                                correctValueDisplay = q.correctAnswer;
+                                userAnswerDisplay = userAnswer || 'N/A';
+                            }
+
+                            let questionNumberForDisplay = currentQuestionNumberForPdf.toString();
+                            if (q.type === "checkbox" && q.correctAnswer.length === 2) {
+                                questionNumberForDisplay = `${currentQuestionNumberForPdf}-${currentQuestionNumberForPdf + 1}`;
+                            }
+
+                            data.push([
+                                questionNumberForDisplay,
+                                userAnswerDisplay,
+                                correctValueDisplay,
+                                status
+                            ]);
+
+                            currentQuestionNumberForPdf += (q.type === "checkbox" && q.correctAnswer.length === 2) ? 2 : 1;
+                        });
+                    }
+                }
+
+                doc.autoTable({
+                    startY: 75,
+                    head: headers,
+                    body: data,
+                    theme: 'striped',
+                    styles: { font: 'Inter', fontSize: 9, cellPadding: 2, valign: 'middle' },
+                    headStyles: { fillColor: [30, 58, 138], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    columnStyles: {
+                        0: { cellWidth: 20 },
+                        1: { cellWidth: 50 },
+                        2: { cellWidth: 50 },
+                        3: { cellWidth: 30 }
+                    },
+                    didParseCell: function (data) {
+                        if (data.section === 'body' && data.column.index === 3) { // Status column
+                            if (data.cell.raw === 'Correct') {
+                                data.cell.styles.textColor = [34, 139, 34]; // Forest green
+                            } else if (data.cell.raw === 'Incorrect') {
+                                data.cell.styles.textColor = [220, 20, 60]; // Crimson red
+                            }
+                        }
+                    }
+                });
+
+                console.log("PDF data prepared, attempting to save.");
+                doc.save("Results.pdf");
+                console.log("doc.save() called.");
+            }
+
+
+            // --- Highlight Toolbar Logic ---
+            const testContainer = document.querySelector('.container'); // The main test content area
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const toolbarClearBtn = document.getElementById('toolbarClearBtn');
+            const toolbarYellow = document.getElementById('toolbarYellow');
+            const toolbarBlue = document.getElementById('toolbarBlue');
+            const toolbarGreen = document.getElementById('toolbarGreen');
+            const toolbarPink = document.getElementById('toolbarPink');
+
+            let lastSelectionRange = null;
+
+            // Function to apply highlight to selected text
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges(); // Clear current selection before re-adding
+                    selection.addRange(range);
+                } else {
+                    // No text selected or previously selected
+                    console.log("No text selected to highlight.");
+                    return;
+                }
+
+                const selectedText = range.toString().trim();
+                if (!selectedText) return; // Do nothing if selection is empty
+
+                const span = document.createElement('span');
+                span.classList.add(colorClass);
+                span.classList.add('highlighted-text'); // Add a class to identify highlighted spans
+
+                try {
+                    // Extract the selected content and put it into the new span
+                    const contents = range.extractContents();
+                    span.appendChild(contents);
+                    range.insertNode(span); // Insert the new span back into the document
+
+                    selection.removeAllRanges(); // Clear the selection after highlighting
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } catch (e) {
+                    console.error("Error applying highlight:", e);
+                    // Provide user feedback if highlighting fails for complex selections
+                    // (e.g., selection spanning across multiple non-text nodes)
+                }
+            }
+
+            // Function to clear highlight from selected text
+            function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    console.log("No text selected to clear highlight.");
+                    return;
+                }
+
+                const selectedNode = range.commonAncestorContainer;
+                let highlightedSpan = null;
+
+                // Check if the selected node itself is a highlighted span
+                if (selectedNode && selectedNode.nodeType === Node.ELEMENT_NODE && selectedNode.classList.contains('highlighted-text')) {
+                    highlightedSpan = selectedNode;
+                } else {
+                    // Traverse up the DOM tree from the selected node to find a parent highlight span
+                    let currentNode = selectedNode;
+                    while (currentNode && currentNode !== testContainer && currentNode.parentNode) { // Changed readingPassageContent
+                        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.classList.contains('highlighted-text')) {
+                            highlightedSpan = currentNode;
+                            break;
+                        }
+                        currentNode = currentNode.parentNode;
+                    }
+                }
+
+                if (highlightedSpan && highlightedSpan.parentNode) {
+                    // Replace the highlighted span with its plain text content
+                    const textContent = highlightedSpan.textContent;
+                    highlightedSpan.parentNode.replaceChild(document.createTextNode(textContent), highlightedSpan);
+
+                    selection.removeAllRanges(); // Clear the selection
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } else {
+                    console.log("No highlight found to clear for this selection.");
+                }
+            }
+
+            // Event listeners for toolbar buttons
+            toolbarYellow.addEventListener('click', () => applyHighlight('highlight-yellow'));
+            toolbarBlue.addEventListener('click', () => applyHighlight('highlight-blue'));
+            toolbarGreen.addEventListener('click', () => applyHighlight('highlight-green'));
+            toolbarPink.addEventListener('click', () => applyHighlight('highlight-pink'));
+            toolbarClearBtn.addEventListener('click', clearSelectedHighlight);
+
+            // Show/hide toolbar on text selection (mouseup event)
+            testContainer.addEventListener('mouseup', (event) => { // Changed from readingPassageContent
+                const selection = window.getSelection();
+                // Check if there's a selection and it's not collapsed (i.e., actual text is selected)
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0); // Store the current selection range
+                    const rect = lastSelectionRange.getBoundingClientRect(); // Get the bounding box of the selection
+                    const toolbarHeight = floatingToolbar.offsetHeight;
+                    const toolbarWidth = floatingToolbar.offsetWidth;
+
+                    // Position the toolbar above the selected text
+                    let topPos = rect.top + window.scrollY - toolbarHeight - 10;
+                    // Center the toolbar horizontally above the selection
+                    let leftPos = rect.left + window.scrollX + (rect.width / 2) - (toolbarWidth / 2);
+
+                    // Ensure the toolbar stays within the viewport boundaries
+                    topPos = Math.max(10, topPos); // Prevent going too far left (top adjusted too)
+                    leftPos = Math.max(10, leftPos); // Prevent going too far left
+                    leftPos = Math.min(leftPos, window.innerWidth - toolbarWidth - 10); // Prevent going too far right
+
+                    floatingToolbar.style.top = `${topPos}px`;
+                    floatingToolbar.style.left = `${leftPos}px`;
+
+                    floatingToolbar.classList.remove('hidden'); // Show the toolbar
+                } else {
+                    floatingToolbar.classList.add('hidden'); // Hide if no selection
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+
+            // Hide toolbar when clicking outside the toolbar or passage content
+            document.addEventListener('mousedown', (event) => {
+                // If the click is not inside the toolbar and not inside the reading passage content
+                if (!floatingToolbar.contains(event.target) && !testContainer.contains(event.target)) { // Changed readingPassageContent
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+            // --- End Highlight Toolbar Logic ---
+
+
+            // --- Main Test Navigation and Rendering ---
+            // Initialize the test by showing Section 1
+            showSection('section1');
+            renderQuestions('section1', 'part1', testData.section1.part1);
+            renderQuestions('section1', 'part2', testData.section1.part2);
+
+            // Navigate to Section 2
+            document.getElementById('nextSection1').addEventListener('click', () => {
+                checkAnswers('section1', 'part1');
+                checkAnswers('section1', 'part2');
+                showSection('section2');
+                renderQuestions('section2', 'part1', testData.section2.part1);
+                renderQuestions('section2', 'part2', testData.section2.part2);
+                renderQuestions('section2', 'part3', testData.section2.part3);
+                renderQuestions('section2', 'part4', testData.section2.part4);
+            });
+
+            // Navigate to Section 3
+            document.getElementById('nextSection2').addEventListener('click', () => {
+                checkAnswers('section2', 'part1');
+                checkAnswers('section2', 'part2');
+                checkAnswers('section2', 'part3');
+                checkAnswers('section2', 'part4');
+                showSection('section3');
+                renderQuestions('section3', 'part1', testData.section3.part1);
+                renderQuestions('section3', 'part2', testData.section3.part2);
+            });
+
+            // Navigate to Section 4 (Part 3 answers are checked automatically)
+            document.getElementById('nextSection3').addEventListener('click', () => {
+                checkAnswers('section3', 'part1');
+                checkAnswers('section3', 'part2');
+                showSection('section4');
+                renderQuestions('section4', 'part1', testData.section4.part1);
+                renderQuestions('section4', 'part2', testData.section4.part2);
+                renderQuestions('section4', 'part3', testData.section4.part3);
+                // Manually handle table inputs for Section 4 Part 4
+                testData.section4.part4.forEach((q, qIndex) => {
+                    // Note: globalQNum is not directly used for assignment here, as q.question is the specific ID (e.g., "37")
+                    const inputField = document.getElementById(`answer-${q.question}`); // Use q.question as ID directly
+                    if (inputField) {
+                         inputField.value = userAnswers.section4.part4[qIndex] || '';
+                         inputField.addEventListener('input', (event) => {
+                            userAnswers.section4.part4[qIndex] = event.target.value.trim();
+                        });
+                    }
+                });
+            });
+
+            // Submit test (Section 4 answers are checked automatically)
+            document.getElementById('submitTest').addEventListener('click', () => {
+                checkAnswers('section4', 'part1');
+                checkAnswers('section4', 'part2');
+                checkAnswers('section4', 'part3');
+                checkAnswers('section4', 'part4'); // Check table answers
+                showResults();
+            });
+
+            // Download PDF Report
+            document.getElementById('downloadPdf').addEventListener('click', generatePdfReport);
+
+            // Back buttons navigation
+            document.getElementById('backSection2').addEventListener('click', () => {
+                showSection('section1');
+            });
+
+            document.getElementById('backSection3').addEventListener('click', () => {
+                showSection('section2');
+                renderQuestions('section2', 'part1', testData.section2.part1);
+                renderQuestions('section2', 'part2', testData.section2.part2);
+                renderQuestions('section2', 'part3', testData.section2.part3);
+                renderQuestions('section2', 'part4', testData.section2.part4);
+            });
+
+            document.getElementById('backSection4').addEventListener('click', () => {
+                showSection('section3');
+                renderQuestions('section3', 'part1', testData.section3.part1);
+                renderQuestions('section3', 'part2', testData.section3.part2);
+            });
+        }; // End of window.onload
+    </script>
+</body>
+</html>
