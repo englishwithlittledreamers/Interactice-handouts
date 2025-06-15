@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Passage: Child Language Development</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+        /* Highlight styles - Copied from the provided HTML */
+        .highlight-yellow { background-color: #FEF9C3; } /* Yellow-100 */
+        .highlight-blue { background-color: #DBEAFE; } /* Blue-100 */
+        .highlight-green { background-color: #D1FAE5; } /* Green-100 */
+        .highlight-pink { background-color: #FCE7F3; } /* Pink-100 */
+        .highlighted-text {
+            /* Ensures highlighted text is treated as a single unit for selection */
+            display: inline;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+    <div class="bg-white p-6 sm:p-8 md:p-10 rounded-xl w-full max-w-4xl border border-gray-200 shadow-lg">
+        <div id="readingPassageContent" class="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed select-text">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Child language development: the early years</h1>
+
+            <p>Research shows that children don’t learn their native language like little robots who can only notice and copy what they hear. For example, from the first moments of life babies begin to make sounds: they cry, coo and chatter. Although they make sounds that sound very much like words, these sounds have no conventional meaning. This is shown by the fact that deaf babies, who can’t hear what others are saying, chatter in the same way.</p>
+
+            <p>Children already begin to recognize what their caregivers are saying at an early age. For example, some six-month-olds will regularly glance up at the ceiling light in response to their mother saying ‘light’. Actual talking begins sometime between about ten and twenty months of age. Almost invariably, children’s first utterances are one word long. Some first words refer to simple interactions with adults, such as ‘hi’ and ‘peekaboo’. Others are names, such as ‘Mama’ and ‘Fido’. Most of the rest are simple nouns, such as ‘duck’ and ‘spoon’, adjectives such as ‘hot’ and ‘big’, and action verbs such as ‘give’ and ‘push’. And one of the first words is almost always an emphatic ‘No’.</p>
+
+            <p>The early vocabulary tends to concern things that can be moved around, or that move by themselves in the child’s environment. For example, children are less likely to talk about ceilings than about rolling balls. And this early vocabulary refers more often to attributes and actions children can perceive in the outside world, such as shape or movement, than to internal states and feelings, such as pain or ideas.</p>
+
+            <p>It is hard to understand what children mean by the words they say. Even though we hear them say ‘rabbit’ or ‘ball’, we don’t know exactly what these mean to their young users. For example, if a young child says ‘rabbit’ when he sees a rabbit, he may mean ‘tail’, or ‘animal’, or ‘white’, or even ‘runs by’.</p>
+
+            <p>The same problem that makes it hard for investigators to find out exactly what children mean probably makes it hard for children themselves to discover these meanings. Even if the helpful mother points out a rabbit to her child, saying ‘rabbit’, the child still has a big job to do. He has to make up his mind whether the word ‘rabbit’ means a particular animal (in which case ‘rabbit’ is a name, like ‘Peter Rabbit’), anything that falls within the animal kingdom (in which case ‘rabbit’ means ‘animal’), anything within a particular species (so ‘rabbit’ means ‘rabbit’), or even some property, part, or action of a rabbit (in which case ‘rabbit’ means ‘white’, or ‘tail’, or ‘hops’). Because of problems like these, beginners often under-generalize the meaning of a word. They may know that the word ‘house’ refers to small toy buildings, but not that it also refers to large real buildings. They may also over-generalize the meaning of other words. They may think that the word ‘Daddy’ refers to any man, not just their own father.</p>
+
+            <p>These overgeneralizations and under-generalizations are common for the first seventy-five or so words the child utters, but very rare after that. At later stages of learning, the child is almost exactly on the mark in using words to refer to the right thing in the world. However, it is important to realize that even the young over-generalizer is surprisingly correct in what he has learned. Though he just about always observes the ground when he sees a rabbit (and hears the word ‘rabbit’), because rabbits can’t fly and so are nearly always found near the ground, still he virtually never mistakenly learns that ‘rabbit’ means ‘ground’, or that ‘ground’ means ‘rabbit’. He just makes the category a bit too broad or narrow at first.</p>
+
+            <p>At about the child’s second birthday many drastic changes take place. The child’s vocabulary begins to increase rapidly, rising to many hundreds of words. Soon he begins to put words together into ‘sentences’. Although we can clearly recognize ideas in these first sentences, they hardly sound like adult speech. Generally each one is only two words long, and each of these words is a content word. The function words and morphemes (word parts) are still largely missing, and so these sentences sound like the short ones we use in text messages: ‘Throw ball!’, ‘Daddy shoe’, or ‘No eat!’. However, despite their simplicity they show evidence of organization. For example, young English speakers will put the doer of the action first, and will say ‘Mummy throw’ if they want the mother to throw the ball. In fact these short sentences are so clear in meaning that one may wonder why children bother to learn anything more.</p>
+        </div>
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500 transition-colors duration-200" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500 transition-colors duration-200" data-color="highlight-pink"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const readingPassageContent = document.getElementById('readingPassageContent');
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const toolbarClearBtn = document.getElementById('toolbarClearBtn');
+            const toolbarYellow = document.getElementById('toolbarYellow');
+            const toolbarBlue = document.getElementById('toolbarBlue');
+            const toolbarGreen = document.getElementById('toolbarGreen');
+            const toolbarPink = document.getElementById('toolbarPink');
+
+            let lastSelectionRange = null;
+
+            // Function to apply highlight to selected text
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges(); // Clear current selection before re-adding
+                    selection.addRange(range);
+                } else {
+                    // No text selected or previously selected
+                    console.log("No text selected to highlight.");
+                    return;
+                }
+
+                const selectedText = range.toString().trim();
+                if (!selectedText) return; // Do nothing if selection is empty
+
+                const span = document.createElement('span');
+                span.classList.add(colorClass);
+                span.classList.add('highlighted-text'); // Add a class to identify highlighted spans
+
+                try {
+                    // Extract the selected content and put it into the new span
+                    const contents = range.extractContents();
+                    span.appendChild(contents);
+                    range.insertNode(span); // Insert the new span back into the document
+
+                    selection.removeAllRanges(); // Clear the selection after highlighting
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } catch (e) {
+                    console.error("Error applying highlight:", e);
+                    // Provide user feedback if highlighting fails for complex selections
+                    // (e.g., selection spanning across multiple non-text nodes)
+                }
+            }
+
+            // Function to clear highlight from selected text
+            function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    console.log("No text selected to clear highlight.");
+                    return;
+                }
+
+                const selectedNode = range.commonAncestorContainer;
+                let highlightedSpan = null;
+
+                // Check if the selected node itself is a highlighted span
+                if (selectedNode && selectedNode.nodeType === Node.ELEMENT_NODE && selectedNode.classList.contains('highlighted-text')) {
+                    highlightedSpan = selectedNode;
+                } else {
+                    // Traverse up the DOM tree from the selected node to find a parent highlight span
+                    let currentNode = selectedNode;
+                    while (currentNode && currentNode !== readingPassageContent && currentNode.parentNode) {
+                        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.classList.contains('highlighted-text')) {
+                            highlightedSpan = currentNode;
+                            break;
+                        }
+                        currentNode = currentNode.parentNode;
+                    }
+                }
+
+                if (highlightedSpan && highlightedSpan.parentNode) {
+                    // Replace the highlighted span with its plain text content
+                    const textContent = highlightedSpan.textContent;
+                    highlightedSpan.parentNode.replaceChild(document.createTextNode(textContent), highlightedSpan);
+
+                    selection.removeAllRanges(); // Clear the selection
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } else {
+                    console.log("No highlight found to clear for this selection.");
+                }
+            }
+
+            // Event listeners for toolbar buttons
+            toolbarYellow.addEventListener('click', () => applyHighlight('highlight-yellow'));
+            toolbarBlue.addEventListener('click', () => applyHighlight('highlight-blue'));
+            toolbarGreen.addEventListener('click', () => applyHighlight('highlight-green'));
+            toolbarPink.addEventListener('click', () => applyHighlight('highlight-pink'));
+            toolbarClearBtn.addEventListener('click', clearSelectedHighlight);
+
+            // Show/hide toolbar on text selection (mouseup event)
+            readingPassageContent.addEventListener('mouseup', (event) => {
+                const selection = window.getSelection();
+                // Check if there's a selection and it's not collapsed (i.e., actual text is selected)
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0); // Store the current selection range
+                    const rect = lastSelectionRange.getBoundingClientRect(); // Get the bounding box of the selection
+                    const toolbarHeight = floatingToolbar.offsetHeight;
+                    const toolbarWidth = floatingToolbar.offsetWidth;
+
+                    // Position the toolbar above the selected text
+                    floatingToolbar.style.top = `${rect.top + window.scrollY - toolbarHeight - 10}px`;
+                    // Center the toolbar horizontally above the selection
+                    let leftPos = rect.left + window.scrollX + (rect.width / 2) - (toolbarWidth / 2);
+                    // Ensure the toolbar stays within the viewport boundaries
+                    leftPos = Math.max(10, leftPos); // Prevent going too far left
+                    leftPos = Math.min(leftPos, window.innerWidth - toolbarWidth - 10); // Prevent going too far right
+                    floatingToolbar.style.left = `${leftPos}px`;
+
+                    floatingToolbar.classList.remove('hidden'); // Show the toolbar
+                } else {
+                    floatingToolbar.classList.add('hidden'); // Hide if no selection
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+
+            // Hide toolbar when clicking outside the toolbar or passage content
+            document.addEventListener('mousedown', (event) => {
+                // If the click is not inside the toolbar and not inside the reading passage content
+                if (!floatingToolbar.contains(event.target) && !readingPassageContent.contains(event.target)) {
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+        });
+    </script>
+</body>
+</html>

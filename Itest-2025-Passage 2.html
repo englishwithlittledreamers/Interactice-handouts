@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Passage 1: Interactive Worksheet</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Changed to white */
+        }
+        /* Style for disabled radio buttons */
+        input[type='radio'].form-radio:disabled {
+            opacity: 0.7; /* Make them slightly faded when disabled */
+            cursor: not-allowed;
+        }
+
+        /* Style for radio buttons */
+        input[type='radio'].form-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            border-radius: 100%;
+            height: 1.25em;
+            width: 1.25em;
+            border: 2px solid #D1D5DB; /* gray-300 */
+            background-color: #F9FAFB; /* gray-50 */
+            transition: all 0.2s ease-in-out;
+        }
+        input[type='radio'].form-radio:checked {
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+        }
+        input[type='radio'].form-radio:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* blue-500 with opacity */
+        }
+
+        /* Style for disabled checkboxes */
+        input[type='checkbox'].form-checkbox:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        /* Style for checkboxes */
+        input[type='checkbox'].form-checkbox {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            border-radius: 0.25rem; /* square corners */
+            height: 1.25em;
+            width: 1.25em;
+            border: 2px solid #D1D5DB; /* gray-300 */
+            background-color: #F9FAFB; /* gray-50 */
+            transition: all 0.2s ease-in-out;
+        }
+        input[type='checkbox'].form-checkbox:checked {
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 24 24' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3e%3c/svg%3e"); /* checkmark */
+        }
+        input[type='checkbox'].form-checkbox:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* blue-500 with opacity */
+        }
+
+        /* Ensure input fields don't wrap text onto the next line awkwardly */
+        .input-container {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping for small screens */
+            align-items: center;
+            gap: 0.5rem; /* Space between elements */
+        }
+        .input-container input[type="text"] {
+            flex-grow: 1; /* Allow input to grow */
+            min-width: 150px; /* Minimum width for input */
+        }
+        /* Highlight styles */
+        .highlight-yellow { background-color: #FEF9C3; } /* Yellow-100 */
+        .highlight-blue { background-color: #DBEAFE; } /* Blue-100 */
+        .highlight-green { background-color: #D1FAE5; } /* Green-100 */
+        .highlight-pink { background-color: #FCE7F3; } /* Pink-100 */
+        .highlighted-text {
+            /* Ensures highlighted text is treated as a single unit for selection */
+            display: inline;
+        }
+
+        /* Adjust for very small screens if necessary */
+        @media (max-width: 640px) {
+            .input-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .input-container input {
+                width: 100%; /* Full width on small screens */
+            }
+            /* Adjusted for TFNG questions to ensure stacking on small screens too */
+            .tfng-question .question-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .tfng-question .options-row {
+                justify-content: flex-start; /* Align radio buttons to start */
+                margin-left: 0; /* Remove specific left margin */
+                padding-left: 2rem; /* Add padding for alignment under number */
+            }
+            .multi-choice-question .question-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .multi-choice-question .options-row {
+                justify-content: flex-start; /* Align checkboxes to start */
+                margin-left: 0;
+                padding-left: 2rem;
+            }
+            .heading-question .options-row select {
+                width: 100%; /* Full width on small screens */
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-6 sm:p-8 md:p-10 rounded-xl  w-full max-w-4xl border border-gray-200">
+       
+
+        <div id="dictationContent" class="space-y-8 text-gray-700 text-base sm:text-lg leading-relaxed select-text">
+
+            <h2 class="text-1xl sm:text-1xl font-bold text-gray-800 mt-6 mb-4">
+                Questions 14–20
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Reading Passage 2 has seven sections, A–G.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Choose the correct heading for each section A–G from the list of headings below.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Write the correct number i–ix in boxes 14–20 on your answer sheet.
+            </p>
+            <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-4">List of headings</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-6 ">
+                <li>i Desirable job opportunities</li>
+                <li>ii Design of the jikokoa</li>
+                <li>iii The impact of rising charcoal prices</li>
+                <li>iv Benefits for the individual and the environment</li>
+                <li>v The background to stove innovations</li>
+                <li>vi Manufacture of the jikokoa</li>
+                <li>vii Training courses for BURN staff</li>
+                <li>viii Company plans</li>
+                <li>ix Affordability and availability</li>
+            </ul>
+
+            <!-- Question 14 (Dropdown) -->
+            <div class="heading-question border-b border-gray-200 pb-4" data-question-number="14" data-correct-answer="v">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">14</span>
+                    <p class="flex-grow">Section A</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 pl-10 options-row">
+                    <select id="heading14" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200">
+                        <option value="">Select Heading</option>
+                        <option value="i">i</option>
+                        <option value="ii">ii</option>
+                        <option value="iii">iii</option>
+                        <option value="iv">iv</option>
+                        <option value="v">v</option>
+                        <option value="vi">vi</option>
+                        <option value="vii">vii</option>
+                        <option value="viii">viii</option>
+                        <option value="ix">ix</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Question 15 (Dropdown) -->
+            <div class="heading-question border-b border-gray-200 pb-4 pt-4" data-question-number="15" data-correct-answer="ii">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">15</span>
+                    <p class="flex-grow">Section B</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 pl-10 options-row">
+                    <select id="heading15" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200">
+                        <option value="">Select Heading</option>
+                        <option value="i">i</option>
+                        <option value="ii">ii</option>
+                        <option value="iii">iii</option>
+                        <option value="iv">iv</option>
+                        <option value="v">v</option>
+                        <option value="vi">vi</option>
+                        <option value="vii">vii</option>
+                        <option value="viii">viii</option>
+                        <option value="ix">ix</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Question 16 (Dropdown) -->
+            <div class="heading-question border-b border-gray-200 pb-4 pt-4" data-question-number="16" data-correct-answer="vi">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">16</span>
+                    <p class="flex-grow">Section C</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 pl-10 options-row">
+                    <select id="heading16" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200">
+                        <option value="">Select Heading</option>
+                        <option value="i">i</option>
+                        <option value="ii">ii</option>
+                        <option value="iii">iii</option>
+                        <option value="iv">iv</option>
+                        <option value="v">v</option>
+                        <option value="vi">vi</option>
+                        <option value="vii">vii</option>
+                        <option value="viii">viii</option>
+                        <option value="ix">ix</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Question 17 (Dropdown) -->
+            <div class="heading-question border-b border-gray-200 pb-4 pt-4" data-question-number="17" data-correct-answer="ix">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">17</span>
+                    <p class="flex-grow">Section D</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 pl-10 options-row">
+                    <select id="heading17" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200">
+                        <option value="">Select Heading</option>
+                        <option value="i">i</option>
+                        <option value="ii">ii</option>
+                        <option value="iii">iii</option>
+                        <option value="iv">iv</option>
+                        <option value="v">v</option>
+                        <option value="vi">vi</option>
+                        <option value="vii">vii</option>
+                        <option value="viii">viii</option>
+                        <option value="ix">ix</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Question 18 (Dropdown) -->
+            <div class="heading-question border-b border-gray-200 pb-4 pt-4" data-question-number="18" data-correct-answer="i">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">18</span>
+                    <p class="flex-grow">Section E</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 pl-10 options-row">
+                    <select id="heading18" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200">
+                        <option value="">Select Heading</option>
+                        <option value="i">i</option>
+                        <option value="ii">ii</option>
+                        <option value="iii">iii</option>
+                        <option value="iv">iv</option>
+                        <option value="v">v</option>
+                        <option value="vi">vi</option>
+                        <option value="vii">vii</option>
+                        <option value="viii">viii</option>
+                        <option value="ix">ix</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Question 19 (Dropdown) -->
+            <div class="heading-question border-b border-gray-200 pb-4 pt-4" data-question-number="19" data-correct-answer="iv">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">19</span>
+                    <p class="flex-grow">Section F</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 pl-10 options-row">
+                    <select id="heading19" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200">
+                        <option value="">Select Heading</option>
+                        <option value="i">i</option>
+                        <option value="ii">ii</option>
+                        <option value="iii">iii</option>
+                        <option value="iv">iv</option>
+                        <option value="v">v</option>
+                        <option value="vi">vi</option>
+                        <option value="vii">vii</option>
+                        <option value="viii">viii</option>
+                        <option value="ix">ix</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Question 20 (Dropdown) -->
+            <div class="heading-question border-b border-gray-200 pb-4 pt-4" data-question-number="20" data-correct-answer="viii">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">20</span>
+                    <p class="flex-grow">Section G</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 pl-10 options-row">
+                    <select id="heading20" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200">
+                        <option value="">Select Heading</option>
+                        <option value="i">i</option>
+                        <option value="ii">ii</option>
+                        <option value="iii">iii</option>
+                        <option value="iv">iv</option>
+                        <option value="v">v</option>
+                        <option value="vi">vi</option>
+                        <option value="vii">vii</option>
+                        <option value="viii">viii</option>
+                        <option value="ix">ix</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <h2 class="text-1xl sm:text-1xl font-bold text-gray-800 mt-8 mb-4">
+                Questions 21–26
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Choose <span class="font-bold">NO MORE THAN TWO WORDS AND/OR A NUMBER</span> from the passage for each answer.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Write your answers in boxes 21–26 on your answer sheet.
+            </p>
+
+            <div class="multi-choice-question border-b border-gray-200 pb-4 pt-4" data-question-number="21-22" data-correct-answers="B,E">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">21–22</span>
+                    <p class="flex-grow">Which TWO of the following claims are made about the jikokoa, compared to the KCJ?</p>
+                </div>
+                <div class="flex flex-col space-y-2 mt-2 pl-10 options-row">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice21_22" value="A">
+                        <span class="ml-2 text-base sm:text-lg">A It’s smaller in overall size.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice21_22" value="B">
+                        <span class="ml-2 text-base sm:text-lg">B It’s easier to control.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice21_22" value="C">
+                        <span class="ml-2 text-base sm:text-lg">C It uses more fuel.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice21_22" value="D">
+                        <span class="ml-2 text-base sm:text-lg">D It’s less expensive to buy.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice21_22" value="E">
+                        <span class="ml-2 text-base sm:text-lg">E It gives off fewer fumes.</span>
+                    </label>
+                </div>
+            </div>
+
+            <h2 class="text-1xl sm:text-1xl font-bold text-gray-800 mt-8 mb-4">
+                Questions 23–24
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Choose <span class="font-bold">TWO letters, A–E</span>.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Which TWO of the following statements about the jikokoa are true?
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Write your answers in boxes 23 and 24 on your answer sheet.
+            </p>
+
+            <div class="multi-choice-question border-b border-gray-200 pb-4 pt-4" data-question-number="23-24" data-correct-answers="B,C">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">23–24</span>
+                    <p class="flex-grow">Which TWO of the following statements about the jikokoa are true?</p>
+                </div>
+                <div class="flex flex-col space-y-2 mt-2 pl-10 options-row">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice23_24" value="A">
+                        <span class="ml-2 text-base sm:text-lg">A It is made in China.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice23_24" value="B">
+                        <span class="ml-2 text-base sm:text-lg">B It can be produced very efficiently.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice23_24" value="C">
+                        <span class="ml-2 text-base sm:text-lg">C It can be bought on credit.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice23_24" value="D">
+                        <span class="ml-2 text-base sm:text-lg">D It comes in a range of colours.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox text-blue-600" name="choice23_24" value="E">
+                        <span class="ml-2 text-base sm:text-lg">E It is difficult to move.</span>
+                    </label>
+                </div>
+            </div>
+
+            <h2 class="text-1xl sm:text-1xl font-bold text-gray-800 mt-8 mb-4">
+                Questions 25–26
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Label the diagram below.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Choose <span class="font-bold">NO MORE THAN TWO WORDS</span> from the passage for each answer.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Write your answers in boxes 25 and 26 on your answer sheet.
+                
+            </p>
+
+            <div class="my-8 flex flex-col items-center">
+<a href="https://ibb.co/zhX2pVTb"><img src="https://i.ibb.co/xS1gWqtG/Screenshot-2025-06-15-170025.png" alt="Screenshot-2025-06-15-170025" border="0"></a>                <div class="w-full max-w-md mt-6 space-y-4">
+                    <div class="input-container flex items-center justify-between gap-4">
+                        <span class="font-semibold text-xl text-gray-700 flex-shrink-0">25</span>
+                        <input type="text" id="blank25" data-correct-answer="CERAMIC WOOL"
+                               class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 flex-grow">
+                    </div>
+
+                    <div class="input-container flex items-center justify-between gap-4">
+                        <span class="font-semibold text-xl text-gray-700 flex-shrink-0">26</span>
+                        <input type="text" id="blank26" data-correct-answer="ASH TRAY"
+                               class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 flex-grow">
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <button id="checkAnswersBtn"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    disabled>
+                Check Answers
+            </button>
+            <button id="saveResultsBtn"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                    disabled>
+                Download Results (PDF)
+            </button>
+        </div>
+
+        <div id="feedback" class="mt-6 text-center text-lg font-semibold text-gray-800"></div>
+
+        <!-- The resultsTableSection has been removed from here as per request -->
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500 transition-colors duration-200" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500 transition-colors duration-200" data-color="highlight-pink"></div>
+    </div>
+
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select all relevant question types
+            const headingQuestions = document.querySelectorAll('.heading-question'); // New selector for dropdowns
+            const multiChoiceQuestions = document.querySelectorAll('.multi-choice-question');
+            const wordBlanks = document.querySelectorAll('input[type="text"]');
+
+            const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+            const saveResultsBtn = document.getElementById('saveResultsBtn');
+            const feedbackDiv = document.getElementById('feedback');
+            const dictationContent = document.getElementById('dictationContent');
+
+            // Floating toolbar elements
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const toolbarClearBtn = document.getElementById('toolbarClearBtn');
+            const toolbarYellow = document.getElementById('toolbarYellow');
+            const toolbarBlue = document.getElementById('toolbarBlue');
+            const toolbarGreen = document.getElementById('toolbarGreen');
+            const toolbarPink = document.getElementById('toolbarPink');
+
+            let currentHighlights = []; // Stores highlight data: { text: "...", color: "..." }
+            let lastSelectionRange = null; // Stores the last text selection range
+            let answersCheckedFlag = false; // Flag to track if answers have been checked
+
+            // --- Highlighting Logic ---
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                let range;
+
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    feedbackDiv.textContent = "No text selected or previously selected to highlight.";
+                    feedbackDiv.classList.add('text-red-600');
+                    return;
+                }
+
+                const selectedText = range.toString().trim();
+                if (!selectedText) return;
+
+                const span = document.createElement('span');
+                span.classList.add(colorClass);
+                span.classList.add('highlighted-text');
+
+                try {
+                    const contents = range.extractContents();
+                    span.appendChild(contents);
+                    range.insertNode(span);
+
+                    const existingHighlight = currentHighlights.find(
+                        h => h.text === selectedText && h.color === colorClass.replace('highlight-', '')
+                    );
+                    if (!existingHighlight) {
+                        currentHighlights.push({
+                            text: selectedText,
+                            color: colorClass.replace('highlight-', '')
+                        });
+                    }
+
+                    selection.removeAllRanges();
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                } catch (e) {
+                    console.error("Error applying highlight:", e);
+                    feedbackDiv.textContent = "Could not highlight complex selection. Try selecting less text.";
+                    feedbackDiv.classList.add('text-red-600');
+                }
+            }
+
+            function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                let range;
+
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    feedbackDiv.textContent = "No text selected or previously selected to clear highlight.";
+                    feedbackDiv.classList.add('text-red-600');
+                    return;
+                }
+
+                const selectedNode = range.commonAncestorContainer;
+                let highlightedSpan = null;
+
+                if (selectedNode && selectedNode.nodeType === Node.ELEMENT_NODE && selectedNode.classList.contains('highlighted-text')) {
+                    highlightedSpan = selectedNode;
+                } else {
+                    let currentNode = selectedNode;
+                    while (currentNode && currentNode !== dictationContent && currentNode.parentNode) {
+                        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.classList.contains('highlighted-text')) { // Corrected element type
+                            highlightedSpan = currentNode;
+                            break;
+                        }
+                        currentNode = currentNode.parentNode;
+                    }
+                }
+
+                if (highlightedSpan && highlightedSpan.parentNode) {
+                    const textContent = highlightedSpan.textContent;
+                    highlightedSpan.parentNode.replaceChild(document.createTextNode(textContent), highlightedSpan);
+
+                    currentHighlights = currentHighlights.filter(h => h.text.toLowerCase() !== textContent.toLowerCase());
+
+                    selection.removeAllRanges();
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                    feedbackDiv.textContent = "Highlight cleared.";
+                    feedbackDiv.classList.remove('text-green-600', 'text-red-600', 'text-blue-600');
+                } else {
+                    feedbackDiv.textContent = "No highlight found to clear for this selection.";
+                    feedbackDiv.classList.add('text-red-600');
+                }
+            }
+
+            // --- Event Listeners for Toolbar ---
+            toolbarYellow.addEventListener('click', () => applyHighlight('highlight-yellow'));
+            toolbarBlue.addEventListener('click', () => applyHighlight('highlight-blue'));
+            toolbarGreen.addEventListener('click', () => applyHighlight('highlight-green'));
+            toolbarPink.addEventListener('click', () => applyHighlight('highlight-pink'));
+            toolbarClearBtn.addEventListener('click', clearSelectedHighlight);
+
+            dictationContent.addEventListener('mouseup', (event) => {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0);
+                    const rect = lastSelectionRange.getBoundingClientRect();
+                    const toolbarHeight = floatingToolbar.offsetHeight;
+                    const toolbarWidth = floatingToolbar.offsetWidth;
+
+                    floatingToolbar.style.top = `${rect.top + window.scrollY - toolbarHeight - 10}px`;
+                    let leftPos = rect.left + window.scrollX + (rect.width / 2) - (toolbarWidth / 2);
+                    leftPos = Math.max(10, leftPos);
+                    leftPos = Math.min(leftPos, window.innerWidth - toolbarWidth - 10);
+                    floatingToolbar.style.left = `${leftPos}px`;
+
+                    floatingToolbar.classList.remove('hidden');
+                } else {
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                }
+            });
+
+            document.addEventListener('mousedown', (event) => {
+                if (!floatingToolbar.contains(event.target) && !dictationContent.contains(event.target)) {
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                }
+            });
+
+            // --- Worksheet Functionality ---
+            function getResults() {
+                const results = [];
+                let correctCount = 0;
+                // Recalculate total questions based on all types
+                let totalQuestions = headingQuestions.length + multiChoiceQuestions.length + wordBlanks.length;
+
+                headingQuestions.forEach(qDiv => {
+                    const questionNumber = qDiv.dataset.questionNumber;
+                    const correctAnswer = qDiv.dataset.correctAnswer.toLowerCase();
+                    const selectedOption = qDiv.querySelector(`select#heading${questionNumber}`);
+                    const userAnswer = selectedOption ? selectedOption.value.toLowerCase() : "No answer";
+                    const sectionName = qDiv.querySelector('p').textContent.trim();
+
+                    let isCorrect = (userAnswer === correctAnswer);
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'HEADING',
+                        questionNumber: parseInt(questionNumber),
+                        statement: sectionName,
+                        userAnswer: selectedOption ? selectedOption.value : "No answer",
+                        correctAnswer: qDiv.dataset.correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+
+                multiChoiceQuestions.forEach(qDiv => {
+                    const questionNumberRange = qDiv.dataset.questionNumber;
+                    const correctAnswers = qDiv.dataset.correctAnswers.split(',').map(a => a.trim().toLowerCase());
+                    const selectedCheckboxes = Array.from(qDiv.querySelectorAll(`input[name="choice${questionNumberRange.replace('-', '_')}"]:checked`));
+                    const userAnswers = selectedCheckboxes.map(cb => cb.value.toLowerCase());
+
+                    // Sort arrays for consistent comparison
+                    correctAnswers.sort();
+                    userAnswers.sort();
+
+                    // Check if the user's answers exactly match the correct answers
+                    let isCorrect = (userAnswers.length === correctAnswers.length &&
+                                     userAnswers.every((val, index) => val === correctAnswers[index]));
+
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'MULTI_CHOICE',
+                        questionNumber: questionNumberRange,
+                        statement: qDiv.querySelector('p').textContent.trim(),
+                        userAnswer: selectedCheckboxes.map(cb => cb.value).join(', ') || "No answer",
+                        correctAnswer: qDiv.dataset.correctAnswers,
+                        isCorrect: isCorrect
+                    });
+                });
+
+                wordBlanks.forEach(input => {
+                    const questionNumber = parseInt(input.id.replace('blank', ''));
+                    const userAnswer = input.value.trim();
+                    const correctAnswer = input.dataset.correctAnswer.trim();
+
+                    let isCorrect = (userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'BLANK',
+                        questionNumber: questionNumber,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+
+                return { results, correctCount, totalQuestions }; // Return all relevant data for PDF
+            }
+
+            // Function to check if all questions have an answer
+            function areAllQuestionsAnswered() {
+                let allHeadingAnswered = true;
+                headingQuestions.forEach(qDiv => {
+                    const selectedOption = qDiv.querySelector(`select#heading${qDiv.dataset.questionNumber}`);
+                    if (!selectedOption || selectedOption.value === "") { // Check for placeholder value
+                        allHeadingAnswered = false;
+                    }
+                });
+
+                let allMultiChoiceAnswered = true;
+                multiChoiceQuestions.forEach(qDiv => {
+                    const selectedCheckboxes = qDiv.querySelectorAll(`input[name="choice${qDiv.dataset.questionNumber.replace('-', '_')}"]:checked`);
+                    // Assuming all multi-choice questions require exactly 2 answers as per the prompt
+                    if (selectedCheckboxes.length !== 2) {
+                        allMultiChoiceAnswered = false;
+                    }
+                });
+
+                let allBlanksFilled = true;
+                wordBlanks.forEach(input => {
+                    if (input.value.trim() === '') {
+                        allBlanksFilled = false;
+                    }
+                });
+                return allHeadingAnswered && allMultiChoiceAnswered && allBlanksFilled;
+            }
+
+            // Function to update button states based on completion and answers checked
+            function updateButtonStates() {
+                if (areAllQuestionsAnswered()) {
+                    checkAnswersBtn.disabled = false;
+                    checkAnswersBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    checkAnswersBtn.disabled = true;
+                    checkAnswersBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+
+                if (answersCheckedFlag) {
+                    saveResultsBtn.disabled = false;
+                    saveResultsBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    saveResultsBtn.disabled = true;
+                    saveResultsBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            // Function to lock answers after checking
+            function lockAnswers() {
+                headingQuestions.forEach(qDiv => {
+                    qDiv.querySelector(`select#heading${qDiv.dataset.questionNumber}`).disabled = true;
+                });
+                multiChoiceQuestions.forEach(qDiv => {
+                    qDiv.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.disabled = true;
+                    });
+                });
+                wordBlanks.forEach(input => {
+                    input.readOnly = true;
+                    input.classList.add('cursor-not-allowed'); // Visual cue for read-only
+                });
+            }
+
+            // Initial state for buttons
+            updateButtonStates();
+
+            checkAnswersBtn.addEventListener('click', () => {
+                getResults(); // This will get the results but not display score on page
+                lockAnswers(); // Lock the answers immediately after checking
+                answersCheckedFlag = true; // Set flag to true after checking answers
+                updateButtonStates(); // Update button states to enable download
+                feedbackDiv.textContent = "Answers checked! Download your PDF for results."; // Updated neutral feedback
+                feedbackDiv.classList.remove('text-green-600', 'text-red-600', 'text-blue-600'); // Ensure neutral color
+            });
+
+            saveResultsBtn.addEventListener('click', () => {
+                const { results: allResults, correctCount, totalQuestions } = getResults(); // Get all results including score
+
+                feedbackDiv.textContent = "Generating PDF...";
+                feedbackDiv.classList.remove('text-green-600', 'text-red-600');
+                feedbackDiv.classList.add('text-blue-600');
+
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    doc.setFontSize(22);
+                    doc.text("Reading Passage 1: Your Results", 105, 20, null, null, "center");
+
+                    doc.setFontSize(14);
+                    doc.text(`Report generated on: ${new Date().toLocaleString()}`, 10, 30);
+                    doc.text(`Total Score: ${correctCount} out of ${totalQuestions} correct!`, 10, 40); // Display total score in PDF
+
+                    // Answers Table
+                    doc.setFontSize(16);
+                    doc.text("Your Answers", 10, 60); // Adjusted Y position
+
+                    // Sort results for consistent PDF output
+                    allResults.sort((a, b) => {
+                        // Handle question numbers that are ranges (e.g., "21-22")
+                        const numA = parseInt(a.questionNumber.toString().split('-')[0]);
+                        const numB = parseInt(b.questionNumber.toString().split('-')[0]);
+                        return numA - numB;
+                    });
+
+
+                    const tableColumn = ["Question #", "Your Answer", "Correct Answer", "Status"];
+                    const tableRows = [];
+
+                    allResults.forEach(result => {
+                        const status = result.isCorrect ? "Correct" : "Incorrect";
+                        tableRows.push([
+                            result.questionNumber.toString(),
+                            result.userAnswer || "No answer",
+                            result.correctAnswer,
+                            status
+                        ]);
+                    });
+
+                    doc.autoTable({
+                        head: [tableColumn],
+                        body: tableRows,
+                        startY: 65, // Adjusted Y position
+                        theme: 'striped',
+                        styles: {
+                            fontSize: 10,
+                            cellPadding: 2,
+                            fillColor: [255, 255, 255],
+                            textColor: [51, 51, 51],
+                            lineColor: [200, 200, 200],
+                            lineWidth: 0.1,
+                            overflow: 'linebreak',
+                        },
+                        headStyles: {
+                            fillColor: [220, 230, 240],
+                            textColor: [0, 0, 0],
+                            fontStyle: 'bold'
+                        },
+                        columnStyles: {
+                            0: { cellWidth: 20 },
+                            1: { cellWidth: 55 },
+                            2: { cellWidth: 55 },
+                            3: { cellWidth: 30, halign: 'center' }
+                        },
+                        didDrawCell: (data) => {
+                            if (data.section === 'body' && data.column.index === 3) {
+                                const status = data.cell.text[0];
+                                if (status === 'Correct') {
+                                    doc.setFillColor(144, 238, 144);
+                                } else {
+                                    doc.setFillColor(255, 182, 193);
+                                }
+                                doc.rect(data.cell.x + data.cell.padding('left'), data.cell.y + data.cell.padding('top'), data.cell.width - data.cell.padding('left') - data.cell.padding('right'), data.cell.height - data.cell.padding('top') - data.cell.padding('bottom'), 'F');
+                                doc.setTextColor(0, 0, 0);
+                                doc.text(status, data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2, { align: 'center', baseline: 'middle' });
+                            }
+                        }
+                    });
+
+                    let finalY = doc.lastAutoTable.finalY + 15;
+                    doc.setFontSize(16);
+                    doc.text("Your Highlights", 10, finalY);
+                    finalY += 10;
+
+                    if (currentHighlights.length > 0) {
+                        doc.setFontSize(12);
+                        currentHighlights.forEach((h) => {
+                            const textLines = doc.splitTextToSize(`- "${h.text}" (Color: ${h.color})`, doc.internal.pageSize.width - 25);
+                            doc.text(textLines, 15, finalY);
+                            finalY += (textLines.length * 7);
+                        });
+                    } else {
+                        doc.setFontSize(12);
+                        doc.setTextColor(150, 150, 150);
+                        doc.text("No highlights were made.", 15, finalY);
+                    }
+
+                    const filename = `reading_passage_results_${new Date().toISOString().slice(0,10)}.pdf`;
+                    doc.save(filename);
+
+                    feedbackDiv.textContent = "Results PDF generated and downloaded!";
+                    feedbackDiv.classList.remove('text-blue-600');
+                    feedbackDiv.classList.add('text-green-600');
+
+                } catch (error) {
+                    feedbackDiv.textContent = `An error occurred during PDF generation: ${error.message}`;
+                    feedbackDiv.classList.remove('text-blue-600');
+                    feedbackDiv.classList.add('text-red-600');
+                    console.error('Error generating PDF:', error);
+                }
+            });
+
+            // Event listeners to update button states when input changes
+            wordBlanks.forEach(input => {
+                input.addEventListener('input', () => {
+                    feedbackDiv.textContent = ''; // Clear score message
+                    answersCheckedFlag = false; // Reset flag if user changes answers after checking
+                    updateButtonStates(); // Re-evaluate button states
+                });
+            });
+
+            headingQuestions.forEach(qDiv => { // Updated to headingQuestions
+                const selectElement = qDiv.querySelector('select');
+                if (selectElement) {
+                    selectElement.addEventListener('change', () => {
+                        feedbackDiv.textContent = ''; // Clear score message
+                        answersCheckedFlag = false; // Reset flag if user changes answers after checking
+                        updateButtonStates(); // Re-evaluate button states
+                    });
+                }
+            });
+
+            multiChoiceQuestions.forEach(qDiv => {
+                qDiv.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        feedbackDiv.textContent = ''; // Clear score message
+                        answersCheckedFlag = false; // Reset flag if user changes answers after checking
+                        updateButtonStates(); // Re-evaluate button states
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
