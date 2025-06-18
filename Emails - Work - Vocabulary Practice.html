@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Email Worksheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            background-color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2.5rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        .draggable-word {
+            background-color: #4f46e5;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 9999px; /* Pill shape */
+            cursor: grab;
+            font-weight: 600;
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+        .draggable-word:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+            background-color: #4338ca;
+        }
+        .email-content p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        .blank-input {
+            width: 130px; /* Increased width for better text fit */
+            min-height: 32px; /* Minimum height for better drag target */
+            border: 1px dashed #9ca3af;
+            border-radius: 6px;
+            padding: 0.3rem 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            color: #1f2937;
+            background-color: #f9fafb;
+            transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            display: inline-flex; /* Use flex to center text vertically */
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle; /* Align with surrounding text */
+            margin: 0 0.25rem; /* Small margin for spacing */
+        }
+        .blank-input.drag-over {
+            border-color: #6366f1;
+            background-color: #e0e7ff;
+        }
+        .blank-input.correct {
+            background-color: #d1fae5;
+            border-color: #34d399;
+            color: #065f46;
+        }
+        .blank-input.incorrect {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+        .action-button {
+            padding: 0.8rem 1.8rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .check-button {
+            background-color: #10b981;
+            color: white;
+        }
+        .check-button:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .reset-button {
+            background-color: #f97316;
+            color: white;
+        }
+        .reset-button:hover {
+            background-color: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .show-answers-button {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .show-answers-button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1e293b;
+            color: white;
+            padding: 1.5rem 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .message-box button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .message-box button:hover {
+            background-color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Complete the Email</h1>
+            <p class="text-gray-600">Drag and drop the words from the bank into the correct blanks.</p>
+        </div>
+
+        <div id="wordBank" class="word-bank">
+            <!-- Draggable words will be injected here by JavaScript -->
+        </div>
+
+        <div class="email-content text-gray-700 text-lg">
+            <p>Dear Kim,</p>
+            <p>I was excited to hear about your latest achievements! Congratulations on your new job! Now, let me share what's been going on with me.</p>
+            <p>Being a doctor comes with its <span id="blank-1" class="blank-input" data-correct-answer="challenges" contenteditable="false"></span>. The job is incredibly <span id="blank-2" class="blank-input" data-correct-answer="demanding" contenteditable="false"></span>, often <span id="blank-3" class="blank-input" data-correct-answer="stressful" contenteditable="false"></span>, and I work in a <span id="blank-4" class="blank-input" data-correct-answer="high-pressure" contenteditable="false"></span>, <span id="blank-5" class="blank-input" data-correct-answer="fast-paced" contenteditable="false"></span> environment. My role requires <span id="blank-6" class="blank-input" data-correct-answer="multitasking" contenteditable="false"></span> and handling <span id="blank-7" class="blank-input" data-correct-answer="deadline-driven" contenteditable="false"></span> tasks, especially during surgeries. Due to the nature of the work, I often struggle to maintain a good <span id="blank-8" class="blank-input" data-correct-answer="work-life balance" contenteditable="false"></span>, which leaves little time for my family or myself.</p>
+            <p>However, knowing that I can make a meaningful difference and save lives makes the hard work so <span id="blank-9" class="blank-input" data-correct-answer="rewarding" contenteditable="false"></span>. It's what keeps me motivated! Additionally, the working environment at my hospital is <span id="blank-10" class="blank-input" data-correct-answer="supportive" contenteditable="false"></span> and <span id="blank-11" class="blank-input" data-correct-answer="collaborative" contenteditable="false"></span>. My colleagues are professional and skilled, which creates a <span id="blank-12" class="blank-input" data-correct-answer="productive" contenteditable="false"></span> atmosphere. Despite the <span id="blank-13" class="blank-input" data-correct-answer="stressful" contenteditable="false"></span> aspects, I feel incredibly <span id="blank-14" class="blank-input" data-correct-answer="empowered" contenteditable="false"></span> and fulfilled in what I do.</p>
+            <p>That's my update! I hope everything is going well with you and your family. Please keep in touch and let me know if there's any news on your end.</p>
+            <p>All the best,</p>
+        </div>
+
+        <div class="actions">
+            <button id="checkAnswers" class="action-button check-button">Check Answers</button>
+            <button id="resetWorksheet" class="action-button reset-button">Reset</button>
+            <button id="showAnswers" class="action-button show-answers-button">Show Answers</button>
+        </div>
+    </div>
+
+    <div id="messageBox" class="message-box">
+        <p id="messageText"></p>
+        <button id="closeMessageBox">OK</button>
+    </div>
+
+    <script>
+        const wordBank = document.getElementById('wordBank');
+        const blanks = document.querySelectorAll('.blank-input');
+        const checkAnswersBtn = document.getElementById('checkAnswers');
+        const resetWorksheetBtn = document.getElementById('resetWorksheet');
+        const showAnswersBtn = document.getElementById('showAnswers');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const closeMessageBoxBtn = document.getElementById('closeMessageBox');
+
+        // Original words for reset functionality
+        const originalWords = [
+            "collaborative", "competitive", "deadline-driven", "empowering",
+            "flexible", "healthy", "meaningful", "multitasking",
+            "professional", "productive", "respectful", "stressful",
+            "work-life balance", "demanding", "high-pressure", "fast-paced",
+            "rewarding", "supportive", "positive feedback", "challenges"
+        ];
+
+        // Define groups of blanks where word order can be interchanged
+        const interchangeableGroups = [
+            {
+                blanks: ['blank-2', 'blank-3'], // IDs of the blanks
+                correctWords: ['demanding', 'stressful']
+            },
+            {
+                blanks: ['blank-4', 'blank-5'],
+                correctWords: ['high-pressure', 'fast-paced']
+            },
+            {
+                blanks: ['blank-10', 'blank-11'],
+                correctWords: ['supportive', 'collaborative']
+            }
+        ];
+
+        // --- Drag and Drop Logic ---
+        let draggedItem = null;
+
+        function createWordBank() {
+            // Clear existing words
+            wordBank.innerHTML = '';
+            // Shuffle the words to randomize their order
+            const shuffledWords = [...originalWords].sort(() => Math.random() - 0.5);
+            shuffledWords.forEach(word => {
+                const div = document.createElement('div');
+                div.classList.add('draggable-word');
+                div.textContent = word;
+                div.setAttribute('draggable', true);
+                div.dataset.word = word; // Store the word in a data attribute
+                wordBank.appendChild(div);
+            });
+        }
+
+        // Initialize word bank on load
+        createWordBank();
+
+        wordBank.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('draggable-word')) {
+                draggedItem = e.target;
+                // Add a small delay to avoid flicker and ensure the drag image is set correctly
+                setTimeout(() => {
+                    e.target.style.opacity = '0.5';
+                }, 0);
+            }
+        });
+
+        wordBank.addEventListener('dragend', (e) => {
+            if (draggedItem) {
+                draggedItem.style.opacity = '1';
+                draggedItem = null;
+            }
+        });
+
+        blanks.forEach(blank => {
+            blank.addEventListener('dragover', (e) => {
+                e.preventDefault(); // Allow drop
+                blank.classList.add('drag-over');
+            });
+
+            blank.addEventListener('dragleave', () => {
+                blank.classList.remove('drag-over');
+            });
+
+            blank.addEventListener('drop', (e) => {
+                e.preventDefault();
+                blank.classList.remove('drag-over');
+
+                if (draggedItem) {
+                    // Check if the blank already has a word
+                    if (blank.textContent.trim() !== '') {
+                        // If it does, put the existing word back into the word bank
+                        const existingWord = blank.textContent.trim();
+                        addWordToBank(existingWord);
+                    }
+
+                    // Place the new word into the blank
+                    blank.textContent = draggedItem.dataset.word;
+                    blank.dataset.placedWord = draggedItem.dataset.word; // Store the placed word
+                    draggedItem.remove(); // Remove the word from the word bank
+                    // Remove feedback classes after a drop
+                    blank.classList.remove('correct', 'incorrect');
+                }
+            });
+
+            // Allow clicking on a filled blank to return the word to the bank
+            blank.addEventListener('click', () => {
+                if (blank.textContent.trim() !== '') {
+                    const wordToReturn = blank.textContent.trim();
+                    addWordToBank(wordToReturn);
+                    blank.textContent = ''; // Clear the blank
+                    blank.dataset.placedWord = ''; // Clear the placed word data
+                    // Remove feedback classes
+                    blank.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        function addWordToBank(word) {
+            const div = document.createElement('div');
+            div.classList.add('draggable-word');
+            div.textContent = word;
+            div.setAttribute('draggable', true);
+            div.dataset.word = word;
+            wordBank.appendChild(div);
+        }
+
+        // --- Check Answers Logic ---
+        checkAnswersBtn.addEventListener('click', () => {
+            let allCorrect = true;
+            const checkedBlanks = new Set(); // To keep track of blanks already checked in groups
+
+            // First, check the grouped blanks
+            interchangeableGroups.forEach(group => {
+                const userAnswersForGroup = [];
+                const blankElementsInGroup = [];
+                group.blanks.forEach(blankId => {
+                    const blank = document.getElementById(blankId);
+                    userAnswersForGroup.push(blank.textContent.trim().toLowerCase());
+                    blankElementsInGroup.push(blank);
+                    checkedBlanks.add(blank.id); // Mark this blank's ID as checked
+                });
+
+                // Sort both arrays to compare irrespective of order
+                const sortedUserAnswers = [...userAnswersForGroup].sort();
+                const sortedCorrectAnswers = [...group.correctWords].map(word => word.toLowerCase()).sort();
+
+                let groupIsCorrect = true;
+                if (sortedUserAnswers.length !== sortedCorrectAnswers.length) {
+                    groupIsCorrect = false;
+                } else {
+                    for (let i = 0; i < sortedUserAnswers.length; i++) {
+                        if (sortedUserAnswers[i] !== sortedCorrectAnswers[i]) {
+                            groupIsCorrect = false;
+                            break;
+                        }
+                    }
+                }
+
+                blankElementsInGroup.forEach(blank => {
+                    if (groupIsCorrect) {
+                        blank.classList.add('correct');
+                        blank.classList.remove('incorrect');
+                    } else {
+                        blank.classList.add('incorrect');
+                        blank.classList.remove('correct');
+                        allCorrect = false;
+                    }
+                });
+            });
+
+            // Then, check the remaining individual blanks (those not part of a group)
+            blanks.forEach(blank => {
+                if (!checkedBlanks.has(blank.id)) { // Only check if not already part of a group check
+                    const userAnswer = blank.textContent.trim().toLowerCase();
+                    const correctAnswer = blank.dataset.correctAnswer.toLowerCase();
+
+                    if (userAnswer === correctAnswer) {
+                        blank.classList.add('correct');
+                        blank.classList.remove('incorrect');
+                    } else {
+                        blank.classList.add('incorrect');
+                        blank.classList.remove('correct');
+                        allCorrect = false;
+                    }
+                }
+            });
+
+            // Display overall message
+            if (allCorrect) {
+                showMessage("Congratulations! All answers are correct!");
+            } else {
+                showMessage("Some answers are incorrect. Please review and try again.");
+            }
+        });
+
+        // --- Reset Worksheet Logic ---
+        resetWorksheetBtn.addEventListener('click', () => {
+            blanks.forEach(blank => {
+                // If a blank had a word, add it back to the word bank
+                if (blank.dataset.placedWord && blank.dataset.placedWord !== '') {
+                    addWordToBank(blank.dataset.placedWord);
+                }
+                blank.textContent = '';
+                blank.dataset.placedWord = ''; // Clear the placed word data
+                blank.classList.remove('correct', 'incorrect');
+            });
+            createWordBank(); // Re-populate and shuffle the word bank
+            showMessage("Worksheet has been reset!");
+        });
+
+        // --- Show Answers Logic ---
+        showAnswersBtn.addEventListener('click', () => {
+            blanks.forEach(blank => {
+                const correctAnswer = blank.dataset.correctAnswer;
+                // If the blank currently has a word, return it to the bank first
+                if (blank.textContent.trim() !== '' && blank.textContent.trim().toLowerCase() !== correctAnswer.toLowerCase()) {
+                    addWordToBank(blank.textContent.trim());
+                }
+                blank.textContent = correctAnswer;
+                blank.dataset.placedWord = correctAnswer; // Update the placed word data
+                blank.classList.remove('incorrect');
+                blank.classList.add('correct'); // Mark as correct when showing answers
+            });
+
+            // Remove any remaining words from the word bank as they are now in the blanks
+            wordBank.innerHTML = '';
+            showMessage("Answers displayed!");
+        });
+
+        // --- Message Box Logic ---
+        function showMessage(message) {
+            messageText.textContent = message;
+            messageBox.style.display = 'flex';
+        }
+
+        closeMessageBoxBtn.addEventListener('click', () => {
+            messageBox.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
