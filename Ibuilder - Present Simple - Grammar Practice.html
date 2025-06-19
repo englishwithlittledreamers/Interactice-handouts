@@ -170,6 +170,33 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+        .feedback-message {
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
+
+        .feedback-correct {
+            background-color: #e6ffe6; /* Lighter green */
+            color: #2e7d32;
+        }
+
+        .feedback-incorrect {
+            background-color: #ffe6e6; /* Lighter red */
+            color: #dc3545;
+        }
+
+        .inline-feedback {
+            font-size: 0.9em;
+            color: #2e7d32;
+            margin-top: 5px;
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -214,45 +241,55 @@
                 <div class="verb-sorting-item">
                     <p><span class="question-number">1.</span> A koala bear <span class="text-red-500 font-bold">closes</span> for up to 22 hours each day.</p>
                     <input type="text" id="q1-verb" placeholder="Correct verb">
+                    <span id="q1-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">2.</span> In the summer in the Arctic Circle, the sun never <span class="text-red-500 font-bold">travels</span>.</p>
                     <input type="text" id="q2-verb" placeholder="Correct verb">
+                    <span id="q2-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">3.</span> An astronaut footprint on the surface of the moon <span class="text-red-500 font-bold">sleeps</span> for millions of years.</p>
                     <input type="text" id="q3-verb" placeholder="Correct verb">
+                    <span id="q3-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">4.</span> The largest flower in the world is called a Rafflesia it <span class="text-red-500 font-bold">lasts</span> up to 7 kilos and <span class="text-red-500 font-bold">loses</span> up to 1 metre across.</p>
                     <input type="text" id="q4-verb-1" placeholder="Correct verb 1">
                     <input type="text" id="q4-verb-2" placeholder="Correct verb 2">
+                    <span id="q4-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">5.</span> If a lizard <span class="text-red-500 font-bold">drinks</span> its tail, it <span class="text-red-500 font-bold">grows</span> another one.</p>
                     <input type="text" id="q5-verb-1" placeholder="Correct verb 1">
                     <input type="text" id="q5-verb-2" placeholder="Correct verb 2">
+                    <span id="q5-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">6.</span> In art galleries around the world, each visitor <span class="text-red-500 font-bold">measures</span> an average of 3 seconds in front of each painting.</p>
                     <input type="text" id="q6-verb" placeholder="Correct verb">
+                    <span id="q6-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">7.</span> In baseball, when a pitcher <span class="text-red-500 font-bold">beats</span> a good ball, it <span class="text-red-500 font-bold">weighs</span> at about 160 kilometres an hour.</p>
                     <input type="text" id="q7-verb-1" placeholder="Correct verb 1">
                     <input type="text" id="q7-verb-2" placeholder="Correct verb 2">
+                    <span id="q7-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">8.</span> An adult elephant <span class="text-red-500 font-bold">spends</span> about 225 litres of water every day.</p>
                     <input type="text" id="q8-verb" placeholder="Correct verb">
+                    <span id="q8-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">9.</span> A snake never <span class="text-red-500 font-bold">throws</span> its eyes at any time.</p>
                     <input type="text" id="q9-verb" placeholder="Correct verb">
+                    <span id="q9-verb-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="verb-sorting-item">
                     <p><span class="question-number">10.</span> A human heart <span class="text-red-500 font-bold">sets</span> about 70 times a minute.</p>
                     <input type="text" id="q10-verb" placeholder="Correct verb">
+                    <span id="q10-verb-feedback" class="inline-feedback"></span>
                 </div>
             </div>
         </div>
@@ -268,6 +305,7 @@
                         <label><input type="checkbox" name="cc1" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc1" value="cross"> ✖</label>
                     </div>
+                    <span id="cc1-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">2.</span>
@@ -276,6 +314,7 @@
                         <label><input type="checkbox" name="cc2" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc2" value="cross"> ✖</label>
                     </div>
+                    <span id="cc2-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">3.</span>
@@ -284,6 +323,7 @@
                         <label><input type="checkbox" name="cc3" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc3" value="cross"> ✖</label>
                     </div>
+                    <span id="cc3-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">4.</span>
@@ -292,6 +332,7 @@
                         <label><input type="checkbox" name="cc4" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc4" value="cross"> ✖</label>
                     </div>
+                    <span id="cc4-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">5.</span>
@@ -300,6 +341,7 @@
                         <label><input type="checkbox" name="cc5" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc5" value="cross"> ✖</label>
                     </div>
+                    <span id="cc5-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">6.</span>
@@ -308,6 +350,7 @@
                         <label><input type="checkbox" name="cc6" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc6" value="cross"> ✖</label>
                     </div>
+                    <span id="cc6-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">7.</span>
@@ -316,6 +359,7 @@
                         <label><input type="checkbox" name="cc7" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc7" value="cross"> ✖</label>
                     </div>
+                    <span id="cc7-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">8.</span>
@@ -324,6 +368,7 @@
                         <label><input type="checkbox" name="cc8" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc8" value="cross"> ✖</label>
                     </div>
+                    <span id="cc8-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">9.</span>
@@ -332,6 +377,7 @@
                         <label><input type="checkbox" name="cc9" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc9" value="cross"> ✖</label>
                     </div>
+                    <span id="cc9-feedback" class="inline-feedback ml-auto"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">10.</span>
@@ -340,6 +386,7 @@
                         <label><input type="checkbox" name="cc10" value="check"> ✔</label>
                         <label><input type="checkbox" name="cc10" value="cross"> ✖</label>
                     </div>
+                    <span id="cc10-feedback" class="inline-feedback ml-auto"></span>
                 </div>
             </div>
         </div>
@@ -351,42 +398,54 @@
                 <div class="question-item">
                     <span class="question-number">1.</span>
                     <span class="question-text">A koala bear <input type="text" id="sc1" class="sentence-completion-input" placeholder="Type verb"> for up to 22 hours each day.</span>
+                    <span id="sc1-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">2.</span>
                     <span class="question-text">In the Arctic Circle, the sun never <input type="text" id="sc2" class="sentence-completion-input" placeholder="Type verb"> in summer.</span>
+                    <span id="sc2-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">3.</span>
                     <span class="question-text">An astronaut's footprint on the surface of the moon <input type="text" id="sc3" class="sentence-completion-input" placeholder="Type verb"> for millions of years.</span>
+                    <span id="sc3-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">4.</span>
                     <span class="question-text">The world's largest flower <input type="text" id="sc4a" class="sentence-completion-input" placeholder="Type verb"> up to 7 kilos and <input type="text" id="sc4b" class="sentence-completion-input" placeholder="Type verb"> up to 1 metre across.</span>
+                    <span id="sc4a-feedback" class="inline-feedback"></span>
+                    <span id="sc4b-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">5.</span>
                     <span class="question-text">If a lizard <input type="text" id="sc5a" class="sentence-completion-input" placeholder="Type verb"> its tail, it <input type="text" id="sc5b" class="sentence-completion-input" placeholder="Type verb"> another one.</span>
+                    <span id="sc5a-feedback" class="inline-feedback"></span>
+                    <span id="sc5b-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">6.</span>
                     <span class="question-text">Visitors in art galleries <input type="text" id="sc6" class="sentence-completion-input" placeholder="Type verb"> about 3 seconds looking at each painting.</span>
+                    <span id="sc6-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">7.</span>
                     <span class="question-text">In baseball, a pitcher <input type="text" id="sc7" class="sentence-completion-input" placeholder="Type verb"> a good ball.</span>
+                    <span id="sc7-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">8.</span>
                     <span class="question-text">The ball <input type="text" id="sc8" class="sentence-completion-input" placeholder="Type verb"> at about 160 kilometres an hour.</span>
+                    <span id="sc8-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">9.</span>
                     <span class="question-text">An adult elephant <input type="text" id="sc9" class="sentence-completion-input" placeholder="Type verb"> about 225 litres of water every day.</span>
+                    <span id="sc9-feedback" class="inline-feedback"></span>
                 </div>
                 <div class="question-item">
                     <span class="question-number">10.</span>
                     <span class="question-text">A human heart <input type="text" id="sc10" class="sentence-completion-input" placeholder="Type verb"> about 70 times a minute.</span>
+                    <span id="sc10-feedback" class="inline-feedback"></span>
                 </div>
             </div>
         </div>
@@ -395,6 +454,8 @@
             <button onclick="checkAnswers()">Check Answers</button>
             <button onclick="resetWorksheet()" class="ml-4">Reset Worksheet</button>
         </div>
+
+        <div id="scoreFeedback" class="feedback-message mt-8 mb-4"></div>
 
         <div id="answerKey" class="answer-key">
             <h2>Answer Key</h2>
@@ -491,22 +552,35 @@
         };
 
         function checkAnswers() {
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+
+            // Clear previous feedback
+            document.querySelectorAll('.inline-feedback').forEach(el => el.textContent = '');
+            document.getElementById('scoreFeedback').style.display = 'none';
+            document.getElementById('scoreFeedback').classList.remove('feedback-correct', 'feedback-incorrect');
+
+
             // Check Part 1: Verb Sorting
             for (const id in verbSortingAnswers) {
+                totalQuestions++;
                 const inputElement = document.getElementById(id);
-                if (inputElement) {
+                const feedbackElement = document.getElementById(`${id}-feedback`);
+                if (inputElement && feedbackElement) {
                     const userAnswer = inputElement.value.trim().toLowerCase();
                     const correctAnswer = verbSortingAnswers[id].toLowerCase();
-                    const ansElement = document.getElementById(`ans${id.replace('-', '')}`); // Generate answer ID, e.g., ansQ1Verb
-                    if (ansElement) {
-                         // Reset classes before checking
-                        ansElement.classList.remove('correct-answer', 'incorrect-answer');
 
-                        if (userAnswer === correctAnswer) {
-                            ansElement.classList.add('correct-answer');
-                        } else if (userAnswer !== "") { // Only mark incorrect if user provided an answer
-                            ansElement.classList.add('incorrect-answer');
-                        }
+                    inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
+
+                    if (userAnswer === correctAnswer) {
+                        totalCorrect++;
+                        inputElement.classList.add('border-green-500');
+                        feedbackElement.textContent = 'Correct!';
+                        feedbackElement.style.color = '#28a745';
+                    } else {
+                        inputElement.classList.add('border-red-500');
+                        feedbackElement.textContent = `Correct: ${verbSortingAnswers[id]}`;
+                        feedbackElement.style.color = '#dc3545';
                     }
                 }
             }
@@ -514,8 +588,10 @@
 
             // Check Part 2: Check or Cross
             for (let i = 1; i <= 10; i++) {
+                totalQuestions++;
                 const checkInput = document.querySelector(`input[name="cc${i}"][value="check"]`);
                 const crossInput = document.querySelector(`input[name="cc${i}"][value="cross"]`);
+                const feedbackElement = document.getElementById(`cc${i}-feedback`);
                 let userAnswer = '';
 
                 if (checkInput && checkInput.checked) {
@@ -525,73 +601,65 @@
                 }
 
                 const correctAnswer = checkCrossAnswers[`cc${i}`];
-                const ansElement = document.getElementById(`ans-cc${i}`);
-
-                if (ansElement) {
-                    ansElement.classList.remove('correct-answer', 'incorrect-answer');
-
+                if (feedbackElement) {
                     if (userAnswer === correctAnswer) {
-                        ansElement.classList.add('correct-answer');
-                    } else if (userAnswer !== "") {
-                        ansElement.classList.add('incorrect-answer');
+                        totalCorrect++;
+                        feedbackElement.textContent = 'Correct! ✔';
+                        feedbackElement.style.color = '#28a745';
+                    } else {
+                        feedbackElement.textContent = `Correct: ${correctAnswer === 'check' ? '✔' : '✖'}`;
+                        feedbackElement.style.color = '#dc3545';
                     }
                 }
             }
 
             // Check Part 3: Sentence Completion
             for (const id in sentenceCompletionAnswers) {
+                // Handle q4a/b and q5a/b as individual questions for total count
+                if (id.includes('a') || id.includes('b')) {
+                    // Check if the other part of the pair has already been counted
+                    const baseId = id.replace(/[ab]/, '');
+                    if (id.endsWith('a') || !document.getElementById(`${baseId}a`)) { // Only count 'a' or if it's a single input
+                        totalQuestions++;
+                    }
+                } else {
+                    totalQuestions++;
+                }
+
                 const inputElement = document.getElementById(id);
-                if (inputElement) {
+                const feedbackElement = document.getElementById(`${id}-feedback`);
+
+                if (inputElement && feedbackElement) {
                     const userAnswer = inputElement.value.trim().toLowerCase();
                     const correctAnswer = sentenceCompletionAnswers[id].toLowerCase();
-                    const ansElement = document.getElementById(`ans-${id}`);
 
-                    if (ansElement) {
-                        // Reset classes before checking
-                        ansElement.classList.remove('correct-answer', 'incorrect-answer');
-
-                        if (userAnswer === correctAnswer) {
-                            ansElement.classList.add('correct-answer');
-                        } else if (userAnswer !== "") {
-                            ansElement.classList.add('incorrect-answer');
-                        }
-                    }
-
-                    // Apply styling to the input field itself
                     inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
+
                     if (userAnswer === correctAnswer) {
+                        totalCorrect++;
                         inputElement.classList.add('border-green-500');
-                    } else if (userAnswer !== "") {
+                        feedbackElement.textContent = 'Correct!';
+                        feedbackElement.style.color = '#28a745';
+                    } else {
                         inputElement.classList.add('border-red-500');
-                    } else {
-                        inputElement.classList.add('border-yellow-500'); // No answer given
+                        feedbackElement.textContent = `Correct: ${sentenceCompletionAnswers[id]}`;
+                        feedbackElement.style.color = '#dc3545';
                     }
                 }
             }
 
+            // Display total score
+            const scoreFeedback = document.getElementById('scoreFeedback');
+            scoreFeedback.textContent = `You scored ${totalCorrect} out of ${totalQuestions} correct!`;
+            scoreFeedback.style.display = 'block';
 
-            // For Part 1, update the text input fields with user's input and apply color
-            for (const id in verbSortingAnswers) {
-                const inputElement = document.getElementById(id);
-                if (inputElement) {
-                    const userAnswer = inputElement.value.trim().toLowerCase();
-                    const correctAnswer = verbSortingAnswers[id].toLowerCase();
-
-                    // Remove existing classes
-                    inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
-
-                    if (userAnswer === correctAnswer) {
-                        inputElement.classList.add('border-green-500'); // Green border for correct
-                    } else if (userAnswer !== "") {
-                        inputElement.classList.add('border-red-500'); // Red border for incorrect
-                    } else {
-                        inputElement.classList.add('border-yellow-500'); // Yellow border for unanswered
-                    }
-                }
+            if (totalCorrect === totalQuestions) {
+                scoreFeedback.classList.add('feedback-correct');
+            } else {
+                scoreFeedback.classList.add('feedback-incorrect');
             }
 
-
-            // Show the answer key
+            // Show the overall answer key (optional, can be removed if inline feedback is sufficient)
             document.getElementById('answerKey').style.display = 'block';
         }
 
@@ -603,6 +671,8 @@
                     inputElement.value = '';
                     inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
                 }
+                const feedbackElement = document.getElementById(`${id}-feedback`);
+                if (feedbackElement) feedbackElement.textContent = '';
                 const ansElement = document.getElementById(`ans${id.replace('-', '')}`);
                 if (ansElement) {
                     ansElement.classList.remove('correct-answer', 'incorrect-answer');
@@ -616,6 +686,8 @@
                 if (checkInput) checkInput.checked = false;
                 if (crossInput) crossInput.checked = false;
 
+                const feedbackElement = document.getElementById(`cc${i}-feedback`);
+                if (feedbackElement) feedbackElement.textContent = '';
                 const ansElement = document.getElementById(`ans-cc${i}`);
                 if (ansElement) {
                     ansElement.classList.remove('correct-answer', 'incorrect-answer');
@@ -629,13 +701,16 @@
                     inputElement.value = ''; // Clear text input
                     inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
                 }
+                const feedbackElement = document.getElementById(`${id}-feedback`);
+                if (feedbackElement) feedbackElement.textContent = '';
                 const ansElement = document.getElementById(`ans-${id}`);
                 if (ansElement) {
                     ansElement.classList.remove('correct-answer', 'incorrect-answer');
                 }
             }
 
-            // Hide the answer key
+            // Hide the score feedback and overall answer key
+            document.getElementById('scoreFeedback').style.display = 'none';
             document.getElementById('answerKey').style.display = 'none';
         }
     </script>
