@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unchanging World - Grammar Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .question-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            background-color: #f9fbfd;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e7eb;
+        }
+        .question-number {
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 1.1rem;
+            color: #3498db;
+        }
+        .question-text {
+            flex-grow: 1;
+        }
+        input[type="text"], select {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 250px;
+            box-sizing: border-box;
+            margin-left: 10px; /* Space from question text */
+        }
+        .check-cross-options label {
+            margin-right: 20px;
+            font-size: 1.5rem; /* Larger icons */
+            cursor: pointer;
+        }
+        .check-cross-options input[type="checkbox"] {
+            margin-right: 5px;
+            width: 1.2em; /* Make checkbox larger */
+            height: 1.2em;
+            vertical-align: middle;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .answer-key {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #e8f5e9; /* Light green for answers */
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            display: none; /* Hidden by default */
+        }
+        .answer-key ol, .answer-key ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .answer-key li {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+            color: #2e7d32; /* Dark green text */
+        }
+        .answer-key li strong {
+            color: #1b5e20;
+        }
+        .correct-answer {
+            font-weight: bold;
+            color: #28a745; /* Green for correct answers */
+        }
+        .incorrect-answer {
+            font-weight: bold;
+            color: #dc3545; /* Red for incorrect answers */
+        }
+
+        /* Styling for the original "Unchanging World" image questions */
+        .verb-sorting-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .verb-sorting-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            border: 1px solid #e0e7eb;
+            border-radius: 8px;
+            background-color: #f9fbfd;
+        }
+        .verb-sorting-item p {
+            margin-bottom: 5px;
+        }
+        .verb-sorting-item input {
+            width: calc(100% - 20px); /* Adjust for padding */
+            max-width: none; /* Override max-width for this section */
+        }
+
+        /* Specific styling for sentence completion inputs */
+        .sentence-completion-input {
+            margin-left: 10px; /* Space from question text */
+            width: auto; /* Allow input to size based on content or flexbox */
+            min-width: 150px; /* Ensure a reasonable minimum width */
+            max-width: 300px;
+        }
+
+        .embedded-image {
+            display: block;
+            margin: 0 auto 30px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .verb-sorting-grid {
+                grid-template-columns: 1fr;
+            }
+            .question-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            input[type="text"], select {
+                margin-left: 0;
+                margin-top: 10px;
+                max-width: 100%;
+            }
+            .sentence-completion-input {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container">
+        <h1>Unchanging World: Grammar Practice</h1>
+
+        <div class="section">
+            <a href="https://ibb.co/BH4F2X0j" target="_blank">
+                <img src="https://i.ibb.co/PsT0G7q4/GRAMMAR-PRACTICE-Present-Simple-Fascinating-Facts-True-or-False-Sentence-Completion-A-True-or-False.png" alt="GRAMMAR-PRACTICE-Present-Simple-Fascinating-Facts-True-or-False-Sentence-Completion-A-True-or-False" class="embedded-image" border="0">
+            </a>
+            <h2>Part 1: Unchanging World - Sort the Verbs</h2>
+            <p class="mb-4">The verbs in these fascinating facts are mixed up (Lẫn lộn). Can you sort them out? Type the correct verb for each sentence.</p>
+            <div class="verb-sorting-grid">
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">1.</span> A koala bear <span class="text-red-500 font-bold">closes</span> for up to 22 hours each day.</p>
+                    <input type="text" id="q1-verb" placeholder="Correct verb">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">2.</span> In the summer in the Arctic Circle, the sun never <span class="text-red-500 font-bold">travels</span>.</p>
+                    <input type="text" id="q2-verb" placeholder="Correct verb">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">3.</span> An astronaut footprint on the surface of the moon <span class="text-red-500 font-bold">sleeps</span> for millions of years.</p>
+                    <input type="text" id="q3-verb" placeholder="Correct verb">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">4.</span> The largest flower in the world is called a Rafflesia it <span class="text-red-500 font-bold">lasts</span> up to 7 kilos and <span class="text-red-500 font-bold">loses</span> up to 1 metre across.</p>
+                    <input type="text" id="q4-verb-1" placeholder="Correct verb 1">
+                    <input type="text" id="q4-verb-2" placeholder="Correct verb 2">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">5.</span> If a lizard <span class="text-red-500 font-bold">drinks</span> its tail, it <span class="text-red-500 font-bold">grows</span> another one.</p>
+                    <input type="text" id="q5-verb-1" placeholder="Correct verb 1">
+                    <input type="text" id="q5-verb-2" placeholder="Correct verb 2">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">6.</span> In art galleries around the world, each visitor <span class="text-red-500 font-bold">measures</span> an average of 3 seconds in front of each painting.</p>
+                    <input type="text" id="q6-verb" placeholder="Correct verb">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">7.</span> In baseball, when a pitcher <span class="text-red-500 font-bold">beats</span> a good ball, it <span class="text-red-500 font-bold">weighs</span> at about 160 kilometres an hour.</p>
+                    <input type="text" id="q7-verb-1" placeholder="Correct verb 1">
+                    <input type="text" id="q7-verb-2" placeholder="Correct verb 2">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">8.</span> An adult elephant <span class="text-red-500 font-bold">spends</span> about 225 litres of water every day.</p>
+                    <input type="text" id="q8-verb" placeholder="Correct verb">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">9.</span> A snake never <span class="text-red-500 font-bold">throws</span> its eyes at any time.</p>
+                    <input type="text" id="q9-verb" placeholder="Correct verb">
+                </div>
+                <div class="verb-sorting-item">
+                    <p><span class="question-number">10.</span> A human heart <span class="text-red-500 font-bold">sets</span> about 70 times a minute.</p>
+                    <input type="text" id="q10-verb" placeholder="Correct verb">
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Part 2: Check or Cross</h2>
+            <p class="mb-4">Read the facts and check (✔) if True or cross (✖) if False.</p>
+            <div class="question-list">
+                <div class="question-item">
+                    <span class="question-number">1.</span>
+                    <span class="question-text">The sun never travels in the summer in the Arctic Circle.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc1" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc1" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">2.</span>
+                    <span class="question-text">A koala bear sleeps for up to 22 hours each day.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc2" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc2" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">3.</span>
+                    <span class="question-text">An astronaut's footprint on the surface of the moon disappears after a year.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc3" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc3" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">4.</span>
+                    <span class="question-text">The largest flower in the world weighs up to 7 kilos.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc4" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc4" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">5.</span>
+                    <span class="question-text">If a lizard loses its tail, it grows another one.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc5" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc5" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">6.</span>
+                    <span class="question-text">Each visitor in art galleries spends about 30 minutes in front of each painting.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc6" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc6" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">7.</span>
+                    <span class="question-text">In baseball, a ball can travel at about 160 kilometres an hour.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc7" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc7" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">8.</span>
+                    <span class="question-text">An adult elephant drinks about 225 litres of water every day.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc8" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc8" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">9.</span>
+                    <span class="question-text">Snakes often blink their eyes.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc9" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc9" value="cross"> ✖</label>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">10.</span>
+                    <span class="question-text">A human heart beats about 70 times a minute.</span>
+                    <div class="check-cross-options flex gap-x-4">
+                        <label><input type="checkbox" name="cc10" value="check"> ✔</label>
+                        <label><input type="checkbox" name="cc10" value="cross"> ✖</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Part 3: Sentence Completion</h2>
+            <p class="mb-4">Complete the sentences by typing the correct verb in the Present Simple.</p>
+            <div class="question-list">
+                <div class="question-item">
+                    <span class="question-number">1.</span>
+                    <span class="question-text">A koala bear <input type="text" id="sc1" class="sentence-completion-input" placeholder="Type verb"> for up to 22 hours each day.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">2.</span>
+                    <span class="question-text">In the Arctic Circle, the sun never <input type="text" id="sc2" class="sentence-completion-input" placeholder="Type verb"> in summer.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">3.</span>
+                    <span class="question-text">An astronaut's footprint on the surface of the moon <input type="text" id="sc3" class="sentence-completion-input" placeholder="Type verb"> for millions of years.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">4.</span>
+                    <span class="question-text">The world's largest flower <input type="text" id="sc4a" class="sentence-completion-input" placeholder="Type verb"> up to 7 kilos and <input type="text" id="sc4b" class="sentence-completion-input" placeholder="Type verb"> up to 1 metre across.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">5.</span>
+                    <span class="question-text">If a lizard <input type="text" id="sc5a" class="sentence-completion-input" placeholder="Type verb"> its tail, it <input type="text" id="sc5b" class="sentence-completion-input" placeholder="Type verb"> another one.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">6.</span>
+                    <span class="question-text">Visitors in art galleries <input type="text" id="sc6" class="sentence-completion-input" placeholder="Type verb"> about 3 seconds looking at each painting.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">7.</span>
+                    <span class="question-text">In baseball, a pitcher <input type="text" id="sc7" class="sentence-completion-input" placeholder="Type verb"> a good ball.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">8.</span>
+                    <span class="question-text">The ball <input type="text" id="sc8" class="sentence-completion-input" placeholder="Type verb"> at about 160 kilometres an hour.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">9.</span>
+                    <span class="question-text">An adult elephant <input type="text" id="sc9" class="sentence-completion-input" placeholder="Type verb"> about 225 litres of water every day.</span>
+                </div>
+                <div class="question-item">
+                    <span class="question-number">10.</span>
+                    <span class="question-text">A human heart <input type="text" id="sc10" class="sentence-completion-input" placeholder="Type verb"> about 70 times a minute.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button onclick="checkAnswers()">Check Answers</button>
+            <button onclick="resetWorksheet()" class="ml-4">Reset Worksheet</button>
+        </div>
+
+        <div id="answerKey" class="answer-key">
+            <h2>Answer Key</h2>
+            <h3>Part 1: Unchanging World - Sorted Verbs</h3>
+            <ol>
+                <li id="ans1-verb">1. A koala bear <strong>sleeps</strong> for up to 22 hours each day.</li>
+                <li id="ans2-verb">2. In the summer in the Arctic Circle, the sun never <strong>sets</strong>.</li>
+                <li id="ans3-verb">3. An astronaut footprint on the surface of the moon <strong>lasts</strong> for millions of years.</li>
+                <li id="ans4-verb">4. The largest flower in the world is called a Rafflesia it <strong>weighs</strong> up to 7 kilos and <strong>measures</strong> up to 1 metre across.</li>
+                <li id="ans5-verb">5. If a lizard <strong>loses</strong> its tail, it <strong>grows</strong> another one.</li>
+                <li id="ans6-verb">6. In art galleries around the world, each visitor <strong>spends</strong> an average of 3 seconds in front of each painting.</li>
+                <li id="ans7-verb">7. In baseball, when a pitcher <strong>throws</strong> a good ball, it <strong>travels</strong> at about 160 kilometres an hour.</li>
+                <li id="ans8-verb">8. An adult elephant <strong>drinks</strong> about 225 litres of water every day.</li>
+                <li id="ans9-verb">9. A snake never <strong>blinks</strong> its eyes at any time.</li>
+                <li id="ans10-verb">10. A human heart <strong>beats</strong> about 70 times a minute.</li>
+            </ol>
+
+            <h3>Part 2: Check or Cross Answers</h3>
+            <ol>
+                <li id="ans-cc1">1. The sun never travels in the summer in the Arctic Circle. - <strong>✔</strong></li>
+                <li id="ans-cc2">2. A koala bear sleeps for up to 22 hours each day. - <strong>✔</strong></li>
+                <li id="ans-cc3">3. An astronaut's footprint on the surface of the moon disappears after a year. - <strong>✖</strong> (It lasts for millions of years)</li>
+                <li id="ans-cc4">4. The largest flower in the world weighs up to 7 kilos. - <strong>✔</strong></li>
+                <li id="ans-cc5">5. If a lizard loses its tail, it grows another one. - <strong>✔</strong></li>
+                <li id="ans-cc6">6. Each visitor in art galleries spends about 30 minutes in front of each painting. - <strong>✖</strong> (It's about 3 seconds)</li>
+                <li id="ans-cc7">7. In baseball, a ball can travel at about 160 kilometres an hour. - <strong>✔</strong></li>
+                <li id="ans-cc8">8. An adult elephant drinks about 225 litres of water every day. - <strong>✖</strong> (It spends it, implying it uses it, not necessarily drinks all of it)</li>
+                <li id="ans-cc9">9. Snakes often blink their eyes. - <strong>✖</strong> (They never blink)</li>
+                <li id="ans-cc10">10. A human heart beats about 70 times a minute. - <strong>✔</strong></li>
+            </ol>
+
+            <h3>Part 3: Sentence Completion Answers</h3>
+            <ol>
+                <li id="ans-sc1">1. A koala bear <strong class="correct-answer">sleeps</strong> for up to 22 hours each day.</li>
+                <li id="ans-sc2">2. In the Arctic Circle, the sun never <strong class="correct-answer">travels</strong> in summer.</li>
+                <li id="ans-sc3">3. An astronaut's footprint on the surface of the moon <strong class="correct-answer">sleeps</strong> for millions of years.</li>
+                <li id="ans-sc4">4. The world's largest flower <strong class="correct-answer">weighs</strong> up to 7 kilos and <strong class="correct-answer">loses</strong> up to 1 metre across.</li>
+                <li id="ans-sc5">5. If a lizard <strong class="correct-answer">loses</strong> its tail, it <strong class="correct-answer">grows</strong> another one.</li>
+                <li id="ans-sc6">6. Visitors in art galleries <strong class="correct-answer">spends</strong> about 3 seconds looking at each painting.</li>
+                <li id="ans-sc7">7. In baseball, a pitcher <strong class="correct-answer">beats</strong> a good ball.</li>
+                <li id="ans-sc8">8. The ball <strong class="correct-answer">travels</strong> at about 160 kilometres an hour.</li>
+                <li id="ans-sc9">9. An adult elephant <strong class="correct-answer">drinks</strong> about 225 litres of water every day.</li>
+                <li id="ans-sc10">10. A human heart <strong class="correct-answer">beats</strong> about 70 times a minute.</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Define correct answers for Part 1: Verb Sorting
+        const verbSortingAnswers = {
+            "q1-verb": "sleeps",
+            "q2-verb": "sets", // Based on the "Unchanging World" image which has "travels" mixed up
+            "q3-verb": "lasts", // Based on the "Unchanging World" image which has "sleeps" mixed up
+            "q4-verb-1": "weighs",
+            "q4-verb-2": "measures",
+            "q5-verb-1": "loses",
+            "q5-verb-2": "grows",
+            "q6-verb": "spends",
+            "q7-verb-1": "throws",
+            "q7-verb-2": "travels",
+            "q8-verb": "drinks",
+            "q9-verb": "blinks",
+            "q10-verb": "beats"
+        };
+
+        // Define correct answers for Part 2: Check or Cross
+        const checkCrossAnswers = {
+            "cc1": "check", // True
+            "cc2": "check", // True
+            "cc3": "cross", // False
+            "cc4": "check", // True
+            "cc5": "check", // True
+            "cc6": "cross", // False
+            "cc7": "check", // True
+            "cc8": "cross", // False
+            "cc9": "cross", // False
+            "cc10": "check" // True
+        };
+
+        // Define correct answers for Part 3: Sentence Completion
+        const sentenceCompletionAnswers = {
+            "sc1": "sleeps",
+            "sc2": "travels",
+            "sc3": "sleeps",
+            "sc4a": "weighs",
+            "sc4b": "loses",
+            "sc5a": "loses",
+            "sc5b": "grows",
+            "sc6": "spends",
+            "sc7": "beats",
+            "sc8": "travels",
+            "sc9": "drinks",
+            "sc10": "beats"
+        };
+
+        function checkAnswers() {
+            // Check Part 1: Verb Sorting
+            for (const id in verbSortingAnswers) {
+                const inputElement = document.getElementById(id);
+                if (inputElement) {
+                    const userAnswer = inputElement.value.trim().toLowerCase();
+                    const correctAnswer = verbSortingAnswers[id].toLowerCase();
+                    const ansElement = document.getElementById(`ans${id.replace('-', '')}`); // Generate answer ID, e.g., ansQ1Verb
+                    if (ansElement) {
+                         // Reset classes before checking
+                        ansElement.classList.remove('correct-answer', 'incorrect-answer');
+
+                        if (userAnswer === correctAnswer) {
+                            ansElement.classList.add('correct-answer');
+                        } else if (userAnswer !== "") { // Only mark incorrect if user provided an answer
+                            ansElement.classList.add('incorrect-answer');
+                        }
+                    }
+                }
+            }
+
+
+            // Check Part 2: Check or Cross
+            for (let i = 1; i <= 10; i++) {
+                const checkInput = document.querySelector(`input[name="cc${i}"][value="check"]`);
+                const crossInput = document.querySelector(`input[name="cc${i}"][value="cross"]`);
+                let userAnswer = '';
+
+                if (checkInput && checkInput.checked) {
+                    userAnswer = 'check';
+                } else if (crossInput && crossInput.checked) {
+                    userAnswer = 'cross';
+                }
+
+                const correctAnswer = checkCrossAnswers[`cc${i}`];
+                const ansElement = document.getElementById(`ans-cc${i}`);
+
+                if (ansElement) {
+                    ansElement.classList.remove('correct-answer', 'incorrect-answer');
+
+                    if (userAnswer === correctAnswer) {
+                        ansElement.classList.add('correct-answer');
+                    } else if (userAnswer !== "") {
+                        ansElement.classList.add('incorrect-answer');
+                    }
+                }
+            }
+
+            // Check Part 3: Sentence Completion
+            for (const id in sentenceCompletionAnswers) {
+                const inputElement = document.getElementById(id);
+                if (inputElement) {
+                    const userAnswer = inputElement.value.trim().toLowerCase();
+                    const correctAnswer = sentenceCompletionAnswers[id].toLowerCase();
+                    const ansElement = document.getElementById(`ans-${id}`);
+
+                    if (ansElement) {
+                        // Reset classes before checking
+                        ansElement.classList.remove('correct-answer', 'incorrect-answer');
+
+                        if (userAnswer === correctAnswer) {
+                            ansElement.classList.add('correct-answer');
+                        } else if (userAnswer !== "") {
+                            ansElement.classList.add('incorrect-answer');
+                        }
+                    }
+
+                    // Apply styling to the input field itself
+                    inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
+                    if (userAnswer === correctAnswer) {
+                        inputElement.classList.add('border-green-500');
+                    } else if (userAnswer !== "") {
+                        inputElement.classList.add('border-red-500');
+                    } else {
+                        inputElement.classList.add('border-yellow-500'); // No answer given
+                    }
+                }
+            }
+
+
+            // For Part 1, update the text input fields with user's input and apply color
+            for (const id in verbSortingAnswers) {
+                const inputElement = document.getElementById(id);
+                if (inputElement) {
+                    const userAnswer = inputElement.value.trim().toLowerCase();
+                    const correctAnswer = verbSortingAnswers[id].toLowerCase();
+
+                    // Remove existing classes
+                    inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
+
+                    if (userAnswer === correctAnswer) {
+                        inputElement.classList.add('border-green-500'); // Green border for correct
+                    } else if (userAnswer !== "") {
+                        inputElement.classList.add('border-red-500'); // Red border for incorrect
+                    } else {
+                        inputElement.classList.add('border-yellow-500'); // Yellow border for unanswered
+                    }
+                }
+            }
+
+
+            // Show the answer key
+            document.getElementById('answerKey').style.display = 'block';
+        }
+
+        function resetWorksheet() {
+            // Reset Part 1: Verb Sorting inputs and styling
+            for (const id in verbSortingAnswers) {
+                const inputElement = document.getElementById(id);
+                if (inputElement) {
+                    inputElement.value = '';
+                    inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
+                }
+                const ansElement = document.getElementById(`ans${id.replace('-', '')}`);
+                if (ansElement) {
+                    ansElement.classList.remove('correct-answer', 'incorrect-answer');
+                }
+            }
+
+            // Reset Part 2: Check or Cross checkboxes and styling
+            for (let i = 1; i <= 10; i++) {
+                const checkInput = document.querySelector(`input[name="cc${i}"][value="check"]`);
+                const crossInput = document.querySelector(`input[name="cc${i}"][value="cross"]`);
+                if (checkInput) checkInput.checked = false;
+                if (crossInput) crossInput.checked = false;
+
+                const ansElement = document.getElementById(`ans-cc${i}`);
+                if (ansElement) {
+                    ansElement.classList.remove('correct-answer', 'incorrect-answer');
+                }
+            }
+
+            // Reset Part 3: Sentence Completion inputs and styling
+            for (const id in sentenceCompletionAnswers) {
+                const inputElement = document.getElementById(id);
+                if (inputElement) {
+                    inputElement.value = ''; // Clear text input
+                    inputElement.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500');
+                }
+                const ansElement = document.getElementById(`ans-${id}`);
+                if (ansElement) {
+                    ansElement.classList.remove('correct-answer', 'incorrect-answer');
+                }
+            }
+
+            // Hide the answer key
+            document.getElementById('answerKey').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
