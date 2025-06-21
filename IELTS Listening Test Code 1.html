@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Listening Test - Code: 01</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- jsPDF CDN for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF Autotable plugin for table generation -->
+    <script src="https://unpkg.com/jspdf-autotable@3.5.20/dist/jspdf.plugin.autotable.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .container {
+            max-width: 960px;
+        }
+        /* Custom styles for disabled buttons */
+        .btn-disabled {
+            @apply bg-gray-400 cursor-not-allowed;
+        }
+        /* Style for correct answers */
+        .correct-answer {
+            @apply text-green-600 font-semibold;
+        }
+        /* Style for incorrect answers */
+        .incorrect-answer {
+            @apply text-red-600 font-semibold;
+        }
+        /* Style for user's selected option in MCQs (radio/checkbox) */
+        .selected-option {
+            @apply ring-2 ring-blue-500;
+        }
+        /* Base button styles */
+        .btn {
+            @apply py-2 px-4 rounded-lg font-semibold transition-all duration-300;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-md;
+        }
+        .btn-secondary {
+            @apply bg-gray-200 text-gray-800 hover:bg-gray-300 shadow-sm;
+        }
+
+        /* Highlight styles */
+        .highlight-yellow { background-color: #FEF9C3; } /* Yellow-100 */
+        .highlight-blue { background-color: #DBEAFE; } /* Blue-100 */
+        .highlight-green { background-color: #D1FAE5; } /* Green-100 */
+        .highlight-pink { background-color: #FCE7F3; } /* Pink-100 */
+        .highlighted-text {
+            display: inline;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="container mx-auto bg-white shadow-xl rounded-2xl p-8 md:p-12 border border-gray-200">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">IELTS Listening Test - Code: 01</h1>
+
+        <!-- Audio Player -->
+        <div class="mb-8 p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col items-center">
+            <p class="text-lg font-semibold text-gray-700 mb-2">Listen to the audio for the test:</p>
+            <div>
+                <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2117116908&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/little-dreamers-325309503" title="Little Dreamers" target="_blank" style="color: #cccccc; text-decoration: none;">Little Dreamers</a> · <a href="https://soundcloud.com/little-dreamers-325309503/listening-test-code-1" title="Listening Test Code 1" target="_blank" style="color: #cccccc; text-decoration: none;">Listening Test Code 1</a></div>
+            
+            <p class="text-sm text-gray-600 mt-2 text-center">
+                Note: If the audio doesn't play directly, you can click "View on Vocaroo" to open it in a new tab.
+            </p>
+        </div>
+
+        <!-- Test Sections -->
+        <div id="test-sections" class="space-y-8">
+            <!-- Section 1 -->
+            <div id="section1" class="test-part p-6 bg-blue-50 rounded-xl shadow-inner border border-blue-200">
+                <h2 class="text-2xl font-semibold text-blue-700 mb-6">SECTION 1: Questions 1–10</h2>
+                <h3 class="text-xl font-semibold text-blue-600 mb-4">Complete the notes below.</h3>
+                <p class="text-gray-700 mb-6">Write ONE WORD AND/OR A NUMBER for each answer.</p>
+
+                <h4 class="text-lg font-semibold text-blue-600 mt-6 mb-2">Bankside Recruitment Agency</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                    <li>Address of agency: 497 Eastside, Docklands</li>
+                    <li>Name of agent: Becky <input type="text" id="answer-1" placeholder="Q1" class="w-24 p-1 border border-gray-300 rounded-md text-sm"></li>
+                    <li>Phone number: 07866 510333</li>
+                    <li>Best to call her in the <input type="text" id="answer-2" placeholder="Q2" class="w-24 p-1 border border-gray-300 rounded-md text-sm"></li>
+                </ul>
+
+                <h4 class="text-lg font-semibold text-blue-600 mt-6 mb-2">Typical jobs</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                    <li>Clerical and admin roles, mainly in the finance industry</li>
+                    <li>Must have good <input type="text" id="answer-3" placeholder="Q3" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> skills</li>
+                    <li>Jobs are usually for at least one <input type="text" id="answer-4" placeholder="Q4" class="w-24 p-1 border border-gray-300 rounded-md text-sm"></li>
+                    <li>Pay is usually £<input type="text" id="answer-5" placeholder="Q5" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> per hour</li>
+                </ul>
+
+                <h4 class="text-lg font-semibold text-blue-600 mt-6 mb-2">Registration process</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                    <li>Wear a <input type="text" id="answer-6" placeholder="Q6" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> to the interview</li>
+                    <li>Must bring your <input type="text" id="answer-7" placeholder="Q7" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> to the interview</li>
+                    <li>They will ask questions about each applicant’s <input type="text" id="answer-8" placeholder="Q8" class="w-24 p-1 border border-gray-300 rounded-md text-sm"></li>
+                </ul>
+
+                <h4 class="text-lg font-semibold text-blue-600 mt-6 mb-2">Advantages of using an agency</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                    <li>The <input type="text" id="answer-9" placeholder="Q9" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> you receive at interview will benefit you</li>
+                    <li>Will get access to vacancies which are not advertised</li>
+                    <li>Less <input type="text" id="answer-10" placeholder="Q10" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> is involved in applying for jobs</li>
+                </ul>
+
+                <div id="questions-section1-part1" class="space-y-6"></div> <!-- Questions will not be dynamically rendered here, inputs are hardcoded -->
+                <div class="flex justify-end mt-8">
+                    <button id="nextSection1" class="btn btn-primary">Next Section</button>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div id="section2" class="test-part p-6 bg-green-50 rounded-xl shadow-inner border border-green-200 hidden">
+                <h2 class="text-2xl font-semibold text-green-700 mb-6">SECTION 2: Questions 11–20</h2>
+                <h3 class="text-xl font-semibold text-green-600 mb-4">Choose the correct letter, A, B or C.</h3>
+                <h4 class="text-lg font-semibold text-green-600 mb-4">Matthews Island Holidays</h4>
+                <div id="questions-section2-part1" class="space-y-6"></div> <!-- Q11-14 Multiple Choice -->
+
+                <h3 class="text-xl font-semibold text-green-600 mt-8 mb-4">Complete the table below.</h3>
+                <p class="text-gray-700 mb-6">Write ONE WORD AND/OR A NUMBER for each answer.</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-700">
+                                <th class="py-2 px-4 border-b text-left">Activity</th>
+                                <th class="py-2 px-4 border-b text-left">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Day 1<br>Arrive</td>
+                                <td class="py-2 px-4 border-b">Introduction by manager<br>Hotel dining room has view of the <input type="text" id="answer-15" placeholder="Q15" class="w-24 p-1 border border-gray-300 rounded-md text-sm">.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Day 2<br>Tynwald Exhibition and Peel</td>
+                                <td class="py-2 px-4 border-b">Tynwald may have been founded in <input type="text" id="answer-16" placeholder="Q16" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> not 979.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Day 3<br>Trip to Snaefell</td>
+                                <td class="py-2 px-4 border-b">Travel along promenade in a tram; train to Laxey;<br>train to the <input type="text" id="answer-17" placeholder="Q17" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> of Snaefell</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Day 4<br>Free day</td>
+                                <td class="py-2 px-4 border-b">Company provides a <input type="text" id="answer-18" placeholder="Q18" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> for local transport and heritage sites.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Day 5<br>Take the <input type="text" id="answer-19" placeholder="Q19" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> railway train from Douglas to Port Erin</td>
+                                <td class="py-2 px-4 border-b">Free time, then coach to Castletown - former <input type="text" id="answer-20" placeholder="Q20" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> has old castle.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b">Day 6<br>Leave</td>
+                                <td class="py-2 px-4 border-b">Leave the island by ferry or plane</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backSection2" class="btn btn-secondary">Back</button>
+                    <button id="nextSection2" class="btn btn-primary">Next Section</button>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div id="section3" class="test-part p-6 bg-purple-50 rounded-xl shadow-inner border border-purple-200 hidden">
+                <h2 class="text-2xl font-semibold text-purple-700 mb-6">SECTION 3: Questions 21–30</h2>
+                <h3 class="text-xl font-semibold text-purple-600 mb-4">What did findings of previous research claim about the personality traits a child is likely to have because of their position in the family?</h3>
+                <p class="text-gray-700 mb-6">Choose SIX answers from the box and write the correct letter, A-H, next to Questions 21-26.</p>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-6">
+                    <p class="font-semibold text-gray-800 mb-2">Personality Traits</p>
+                    <ul class="list-disc list-inside text-gray-700 text-sm grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                        <li>A. outgoing</li>
+                        <li>B. selfish</li>
+                        <li>C. independent</li>
+                        <li>D. attention-seeking</li>
+                        <li>E. introverted</li>
+                        <li>F. co-operative</li>
+                        <li>G. caring</li>
+                        <li>H. competitive</li>
+                    </ul>
+                </div>
+                <div class="space-y-4 mb-6">
+                    <p class="font-semibold text-gray-800">Position in family</p>
+                    <div class="flex items-center gap-2">
+                        <label for="answer-21" class="w-48 text-gray-700">21. the eldest child</label>
+                        <input type="text" id="answer-21" placeholder="A-H" class="w-16 p-1 border border-gray-300 rounded-md text-sm uppercase">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="answer-22" class="w-48 text-gray-700">22. a middle child</label>
+                        <input type="text" id="answer-22" placeholder="A-H" class="w-16 p-1 border border-gray-300 rounded-md text-sm uppercase">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="answer-23" class="w-48 text-gray-700">23. the youngest child</label>
+                        <input type="text" id="answer-23" placeholder="A-H" class="w-16 p-1 border border-gray-300 rounded-md text-sm uppercase">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="answer-24" class="w-48 text-gray-700">24. a twin</label>
+                        <input type="text" id="answer-24" placeholder="A-H" class="w-16 p-1 border border-gray-300 rounded-md text-sm uppercase">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="answer-25" class="w-48 text-gray-700">25. an only child</label>
+                        <input type="text" id="answer-25" placeholder="A-H" class="w-16 p-1 border border-gray-300 rounded-md text-sm uppercase">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="answer-26" class="w-48 text-gray-700">26. a child with much older siblings</label>
+                        <input type="text" id="answer-26" placeholder="A-H" class="w-16 p-1 border border-gray-300 rounded-md text-sm uppercase">
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold text-purple-600 mt-8 mb-4">Choose the correct letter, A, B or C.</h3>
+                <div id="questions-section3-part2" class="space-y-6"></div> <!-- Q27-28 Multiple Choice -->
+
+                <h3 class="text-xl font-semibold text-purple-600 mt-8 mb-4">Choose TWO letters, A-E.</h3>
+                <p class="text-gray-700 mb-6">Which TWO experiences of sibling rivalry do the speakers agree has been valuable for them?</p>
+                <div id="questions-section3-part3" class="space-y-6"></div> <!-- Q29-30 Choose Two -->
+
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backSection3" class="btn btn-secondary">Back</button>
+                    <button id="nextSection3" class="btn btn-primary">Next Section</button>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div id="section4" class="test-part p-6 bg-yellow-50 rounded-xl shadow-inner border border-yellow-200 hidden">
+                <h2 class="text-2xl font-semibold text-yellow-700 mb-6">SECTION 4: Questions 31–40</h2>
+                <h3 class="text-xl font-semibold text-yellow-600 mb-4">Complete the notes below.</h3>
+                <p class="text-gray-700 mb-6">Write ONE WORD ONLY for each answer.</p>
+
+                <h4 class="text-lg font-semibold text-yellow-600 mt-6 mb-2">The Eucalyptus Tree in Australia</h4>
+                <p class="text-gray-700 font-semibold mt-4">Importance</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                    <li>it provides <input type="text" id="answer-31" placeholder="Q31" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> and food for a wide range of species</li>
+                    <li>its leaves provide <input type="text" id="answer-32" placeholder="Q32" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> which is used to make a disinfectant</li>
+                </ul>
+
+                <p class="text-gray-700 font-semibold mt-4">Reasons for present decline in number</p>
+                <p class="text-gray-700 font-semibold mt-4">A) Diseases</p>
+                <p class="text-gray-700 ml-4">(i) ‘Mundulla Yellows’</p>
+                <ul class="list-disc list-inside text-gray-700 ml-8 space-y-2 mb-6">
+                    <li>Cause – lime used for making <input type="text" id="answer-33" placeholder="Q33" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> was absorbed</li>
+                    <li>– trees were unable to take in necessary iron through their roots</li>
+                </ul>
+                <p class="text-gray-700 ml-4">(ii) ‘Bell-miner Associated Die-back’</p>
+                <ul class="list-disc list-inside text-gray-700 ml-8 space-y-2 mb-6">
+                    <li>Cause – <input type="text" id="answer-34" placeholder="Q34" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> feed on eucalyptus leaves</li>
+                    <li>– they secrete a substance containing sugar</li>
+                    <li>– bell-miner birds are attracted by this and keep away other species</li>
+                </ul>
+
+                <p class="text-gray-700 font-semibold mt-4">B) Bushfires</p>
+                <p class="text-gray-700 font-semibold mt-4">William Jackson’s theory:</p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                    <li>high-frequency bushfires have impact on vegetation, resulting in the growth of <input type="text" id="answer-35" placeholder="Q35" class="w-24 p-1 border border-gray-300 rounded-md text-sm"></li>
+                    <li>mid-frequency bushfires result in the growth of eucalyptus forests, because they:</li>
+                    <ul class="list-circle list-inside text-gray-700 ml-4 space-y-2">
+                        <li>– make more <input type="text" id="answer-36" placeholder="Q36" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> available to the trees</li>
+                        <li>– maintain the quality of the <input type="text" id="answer-37" placeholder="Q37" class="w-24 p-1 border border-gray-300 rounded-md text-sm"></li>
+                    </ul>
+                    <li>low-frequency bushfires result in the growth of <input type="text" id="answer-38" placeholder="Q38" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> ‘rainforest’, which is:</li>
+                    <ul class="list-circle list-inside text-gray-700 ml-4 space-y-2">
+                        <li>– a <input type="text" id="answer-39" placeholder="Q39" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> Ecosystem</li>
+                        <li>– an ideal environment for the <input type="text" id="answer-40" placeholder="Q40" class="w-24 p-1 border border-gray-300 rounded-md text-sm"> of the bell-miner</li>
+                    </ul>
+                </ul>
+
+                <div id="questions-section4-part1" class="space-y-6"></div> <!-- Q31-40 Fill-in-the-blank (with explicit inputs) -->
+
+                <div class="flex justify-between items-center mt-8">
+                    <button id="backSection4" class="btn btn-secondary">Back</button>
+                    <button id="submitTest" class="btn btn-primary">Submit Test</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="p-6 bg-gray-50 rounded-xl shadow-inner border border-gray-200 hidden text-center">
+                <p id="submission-message" class="text-xl font-bold text-gray-700 mb-8">Your answers have been submitted, click the button below to download your result!</p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
+                    <button id="downloadPdf" class="btn btn-primary">Download PDF Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500 transition-colors duration-200" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500 transition-colors duration-200" data-color="highlight-pink"></div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const testData = {
+                section1: {
+                    part1: [ // Q1-10 Fill-in-the-blank
+                        { question: "Name of agent: Becky 1 _______", correctAnswer: "JAMIESON" },
+                        { question: "Best to call her in the 2 _______", correctAnswer: "AFTERNOON" },
+                        { question: "Must have good 3 _______ skills", correctAnswer: "COMMUNICATION" },
+                        { question: "Jobs are usually for at least one 4 _______", correctAnswer: "WEEK" },
+                        { question: "Pay is usually 5 £ _______ per hour", correctAnswer: "10" },
+                        { question: "Wear a 6 _______ to the interview", correctAnswer: "SUIT" },
+                        { question: "Must bring your 7 _______ to the interview", correctAnswer: "PASSPORT" },
+                        { question: "They will ask questions about each applicant’s 8 _______", correctAnswer: "PERSONALITY" },
+                        { question: "The 9 _______ you receive at interview will benefit you", correctAnswer: "FEEDBACK" },
+                        { question: "Less 10 _______ is involved in applying for jobs", correctAnswer: "TIME" }
+                    ]
+                },
+                section2: {
+                    part1: [ // Q11-14 Multiple Choice
+                        {
+                            question: "11. According to the speaker, the company",
+                            options: ["A. has been in business for longer than most of its competitors.", "B. arranges holidays to more destinations than its competitors.", "C. has more customers than its competitors."],
+                            correctAnswer: "A"
+                        },
+                        {
+                            question: "12. Where can customers meet the tour manager before travelling to the Isle of Man?",
+                            options: ["A. Liverpool", "B. Heysham", "C. Luton"],
+                            correctAnswer: "B"
+                        },
+                        {
+                            question: "13. How many lunches are included in the price of the holiday?",
+                            options: ["A. three", "B. four", "C. five"],
+                            correctAnswer: "A"
+                        },
+                        {
+                            question: "14. Customers have to pay extra for",
+                            options: ["A. guaranteeing themselves a larger room.", "B. booking at short notice.", "C. transferring to another date."],
+                            correctAnswer: "C"
+                        }
+                    ],
+                    part2: [ // Q15-20 Table Fill-in-the-blank
+                        { question: "15", correctAnswer: "RIVER" },
+                        { question: "16", correctAnswer: "1422" },
+                        { question: "17", correctAnswer: "TOP" },
+                        { question: "18", correctAnswer: "PASS" },
+                        { question: "19", correctAnswer: "STEAM" },
+                        { question: "20", correctAnswer: "CAPITAL" }
+                    ]
+                },
+                section3: {
+                    part1: [ // Q21-26 Matching
+                        { question: "21. the eldest child", correctAnswer: "G" }, // G. caring
+                        { question: "22. a middle child", correctAnswer: "F" }, // F. co-operative
+                        { question: "23. the youngest child", correctAnswer: "A" }, // A. outgoing
+                        { question: "24. a twin", correctAnswer: "E" }, // E. introverted
+                        { question: "25. an only child", correctAnswer: "B" }, // B. selfish
+                        { question: "26. a child with much older siblings", correctAnswer: "C" }  // C. independent
+                    ],
+                    part2: [ // Q27-28 Multiple Choice
+                        {
+                            question: "27. What do the speakers say about the evidence relating to birth order and academic success?",
+                            options: ["A. There is conflicting evidence about whether oldest children perform best in intelligence tests.", "B. There is little doubt that birth order has less influence on academic achievement than socio-economic status.", "C. Some studies have neglected to include important factors such as family size."],
+                            correctAnswer: "C"
+                        },
+                        {
+                            question: "28. What does Ruth think is surprising about the difference in oldest children’s academic performance?",
+                            options: ["A. It is mainly thanks to their roles as teachers for their younger siblings.", "B. The advantages they have only lead to a slightly higher level of achievement.", "C. The extra parental attention they receive at a young age makes little difference."],
+                            correctAnswer: "A"
+                        }
+                    ],
+                    part3: [ // Q29-30 Choose TWO
+                        {
+                            question: "Which TWO experiences of sibling rivalry do the speakers agree has been valuable for them?",
+                            options: ["A. learning to share", "B. learning to stand up for oneself", "C. learning to be a good loser", "D. learning to be tolerant", "E. learning to say sorry"],
+                            correctAnswer: ["B", "D"], // Correct letters, order doesn't matter for check, but stored as array
+                            type: "checkbox"
+                        }
+                    ]
+                },
+                section4: {
+                    part1: [ // Q31-40 Fill-in-the-blank (explicit inputs)
+                        { question: "31", correctAnswer: "SHELTER" },
+                        { question: "32", correctAnswer: "OIL" },
+                        { question: "33", correctAnswer: "ROADS" },
+                        { question: "34", correctAnswer: "INSECTS" },
+                        { question: "35", correctAnswer: "GRASS" },
+                        { question: "36", correctAnswer: "WATER" },
+                        { question: "37", correctAnswer: "SOIL" },
+                        { question: "38", correctAnswer: "DRY" },
+                        { question: "39", correctAnswer: "SIMPLE" },
+                        { question: "40", correctAnswer: "NEST" }
+                    ]
+                }
+            };
+
+            // User's answers storage, initialized with empty arrays for each part/sub-part
+            const userAnswers = {
+                section1: { part1: Array(10).fill("") },
+                section2: { part1: Array(4).fill(""), part2: Array(6).fill("") }, // 4 MCQs, 6 table
+                section3: { part1: Array(6).fill(""), part2: Array(2).fill(""), part3: Array(1).fill([]) }, // 6 Matching, 2 MCQs, 1 Checkbox (2 answers)
+                section4: { part1: Array(10).fill("") }
+            };
+
+            // Total score
+            let score = 0;
+
+            // --- Helper Functions ---
+
+            /**
+             * Hides all test parts.
+             */
+            function hideAllParts() {
+                document.querySelectorAll('.test-part').forEach(part => {
+                    part.classList.add('hidden');
+                });
+            }
+
+            /**
+             * Displays a specific test part.
+             * @param {string} sectionId - The ID of the section to display (e.g., 'section1').
+             */
+            function showSection(sectionId) {
+                hideAllParts();
+                document.getElementById(sectionId).classList.remove('hidden');
+            }
+
+            /**
+             * Calculates the global question number for a specific question within a section and part.
+             * This function is now simplified as it's primarily used for input IDs and feedback.
+             * @param {string} sectionId - The ID of the section.
+             * @param {string} partId - The ID of the part within the section.
+             * @param {number} qIndex - The zero-based index of the question within its part.
+             * @returns {number} The global question number.
+             */
+            function getGlobalQuestionNumber(sectionId, partId, qIndex) {
+                let currentQuestionCount = 0;
+                for (const secKey in testData) {
+                    for (const pKey in testData[secKey]) {
+                        if (secKey === sectionId && pKey === partId) {
+                            // Special handling for checkbox questions that count as two numbers
+                            if (testData[secKey][pKey][qIndex]?.type === "checkbox" && testData[secKey][pKey][qIndex]?.correctAnswer.length === 2) {
+                                // If this is a "choose two" question, we return the starting number for its range
+                                // For example, for Q11-12, this will return 11.
+                                return currentQuestionCount + 1;
+                            }
+                            return currentQuestionCount + qIndex + 1;
+                        }
+                        // For checkbox questions with 2 correct answers, they count as 2 points/questions
+                        testData[secKey][pKey].forEach(q => {
+                            currentQuestionCount += (q.type === "checkbox" && q.correctAnswer.length === 2) ? 2 : 1;
+                        });
+                    }
+                }
+                return currentQuestionCount; // Should not be reached under normal circumstances
+            }
+
+
+            /**
+             * Renders questions (MCQ, Checkbox, or Fill-in-the-blank) for a given part.
+             * This function is now used flexibly to render based on `q.options` and `q.type`.
+             * @param {string} sectionId - The ID of the section.
+             * @param {string} partId - The ID of the part (e.g., 'part1', 'part2').
+             * @param {Array<Object>} questions - An array of question objects.
+             */
+            function renderQuestions(sectionId, partId, questions) {
+                const container = document.getElementById(`questions-${sectionId}-${partId}`);
+                if (!container) {
+                    console.error(`Container for questions-${sectionId}-${partId} not found.`);
+                    return;
+                }
+                container.innerHTML = ''; // Clear previous questions
+
+                questions.forEach((q, qIndex) => {
+                    const globalQuestionNumber = getGlobalQuestionNumber(sectionId, partId, qIndex);
+
+                    // Skip rendering for questions that are already part of a hardcoded HTML structure
+                    if (
+                        (sectionId === 'section1' && partId === 'part1') ||
+                        (sectionId === 'section2' && partId === 'part2') || // Table handled directly in HTML
+                        (sectionId === 'section3' && partId === 'part1') || // Matching handled directly in HTML
+                        (sectionId === 'section4' && partId === 'part1') // Fill-in-the-blanks handled directly in HTML
+                    ) {
+                        // For the questions that are explicitly present in the HTML structure, just attach listeners
+                        // This block now only ensures pre-filling and attaching input listeners to the already existing inputs
+                        const inputElementId = (sectionId === 'section1' || sectionId === 'section4' || (sectionId === 'section3' && partId === 'part1'))
+                            ? `answer-${globalQuestionNumber}` // For fixed Q IDs 1-10, 21-26, 31-40
+                            : `answer-${globalQuestionNumber}`; // For table Qs 15-20 (id corresponds to number)
+
+                        const inputField = document.getElementById(inputElementId);
+
+                        if (inputField) {
+                            // Pre-fill user's previous answer if available
+                            inputField.value = userAnswers[sectionId][partId][qIndex] || '';
+                            inputField.addEventListener('input', (event) => {
+                                userAnswers[sectionId][partId][qIndex] = event.target.value.trim();
+                            });
+                        }
+                        return; // Skip creating new divs for these
+                    }
+
+
+                    const questionDiv = document.createElement('div');
+                    questionDiv.classList.add('mb-4', 'p-4', 'bg-white', 'rounded-lg', 'shadow-sm', 'border', 'border-gray-100');
+
+                    if (q.options) { // Multiple choice or Checkbox
+                        let questionTextForDisplay = q.question;
+                        // Check if the question text already contains a number at the beginning (e.g., "11. According...")
+                        // If it does, don't prepend the globalQuestionNumber again.
+                        if (!questionTextForDisplay.match(/^\d+\.\s*/)) {
+                            questionTextForDisplay = `${globalQuestionNumber}. ${questionTextForDisplay}`;
+                        }
+
+                        const inputType = q.type === "checkbox" ? "checkbox" : "radio";
+                        questionDiv.innerHTML = `
+                            <p class="font-semibold text-lg mb-3 text-gray-800">${questionTextForDisplay}</p>
+                            <div class="space-y-2">
+                                ${q.options.map((option, oIndex) => {
+                                    const optionLetter = String.fromCharCode(65 + oIndex); // A, B, C, D, E
+                                    const inputName = `${inputType}-q${globalQuestionNumber}`;
+                                    // Pre-select if answer exists (for back navigation)
+                                    const isChecked = Array.isArray(userAnswers[sectionId][partId][qIndex]) ?
+                                                      userAnswers[sectionId][partId][qIndex].includes(optionLetter) :
+                                                      userAnswers[sectionId][partId][qIndex] === optionLetter;
+
+                                    return `
+                                        <label class="flex items-center p-3 rounded-md cursor-pointer hover:bg-gray-50 transition-colors duration-200 border border-gray-200 ${isChecked ? 'selected-option' : ''}">
+                                            <input type="${inputType}" name="${inputName}" value="${optionLetter}" class="form-${inputType} h-5 w-5 text-blue-600" ${isChecked ? 'checked' : ''}>
+                                            <span class="ml-3 text-gray-700">${optionLetter}. ${option.replace(/^[A-E]\.\s*/, '')}</span>
+                                        </label>
+                                    `;
+                                }).join('')}
+                            </div>
+                            <div id="feedback-${globalQuestionNumber}" class="mt-2 text-sm"></div>
+                        `;
+                        container.appendChild(questionDiv);
+
+                        // Add event listener to store selected answer(s)
+                        questionDiv.querySelectorAll(`input[name="${inputType}-q${globalQuestionNumber}"]`).forEach(input => {
+                            input.addEventListener('change', (event) => {
+                                if (inputType === "radio") {
+                                    userAnswers[sectionId][partId][qIndex] = event.target.value;
+                                } else { // Checkbox
+                                    let currentSelections = userAnswers[sectionId][partId][qIndex] || [];
+                                    if (event.target.checked) {
+                                        currentSelections.push(event.target.value);
+                                    } else {
+                                        currentSelections = currentSelections.filter(val => val !== event.target.value);
+                                    }
+                                    userAnswers[sectionId][partId][qIndex] = currentSelections;
+                                }
+                                // Visually highlight the selected option(s)
+                                questionDiv.querySelectorAll('label').forEach(label => {
+                                    const checkbox = label.querySelector(`input[name="${inputType}-q${globalQuestionNumber}"]`);
+                                    if (checkbox && checkbox.checked) {
+                                        label.classList.add('selected-option');
+                                    } else {
+                                        label.classList.remove('selected-option');
+                                    }
+                                });
+                            });
+                        });
+                    } else {
+                        // This case should ideally not be reached if HTML is pre-defined for all non-MCQ.
+                        console.log(`Fallback: Dynamically rendering fill-in-the-blank for Q${globalQuestionNumber}. This might be redundant.`);
+                        let displayQuestionText = q.question;
+                        if (!displayQuestionText.match(/^\d+\.\s*/)) {
+                             displayQuestionText = `${globalQuestionNumber}. ${displayQuestionText}`;
+                        }
+                        displayQuestionText = displayQuestionText.replace('_______', `<input type="text" id="answer-${globalQuestionNumber}" placeholder="Type your answer here..." class="w-full p-2 border border-gray-300 rounded-md text-sm">`);
+
+                        questionDiv.innerHTML = `
+                            <p class="font-semibold text-lg mb-3 text-gray-800">${displayQuestionText}</p>
+                            <div id="feedback-${globalQuestionNumber}" class="mt-2 text-sm"></div>
+                        `;
+                        container.appendChild(questionDiv);
+
+                        const inputField = document.getElementById(`answer-${globalQuestionNumber}`);
+                        if (inputField) {
+                            inputField.value = userAnswers[sectionId][partId][qIndex] || '';
+                            inputField.addEventListener('input', (event) => {
+                                userAnswers[sectionId][partId][qIndex] = event.target.value.trim();
+                            });
+                        }
+                    }
+                });
+            }
+
+            /**
+             * Checks answers for a part and updates score and feedback.
+             * This function handles both single-choice and multiple-choice (checkbox) questions.
+             * @param {string} sectionId - The ID of the section.
+             * @param {string} partId - The ID of the part.
+             */
+            function checkAnswers(sectionId, partId) {
+                const questions = testData[sectionId][partId];
+
+                questions.forEach((q, qIndex) => {
+                    const globalQuestionNumber = getGlobalQuestionNumber(sectionId, partId, qIndex);
+                    const userAnswer = userAnswers[sectionId][partId][qIndex];
+                    const feedbackDiv = document.getElementById(`feedback-${globalQuestionNumber}`);
+                    let isCorrect = false;
+
+                    // Determine the input element to disable
+                    let inputElement;
+                    if (q.options) { // MCQ or Checkbox
+                        document.querySelectorAll(`input[name="${q.type || 'radio'}-q${globalQuestionNumber}"]`).forEach(input => input.disabled = true);
+                    } else { // Fill-in-the-blank or Matching (input fields)
+                        // For fill-in-the-blank and matching, the input ID is either the global number or q.question
+                        inputElement = document.getElementById(`answer-${globalQuestionNumber}`); // Consistent ID for all
+                        if (inputElement) inputElement.disabled = true;
+                    }
+
+
+                    if (q.type === "checkbox") { // Choose TWO answers
+                        const correctAnswersSet = new Set(q.correctAnswer.map(ans => ans.toUpperCase()));
+                        const userAnswersSet = new Set((userAnswer || []).map(ans => ans.toUpperCase()));
+
+                        // Check if all correct answers are present in user's selection
+                        const allCorrectSelected = [...correctAnswersSet].every(ans => userAnswersSet.has(ans));
+                        // Check if user selected only correct answers (no extra incorrect ones)
+                        const noIncorrectSelected = [...userAnswersSet].every(ans => correctAnswersSet.has(ans));
+
+                        isCorrect = allCorrectSelected && noIncorrectSelected && userAnswersSet.size === correctAnswersSet.size;
+
+                    } else if (q.options) { // Single choice MCQ (radio)
+                        isCorrect = (userAnswer && userAnswer.toUpperCase() === q.correctAnswer.toUpperCase());
+                    } else { // Fill-in-the-blank or Matching (text input)
+                        const normalizedUserAnswer = (userAnswer || '').toLowerCase();
+                        const normalizedCorrectAnswer = q.correctAnswer.toLowerCase();
+                        isCorrect = normalizedUserAnswer === normalizedCorrectAnswer;
+
+                         // Special case for Q5 (10/TEN)
+                        if (globalQuestionNumber === 5) { // Q5 is "10" or "TEN"
+                            isCorrect = normalizedUserAnswer === '10' || normalizedUserAnswer === 'ten';
+                        }
+                    }
+
+                    if (feedbackDiv) { // Ensure feedbackDiv exists
+                        if (isCorrect) {
+                            feedbackDiv.classList.remove('incorrect-answer');
+                            feedbackDiv.classList.add('correct-answer');
+                            feedbackDiv.textContent = `Correct!`;
+                            score++;
+                            // For checkbox questions with 2 correct answers, increment score twice
+                            if (q.type === "checkbox" && q.correctAnswer.length === 2) {
+                                score++;
+                            }
+                        } else {
+                            feedbackDiv.classList.remove('correct-answer');
+                            feedbackDiv.classList.add('incorrect-answer');
+                            let correctDisplay = q.options ? q.correctAnswer : `"${q.correctAnswer}"`;
+                            if (q.type === "checkbox") {
+                                correctDisplay = `"${q.correctAnswer.join(', ')}"`;
+                            }
+                            feedbackDiv.textContent = `Incorrect. The correct answer is ${correctDisplay}.`;
+                        }
+                    }
+                });
+            }
+
+            /**
+             * Displays the final results.
+             */
+            function showResults() {
+                hideAllParts();
+                document.getElementById('results').classList.remove('hidden');
+            }
+
+
+            /**
+             * Generates and downloads a PDF report of the test results.
+             */
+            function generatePdfReport() {
+                console.log("generatePdfReport called.");
+                if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                    console.error("jsPDF library (window.jspdf.jsPDF) not loaded. Cannot generate PDF.");
+                    alert("PDF generation is not available. Please ensure your browser allows scripts from CDNs.");
+                    return;
+                }
+                console.log("jsPDF is loaded.");
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                console.log("jsPDF document initialized.");
+
+                doc.setFontSize(22);
+                doc.text("Results", 105, 20, { align: 'center' });
+                doc.setFontSize(10);
+                const now = new Date();
+                const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                doc.text(`Report generated on: ${now.toLocaleDateString('en-US', dateOptions)}`, 105, 30, { align: 'center' });
+
+                let totalPossibleScore = 0;
+                for (const secKey in testData) {
+                    for (const partKey in testData[secKey]) {
+                        testData[secKey][partKey].forEach(q => {
+                            if (q.type === "checkbox" && q.correctAnswer.length === 2) {
+                                totalPossibleScore += 2;
+                            } else {
+                                totalPossibleScore += 1;
+                            }
+                        });
+                    }
+                }
+
+                doc.setFontSize(14);
+                doc.text(`Total Score: ${score} out of ${totalPossibleScore} correct!`, 105, 45, { align: 'center' });
+
+                doc.setFontSize(16);
+                doc.text("Your Answers", 14, 65);
+
+                const headers = [["Question #", "Your Answer", "Correct Answer", "Status"]];
+                const data = [];
+
+                let currentQuestionNumberForPdf = 1; // Use a separate counter for PDF to handle question ranges
+
+                for (const secKey in testData) {
+                    for (const partKey in testData[secKey]) {
+                        testData[secKey][partKey].forEach((q, qIndex) => {
+                            const userAnswer = userAnswers[secKey][partKey][qIndex];
+                            let status = "Not Answered";
+                            let correctValueDisplay;
+                            let userAnswerDisplay;
+                            let isCorrect = false;
+
+                            if (q.type === "checkbox") {
+                                const correctAnswersSet = new Set(q.correctAnswer.map(ans => ans.toUpperCase()));
+                                const userAnswersSet = new Set((userAnswer || []).map(ans => ans.toUpperCase()));
+
+                                const allCorrectSelected = [...correctAnswersSet].every(ans => userAnswersSet.has(ans));
+                                const noIncorrectSelected = [...userAnswersSet].every(ans => correctAnswersSet.has(ans));
+
+                                isCorrect = allCorrectSelected && noIncorrectSelected && userAnswersSet.size === correctAnswersSet.size;
+
+                                correctValueDisplay = q.correctAnswer.map(ans => {
+                                    const optionIndex = ans.charCodeAt(0) - 65;
+                                    // Handle cases where option might not exist for invalid letters
+                                    return q.options[optionIndex] ? `${ans}. ${q.options[optionIndex].replace(/^[A-E]\.\s*/, '')}` : ans;
+                                }).join(', ');
+
+                                userAnswerDisplay = (userAnswer && userAnswer.length > 0) ? userAnswer.map(ans => {
+                                    const optionIndex = ans.charCodeAt(0) - 65;
+                                    // Handle cases where option might not exist for invalid letters
+                                    return q.options[optionIndex] ? `${ans}. ${q.options[optionIndex].replace(/^[A-E]\.\s*/, '')}` : ans;
+                                }).join(', ') : 'N/A';
+
+                            } else if (q.options) { // Single choice MCQ (radio)
+                                isCorrect = (userAnswer && userAnswer.toUpperCase() === q.correctAnswer.toUpperCase());
+                                status = isCorrect ? "Correct" : "Incorrect";
+                                if (!userAnswer) status = "Not Answered";
+
+                                const optionIndex = q.correctAnswer.charCodeAt(0) - 65;
+                                correctValueDisplay = q.options[optionIndex] ? `${q.correctAnswer}. ${q.options[optionIndex]}` : q.correctAnswer;
+                                const userAnswerOptionIndex = userAnswer ? userAnswer.charCodeAt(0) - 65 : -1;
+                                userAnswerDisplay = (userAnswer && q.options[userAnswerOptionIndex]) ? `${userAnswer}. ${q.options[userAnswerOptionIndex]}` : 'N/A';
+
+                            } else { // Fill-in-the-blank or Matching (text input)
+                                const normalizedUserAnswer = (userAnswer || '').toLowerCase();
+                                const normalizedCorrectAnswer = q.correctAnswer.toLowerCase();
+                                isCorrect = normalizedUserAnswer === normalizedCorrectAnswer;
+
+                                // Special handling for Q5 (10/TEN) and table questions
+                                if (currentQuestionNumberForPdf === 5) {
+                                    isCorrect = normalizedUserAnswer === '10' || normalizedUserAnswer === 'ten';
+                                } else if (currentQuestionNumberForPdf >= 15 && currentQuestionNumberForPdf <= 20) {
+                                    // Correctly map qIndex to testData.section2.part2 index (which is 0-indexed for 15-20)
+                                    isCorrect = normalizedUserAnswer === testData.section2.part2[currentQuestionNumberForPdf - 15].correctAnswer.toLowerCase();
+                                } else if (currentQuestionNumberForPdf >= 21 && currentQuestionNumberForPdf <= 26) {
+                                     // For matching (Section 3, part 1), ensure the user answer is a single letter (A-H)
+                                    isCorrect = normalizedUserAnswer === testData.section3.part1[currentQuestionNumberForPdf - 21].correctAnswer.toLowerCase();
+                                } else if (currentQuestionNumberForPdf >= 31 && currentQuestionNumberForPdf <= 40) {
+                                     // For fill-in-the-blank in Section 4, part 1
+                                    isCorrect = normalizedUserAnswer === testData.section4.part1[currentQuestionNumberForPdf - 31].correctAnswer.toLowerCase();
+                                }
+
+                                status = isCorrect ? "Correct" : "Incorrect";
+                                if (!userAnswer) status = "Not Answered";
+
+                                correctValueDisplay = q.correctAnswer;
+                                userAnswerDisplay = userAnswer || 'N/A';
+                            }
+
+                            let questionNumberForDisplay = currentQuestionNumberForPdf.toString();
+                            if (q.type === "checkbox" && q.correctAnswer.length === 2) {
+                                // Display as a range if it's a 'choose two' question
+                                questionNumberForDisplay = `${currentQuestionNumberForPdf}-${currentQuestionNumberForPdf + 1}`;
+                            }
+
+                            data.push([
+                                questionNumberForDisplay,
+                                userAnswerDisplay,
+                                correctValueDisplay,
+                                status
+                            ]);
+
+                            // Increment the PDF question number for the next row
+                            currentQuestionNumberForPdf += (q.type === "checkbox" && q.correctAnswer.length === 2) ? 2 : 1;
+                        });
+                    }
+                }
+
+                doc.autoTable({
+                    startY: 75,
+                    head: headers,
+                    body: data,
+                    theme: 'striped',
+                    styles: { font: 'Inter', fontSize: 9, cellPadding: 2, valign: 'middle' },
+                    headStyles: { fillColor: [30, 58, 138], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    columnStyles: {
+                        0: { cellWidth: 20 },
+                        1: { cellWidth: 50 },
+                        2: { cellWidth: 50 },
+                        3: { cellWidth: 30 }
+                    },
+                    didParseCell: function (data) {
+                        if (data.section === 'body' && data.column.index === 3) { // Status column
+                            if (data.cell.raw === 'Correct') {
+                                data.cell.styles.textColor = [34, 139, 34]; // Forest green
+                            } else if (data.cell.raw === 'Incorrect') {
+                                data.cell.styles.textColor = [220, 20, 60]; // Crimson red
+                            }
+                        }
+                    }
+                });
+
+                console.log("PDF data prepared, attempting to save.");
+                doc.save("Results.pdf");
+                console.log("doc.save() called.");
+            }
+
+
+            // --- Highlight Toolbar Logic ---
+            const testContainer = document.querySelector('.container'); // The main test content area
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const toolbarClearBtn = document.getElementById('toolbarClearBtn');
+            const toolbarYellow = document.getElementById('toolbarYellow');
+            const toolbarBlue = document.getElementById('toolbarBlue');
+            const toolbarGreen = document.getElementById('toolbarGreen');
+            const toolbarPink = document.getElementById('toolbarPink');
+
+            let lastSelectionRange = null;
+
+            // Function to apply highlight to selected text
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges(); // Clear current selection before re-adding
+                    selection.addRange(range);
+                } else {
+                    // No text selected or previously selected
+                    console.log("No text selected to highlight.");
+                    return;
+                }
+
+                const selectedText = range.toString().trim();
+                if (!selectedText) return; // Do nothing if selection is empty
+
+                const span = document.createElement('span');
+                span.classList.add(colorClass);
+                span.classList.add('highlighted-text'); // Add a class to identify highlighted spans
+
+                try {
+                    // Extract the selected content and put it into the new span
+                    const contents = range.extractContents();
+                    span.appendChild(contents);
+                    range.insertNode(span); // Insert the new span back into the document
+
+                    selection.removeAllRanges(); // Clear the selection after highlighting
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } catch (e) {
+                    console.error("Error applying highlight:", e);
+                    // Provide user feedback if highlighting fails for complex selections
+                    // (e.g., selection spanning across multiple non-text nodes)
+                }
+            }
+
+            // Function to clear highlight from selected text
+            function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    console.log("No text selected to clear highlight.");
+                    return;
+                }
+
+                const selectedNode = range.commonAncestorContainer;
+                let highlightedSpan = null;
+
+                // Check if the selected node itself is a highlighted span
+                if (selectedNode && selectedNode.nodeType === Node.ELEMENT_NODE && selectedNode.classList.contains('highlighted-text')) {
+                    highlightedSpan = selectedNode;
+                } else {
+                    // Traverse up the DOM tree from the selected node to find a parent highlight span
+                    let currentNode = selectedNode;
+                    while (currentNode && currentNode !== testContainer && currentNode.parentNode) { // Changed readingPassageContent
+                        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.classList.contains('highlighted-text')) {
+                            highlightedSpan = currentNode;
+                            break;
+                        }
+                        currentNode = currentNode.parentNode;
+                    }
+                }
+
+                if (highlightedSpan && highlightedSpan.parentNode) {
+                    // Replace the highlighted span with its plain text content
+                    const textContent = highlightedSpan.textContent;
+                    highlightedSpan.parentNode.replaceChild(document.createTextNode(textContent), highlightedSpan);
+
+                    selection.removeAllRanges(); // Clear the selection
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } else {
+                    console.log("No highlight found to clear for this selection.");
+                }
+            }
+
+            // Event listeners for toolbar buttons
+            toolbarYellow.addEventListener('click', () => applyHighlight('highlight-yellow'));
+            toolbarBlue.addEventListener('click', () => applyHighlight('highlight-blue'));
+            toolbarGreen.addEventListener('click', () => applyHighlight('highlight-green'));
+            toolbarPink.addEventListener('click', () => applyHighlight('highlight-pink'));
+            toolbarClearBtn.addEventListener('click', clearSelectedHighlight);
+
+            // Show/hide toolbar on text selection (mouseup event)
+            testContainer.addEventListener('mouseup', (event) => { // Changed from readingPassageContent
+                const selection = window.getSelection();
+                // Check if there's a selection and it's not collapsed (i.e., actual text is selected)
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0); // Store the current selection range
+                    const rect = lastSelectionRange.getBoundingClientRect(); // Get the bounding box of the selection
+                    const toolbarHeight = floatingToolbar.offsetHeight;
+                    const toolbarWidth = floatingToolbar.offsetWidth;
+
+                    // Position the toolbar above the selected text
+                    let topPos = rect.top + window.scrollY - toolbarHeight - 10;
+                    // Center the toolbar horizontally above the selection
+                    let leftPos = rect.left + window.scrollX + (rect.width / 2) - (toolbarWidth / 2);
+
+                    // Ensure the toolbar stays within the viewport boundaries
+                    topPos = Math.max(10, topPos); // Prevent going too far left (top adjusted too)
+                    leftPos = Math.max(10, leftPos); // Prevent going too far left
+                    leftPos = Math.min(leftPos, window.innerWidth - toolbarWidth - 10); // Prevent going too far right
+
+                    floatingToolbar.style.top = `${topPos}px`;
+                    floatingToolbar.style.left = `${leftPos}px`;
+
+                    floatingToolbar.classList.remove('hidden'); // Show the toolbar
+                } else {
+                    floatingToolbar.classList.add('hidden'); // Hide if no selection
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+
+            // Hide toolbar when clicking outside the toolbar or passage content
+            document.addEventListener('mousedown', (event) => {
+                // If the click is not inside the toolbar and not inside the reading passage content
+                if (!floatingToolbar.contains(event.target) && !testContainer.contains(event.target)) { // Changed readingPassageContent
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+            // --- End Highlight Toolbar Logic ---
+
+
+            // --- Main Test Navigation and Rendering ---
+            // Initialize the test by showing Section 1
+            showSection('section1');
+            renderQuestions('section1', 'part1', testData.section1.part1);
+
+
+            // Navigate to Section 2
+            document.getElementById('nextSection1').addEventListener('click', () => {
+                checkAnswers('section1', 'part1');
+                showSection('section2');
+                renderQuestions('section2', 'part1', testData.section2.part1);
+                // Manually attach listeners for Section 2 Part 2 table inputs
+                testData.section2.part2.forEach((q, qIndex) => {
+                    const globalQNum = getGlobalQuestionNumber('section2', 'part2', qIndex);
+                    const inputField = document.getElementById(`answer-${globalQNum}`);
+                    if (inputField) {
+                        inputField.value = userAnswers.section2.part2[qIndex] || '';
+                        inputField.addEventListener('input', (event) => {
+                            userAnswers.section2.part2[qIndex] = event.target.value.trim();
+                        });
+                    }
+                });
+            });
+
+            // Navigate to Section 3
+            document.getElementById('nextSection2').addEventListener('click', () => {
+                checkAnswers('section2', 'part1');
+                checkAnswers('section2', 'part2'); // Check table answers
+                showSection('section3');
+                // Manually attach listeners for Section 3 Part 1 matching inputs
+                testData.section3.part1.forEach((q, qIndex) => {
+                    const globalQNum = getGlobalQuestionNumber('section3', 'part1', qIndex);
+                    const inputField = document.getElementById(`answer-${globalQNum}`);
+                    if (inputField) {
+                        inputField.value = userAnswers.section3.part1[qIndex] || '';
+                        inputField.addEventListener('input', (event) => {
+                            userAnswers.section3.part1[qIndex] = event.target.value.trim().toUpperCase(); // Ensure uppercase for matching
+                        });
+                    }
+                });
+                renderQuestions('section3', 'part2', testData.section3.part2);
+                renderQuestions('section3', 'part3', testData.section3.part3);
+            });
+
+            // Navigate to Section 4
+            document.getElementById('nextSection3').addEventListener('click', () => {
+                checkAnswers('section3', 'part1'); // Check matching answers
+                checkAnswers('section3', 'part2');
+                checkAnswers('section3', 'part3');
+                showSection('section4');
+                // Manually attach listeners for Section 4 Part 1 inputs
+                testData.section4.part1.forEach((q, qIndex) => {
+                    const globalQNum = getGlobalQuestionNumber('section4', 'part1', qIndex);
+                    const inputField = document.getElementById(`answer-${globalQNum}`);
+                    if (inputField) {
+                         inputField.value = userAnswers.section4.part1[qIndex] || '';
+                         inputField.addEventListener('input', (event) => {
+                            userAnswers.section4.part1[qIndex] = event.target.value.trim();
+                        });
+                    }
+                });
+            });
+
+            // Submit test
+            document.getElementById('submitTest').addEventListener('click', () => {
+                checkAnswers('section4', 'part1');
+                showResults();
+            });
+
+            // Download PDF Report
+            document.getElementById('downloadPdf').addEventListener('click', generatePdfReport);
+
+            // Back buttons navigation
+            document.getElementById('backSection2').addEventListener('click', () => {
+                showSection('section1');
+                renderQuestions('section1', 'part1', testData.section1.part1);
+            });
+
+            document.getElementById('backSection3').addEventListener('click', () => {
+                showSection('section2');
+                renderQuestions('section2', 'part1', testData.section2.part1);
+                testData.section2.part2.forEach((q, qIndex) => { // Re-attach for table as well
+                    const globalQNum = getGlobalQuestionNumber('section2', 'part2', qIndex);
+                    const inputField = document.getElementById(`answer-${globalQNum}`);
+                    if (inputField) {
+                        inputField.value = userAnswers.section2.part2[qIndex] || '';
+                        inputField.addEventListener('input', (event) => {
+                            userAnswers.section2.part2[qIndex] = event.target.value.trim();
+                        });
+                    }
+                });
+            });
+
+            document.getElementById('backSection4').addEventListener('click', () => {
+                showSection('section3');
+                testData.section3.part1.forEach((q, qIndex) => { // Re-attach for matching as well
+                    const globalQNum = getGlobalQuestionNumber('section3', 'part1', qIndex);
+                    const inputField = document.getElementById(`answer-${globalQNum}`);
+                    if (inputField) {
+                        inputField.value = userAnswers.section3.part1[qIndex] || '';
+                        inputField.addEventListener('input', (event) => {
+                            userAnswers.section3.part1[qIndex] = event.target.value.trim().toUpperCase();
+                        });
+                    }
+                });
+                renderQuestions('section3', 'part2', testData.section3.part2);
+                renderQuestions('section3', 'part3', testData.section3.part3);
+            });
+        }; // End of window.onload
+    </script>
+</body>
+</html>
