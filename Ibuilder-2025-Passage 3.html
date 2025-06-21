@@ -492,7 +492,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Select all relevant question types
             const sentenceCompletionQuestions = document.querySelectorAll('.sentence-completion-question');
-            const summaryQuestions = document.querySelectorAll('.summary-question');
+            // Changed: targeting selects directly for summary blanks
+            const summaryBlanks = document.querySelectorAll('[id^="summaryBlank"]');
             const multipleChoiceSingleAnswerQuestions = document.querySelectorAll('.multiple-choice-single-answer-question');
 
             const checkAnswersBtn = document.getElementById('checkAnswersBtn');
@@ -673,13 +674,13 @@
                     });
                 });
 
-                summaryQuestions.forEach(qDiv => {
+                // Changed iteration to summaryBlanks
+                summaryBlanks.forEach(selectElement => {
                     totalQuestions++;
-                    const questionNumber = qDiv.dataset.questionNumber;
-                    const correctAnswer = qDiv.dataset.correctAnswer.toLowerCase();
-                    const selectedOption = qDiv.querySelector(`select#summaryBlank${questionNumber}`);
-                    const userAnswer = selectedOption ? selectedOption.value.toLowerCase() : "No answer";
-                    const questionText = `Blank ${questionNumber} in summary`; // Adjusted for clarity in PDF
+                    const questionNumber = selectElement.id.replace('summaryBlank', '');
+                    const correctAnswer = selectElement.dataset.correctAnswer.toLowerCase();
+                    const userAnswer = selectElement.value.toLowerCase();
+                    const questionText = `Blank ${questionNumber} in summary`;
 
                     let isCorrect = (userAnswer === correctAnswer);
                     if (isCorrect) {
@@ -689,8 +690,8 @@
                         type: 'SUMMARY_BLANK',
                         questionNumber: parseInt(questionNumber),
                         statement: questionText,
-                        userAnswer: selectedOption ? selectedOption.value : "No answer",
-                        correctAnswer: qDiv.dataset.correctAnswer,
+                        userAnswer: selectElement.value, // Keep original value for PDF
+                        correctAnswer: selectElement.dataset.correctAnswer,
                         isCorrect: isCorrect
                     });
                 });
@@ -731,15 +732,15 @@
                     }
                 });
 
-                summaryQuestions.forEach(qDiv => {
-                    const selectedOption = qDiv.querySelector('select');
-                    if (!selectedOption || selectedOption.value === "") {
+                // Changed iteration to summaryBlanks
+                summaryBlanks.forEach(selectElement => {
+                    if (!selectElement || selectElement.value === "") {
                         allAnswered = false;
                     }
                 });
 
                 multipleChoiceSingleAnswerQuestions.forEach(qDiv => {
-                    const selectedRadio = qDiv.querySelector(`input[name="mc${qDiv.dataset.questionNumber}"]:checked`); // Corrected: qDiv.dataset.question-number to qDiv.dataset.questionNumber
+                    const selectedRadio = qDiv.querySelector(`input[name="mc${qDiv.dataset.questionNumber}"]:checked`);
                     if (!selectedRadio) {
                         allAnswered = false;
                     }
@@ -773,8 +774,8 @@
                     const selectElement = qDiv.querySelector('select');
                     if (selectElement) selectElement.disabled = true;
                 });
-                summaryQuestions.forEach(qDiv => {
-                    const selectElement = qDiv.querySelector('select');
+                // Changed iteration to summaryBlanks
+                summaryBlanks.forEach(selectElement => {
                     if (selectElement) selectElement.disabled = true;
                 });
                 multipleChoiceSingleAnswerQuestions.forEach(qDiv => {
@@ -923,8 +924,8 @@
                 }
             });
 
-            summaryQuestions.forEach(qDiv => {
-                const selectElement = qDiv.querySelector('select');
+            // Changed iteration to summaryBlanks
+            summaryBlanks.forEach(selectElement => {
                 if (selectElement) {
                     selectElement.addEventListener('change', () => {
                         feedbackDiv.textContent = '';
