@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Reading Worksheet</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for a clean look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        /* Custom styles for interactive elements (optional, Tailwind handles most) */
+        .form-radio:checked {
+            background-color: #4f46e5; /* Indigo-600 */
+            border-color: #4f46e5;
+        }
+        .form-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            border-radius: 9999px; /* Make it circular */
+            border-width: 1px;
+            border-color: #d1d5db; /* Gray-300 */
+        }
+        .form-radio:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center py-8">
+    <div class="container mx-auto p-4 max-w-4xl w-full bg-gray-50 rounded-lg shadow-xl border border-gray-200">
+        <!-- Title Section -->
+        <h1 class="text-4xl font-extrabold text-center mb-8 text-indigo-800 tracking-tight">Interactive Reading Worksheet</h1>
+
+        <!-- Section: Reading Passage -->
+        <div class="bg-white p-7 rounded-xl shadow-inner mb-10 border border-indigo-100">
+            <h2 class="text-3xl font-bold mb-6 text-indigo-700 border-b-2 pb-3 border-indigo-200">GLOBALIZATION OF EDUCATION AND THE WORKPLACE</h2>
+            <div class="text-gray-700 leading-relaxed text-lg">
+                <p class="mb-5"><strong>A</strong> Globalization has affected most aspects of our lives. One area which has changed is education. More and more people move to different countries for their studies. At the same time, more people stay at home and study by distance learning. It is now easy to learn without attending a college or university, or attending less often. 'Blended learning' means studying partly in a traditional way in the classroom and partly online or via email. These changes also mean that there is now more interest in 'lifelong learning', the idea that we go on learning throughout our working lives and even into retirement. It is easy to attend 'webinars' or online seminars without being away from our offices. Many adults go back to college later in life because it is so easy to get a qualification without giving up work or disrupting family life.</p>
+                <p class="mb-5"><strong>B</strong> Different countries have benefitted from the globalization of education in different ways. Many British, Australian and American universities run their degree programs in countries throughout Asia, and many students, parents and employers feel this is a valuable opportunity. Students can get an internationally recognized degree at a much cheaper price than going abroad and so can improve their chances of getting a good job. At the same time, those in the countries providing world-class degrees also benefit. They have greater access to ideas and knowledge from all over the world and having international students enriches their universities.</p>
+                <p class="mb-5"><strong>C</strong> However, it is not good news for everyone in some developing countries. It is usually the elite - or the richest people in the large cities - who have access to international education. Many people in rural areas have not even had a primary education. Also, those areas usually do not have reliable internet connections and most people do not own a computer. It will take a bit more time for international opportunities to reach everyone in developing countries.</p>
+                <p class="mb-5"><strong>D</strong> One concern people have about globalization is that it can start to mean 'westernization'. In other words, local knowledge can be lost and money seen as more important than culture. Education should treat every culture with respect; it should not be just learning about the West, but should include different ways of teaching and approaches from around the world. The aim is to enrich and share; the flow of ideas and information should go from East to West as well as from West to East.</p>
+                <p class="mb-5"><strong>E</strong> Educational institutions have changed their focus due to globalization. There are so many benefits of having overseas students that universities are competing for them, using strategies from the world of business. For example, they visit Education Fairs all over the world and spend time and money creating publicity material and advertisements. There is also more emphasis on the student experience. There is more focus on customer care, especially helping international students to settle in, improve their English and understand the academic culture of the host country.</p>
+                <p class="mb-0"><strong>F</strong> There are many advantages to the globalization of education and the workplace. More people get benefits that were only available to those in the developed countries before. There is more understanding between different nations as people learn about each other's cultures. However, it is important to make sure the benefits reach everyone and don't leave many citizens of the developing world behind</p>
+            </div>
+        </div>
+
+        <!-- Section: Pre-Reading -->
+        <div class="bg-white p-7 rounded-xl shadow-inner mb-10 border border-blue-100">
+            <h2 class="text-3xl font-bold mb-6 text-blue-700 border-b-2 pb-3 border-blue-200">Pre-Reading</h2>
+            <div class="mb-6">
+                <p class="font-medium text-gray-800 text-lg mb-2">What comes to mind when you hear the word “globalization”?</p>
+                <textarea class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-all duration-200 text-gray-700" rows="4" placeholder="Type your thoughts here..."></textarea>
+            </div>
+            <div class="mb-0">
+                <p class="font-medium text-gray-800 text-lg mb-2">Have you ever taken an online course or webinar? Describe your experience in one or two sentences.</p>
+                <textarea class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-all duration-200 text-gray-700" rows="4" placeholder="Share your experience..."></textarea>
+            </div>
+        </div>
+
+        <!-- Section: Vocabulary Matching -->
+        <div class="bg-white p-7 rounded-xl shadow-inner mb-10 border border-green-100">
+            <h2 class="text-3xl font-bold mb-6 text-green-700 border-b-2 pb-3 border-green-200">Vocabulary Matching</h2>
+            <p class="mb-6 text-gray-700 text-lg">Match each word from the box with its definition (select the letter):</p>
+            <div id="vocabulary-matching" class="space-y-5">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-800 w-full sm:w-48 text-lg">1. blended learning</span>
+                    <select id="vocab-1" class="flex-grow p-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 transition-colors text-gray-700 bg-white">
+                        <option value="">Select definition</option>
+                        <option value="A">A. learning that combines traditional classes with online study</option>
+                        <option value="B">B. seminars conducted over the internet</option>
+                        <option value="C">C. the idea of studying throughout one’s life</option>
+                        <option value="D">D. classes where the teacher and student are in different locations</option>
+                        <option value="E">E. information spread to promote something</option>
+                    </select>
+                    <span id="vocab-feedback-1" class="text-sm font-semibold mt-2 sm:mt-0 ml-0 sm:ml-4"></span>
+                </div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-800 w-full sm:w-48 text-lg">2. lifelong learning</span>
+                    <select id="vocab-2" class="flex-grow p-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 transition-colors text-gray-700 bg-white">
+                        <option value="">Select definition</option>
+                        <option value="A">A. learning that combines traditional classes with online study</option>
+                        <option value="B">B. seminars conducted over the internet</option>
+                        <option value="C">C. the idea of studying throughout one’s life</option>
+                        <option value="D">D. classes where the teacher and student are in different locations</option>
+                        <option value="E">E. information spread to promote something</option>
+                    </select>
+                    <span id="vocab-feedback-2" class="text-sm font-semibold mt-2 sm:mt-0 ml-0 sm:ml-4"></span>
+                </div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-800 w-full sm:w-48 text-lg">3. webinar</span>
+                    <select id="vocab-3" class="flex-grow p-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 transition-colors text-gray-700 bg-white">
+                        <option value="">Select definition</option>
+                        <option value="A">A. learning that combines traditional classes with online study</option>
+                        <option value="B">B. seminars conducted over the internet</option>
+                        <option value="C">C. the idea of studying throughout one’s life</option>
+                        <option value="D">D. classes where the teacher and student are in different locations</option>
+                        <option value="E">E. information spread to promote something</option>
+                    </select>
+                    <span id="vocab-feedback-3" class="text-sm font-semibold mt-2 sm:mt-0 ml-0 sm:ml-4"></span>
+                </div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-800 w-full sm:w-48 text-lg">4. distance learning</span>
+                    <select id="vocab-4" class="flex-grow p-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 transition-colors text-gray-700 bg-white">
+                        <option value="">Select definition</option>
+                        <option value="A">A. learning that combines traditional classes with online study</option>
+                        <option value="B">B. seminars conducted over the internet</option>
+                        <option value="C">C. the idea of studying throughout one’s life</option>
+                        <option value="D">D. classes where the teacher and student are in different locations</option>
+                        <option value="E">E. information spread to promote something</option>
+                    </select>
+                    <span id="vocab-feedback-4" class="text-sm font-semibold mt-2 sm:mt-0 ml-0 sm:ml-4"></span>
+                </div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <span class="font-semibold text-gray-800 w-full sm:w-48 text-lg">5. publicity</span>
+                    <select id="vocab-5" class="flex-grow p-3 border-2 border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 transition-colors text-gray-700 bg-white">
+                        <option value="">Select definition</option>
+                        <option value="A">A. learning that combines traditional classes with online study</option>
+                        <option value="B">B. seminars conducted over the internet</option>
+                        <option value="C">C. the idea of studying throughout one’s life</option>
+                        <option value="D">D. classes where the teacher and student are in different locations</option>
+                        <option value="E">E. information spread to promote something</option>
+                    </select>
+                    <span id="vocab-feedback-5" class="text-sm font-semibold mt-2 sm:mt-0 ml-0 sm:ml-4"></span>
+                </div>
+            </div>
+            <button id="check-vocab" class="mt-8 px-8 py-4 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors duration-300 shadow-md transform hover:scale-105 active:scale-95 text-lg">Check Vocabulary Answers</button>
+        </div>
+
+        <!-- Section: Skimming -->
+        <div class="bg-white p-7 rounded-xl shadow-inner mb-10 border border-red-100">
+            <h2 class="text-3xl font-bold mb-6 text-red-700 border-b-2 pb-3 border-red-200">Skimming</h2>
+            <div class="mb-6">
+                <p class="font-medium text-gray-800 text-lg mb-4">1. What is the passage mainly about?</p>
+                <div class="mt-2 space-y-3" id="skimming-q1">
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-red-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-red-600 h-5 w-5" name="skimming-q1" value="A">
+                        <span class="ml-3">A. Many people study after retirement.</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-red-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-red-600 h-5 w-5" name="skimming-q1" value="B">
+                        <span class="ml-3">B. Most lecturers work part-time.</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-red-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-red-600 h-5 w-5" name="skimming-q1" value="C">
+                        <span class="ml-3">C. There are both advantages and disadvantages to globalization.</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-red-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-red-600 h-5 w-5" name="skimming-q1" value="D">
+                        <span class="ml-3">D. Adults can now go back to college without disrupting family life.</span>
+                    </label>
+                </div>
+                <span id="skimming-feedback-1" class="mt-4 block text-base font-semibold"></span>
+            </div>
+            <button id="check-skimming" class="mt-8 px-8 py-4 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors duration-300 shadow-md transform hover:scale-105 active:scale-95 text-lg">Check Skimming Answer</button>
+        </div>
+
+        <!-- Section: Scanning -->
+        <div class="bg-white p-7 rounded-xl shadow-inner mb-10 border border-purple-100">
+            <h2 class="text-3xl font-bold mb-6 text-purple-700 border-b-2 pb-3 border-purple-200">Scanning</h2>
+            <!-- Question 4.1 -->
+            <div class="mb-6">
+                <p class="font-medium text-gray-800 text-lg mb-4">4.1 Who benefits from globalized education in developing countries?</p>
+                <div class="mt-2 space-y-3" id="scanning-q4-1">
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-1" value="A">
+                        <span class="ml-3">A. almost everyone in those countries</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-1" value="B">
+                        <span class="ml-3">B. mainly well-off people in big towns</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-1" value="C">
+                        <span class="ml-3">C. only those in developed countries</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-1" value="D">
+                        <span class="ml-3">D. only those who own a computer</span>
+                    </label>
+                </div>
+                <span id="scanning-feedback-4-1" class="mt-4 block text-base font-semibold"></span>
+            </div>
+            <!-- Question 4.2 -->
+            <div class="mb-6">
+                <p class="font-medium text-gray-800 text-lg mb-4">4.2 What is the meaning of ‘westernization’?</p>
+                <div class="mt-2 space-y-3" id="scanning-q4-2">
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-2" value="A">
+                        <span class="ml-3">A. learning only about the West</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-2" value="B">
+                        <span class="ml-3">B. learning local knowledge</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-2" value="C">
+                        <span class="ml-3">C. not learning about culture</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-2" value="D">
+                        <span class="ml-3">D. treating culture with respect</span>
+                    </label>
+                </div>
+                <span id="scanning-feedback-4-2" class="mt-4 block text-base font-semibold"></span>
+            </div>
+            <!-- Question 4.3 -->
+            <div class="mb-6">
+                <p class="font-medium text-gray-800 text-lg mb-4">4.3 How has the focus of educational institutions changed?</p>
+                <div class="mt-2 space-y-3" id="scanning-q4-3">
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-3" value="A">
+                        <span class="ml-3">A. They have become poor value for money.</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-3" value="B">
+                        <span class="ml-3">B. Staff are not committed to their students.</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-3" value="C">
+                        <span class="ml-3">C. They are focused on attracting students.</span>
+                    </label>
+                    <label class="inline-flex items-center text-lg text-gray-700 cursor-pointer p-2 rounded-md hover:bg-purple-50 transition-colors duration-200 w-full">
+                        <input type="radio" class="form-radio text-purple-600 h-5 w-5" name="scanning-q4-3" value="D">
+                        <span class="ml-3">D. They only want foreign students.</span>
+                    </label>
+                </div>
+                <span id="scanning-feedback-4-3" class="mt-4 block text-base font-semibold"></span>
+            </div>
+            <button id="check-scanning" class="mt-8 px-8 py-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md transform hover:scale-105 active:scale-95 text-lg">Check Scanning Answers</button>
+        </div>
+
+        <!-- Section: Discussion -->
+        <div class="bg-white p-7 rounded-xl shadow-inner mb-10 border border-yellow-100">
+            <h2 class="text-3xl font-bold mb-6 text-yellow-700 border-b-2 pb-3 border-yellow-200">Discussion</h2>
+            <div class="mb-6">
+                <p class="font-medium text-gray-800 text-lg mb-2">In small groups, discuss one way that “lifelong learning” could benefit your community.</p>
+                <textarea class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-yellow-500 transition-all duration-200 text-gray-700" rows="5" placeholder="Your discussion points here..."></textarea>
+            </div>
+            <div class="mb-0">
+                <p class="font-medium text-gray-800 text-lg mb-2">Suggest one strategy universities could use to ensure rural areas gain better access to education.</p>
+                <textarea class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-yellow-500 transition-all duration-200 text-gray-700" rows="5" placeholder="Your strategy here..."></textarea>
+            </div>
+        </div>
+
+        <!-- Section: Answer Key & Explanations -->
+        <div id="answers-section" class="bg-white p-7 rounded-xl shadow-inner mb-8 hidden border border-gray-300">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 pb-3 border-gray-200">Answer Key & Explanations</h2>
+
+            <h3 class="text-2xl font-bold mb-3 text-indigo-700">Vocabulary Matching</h3>
+            <ul class="list-disc pl-8 mb-6 text-gray-700 text-lg space-y-2">
+                <li><strong>1. blended learning:</strong> A. learning that combines traditional classes with online study</li>
+                <li><strong>2. lifelong learning:</strong> C. the idea of studying throughout one’s life</li>
+                <li><strong>3. webinar:</strong> B. seminars conducted over the internet</li>
+                <li><strong>4. distance learning:</strong> D. classes where the teacher and student are in different locations</li>
+                <li><strong>5. publicity:</strong> E. information spread to promote something</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold mb-3 text-indigo-700">Skimming</h3>
+            <p class="mb-2 text-gray-700 text-lg"><strong>Question 1:</strong> <span class="font-bold text-green-600">C. There are both advantages and disadvantages to globalization.</span></p>
+            <p class="text-gray-700 mb-6 text-base">The overall passage addresses both the advantages (e.g., cheaper international degrees, cultural exchange, flexible learning) and disadvantages (e.g., unequal access, risk of westernization) of globalization in education and the workplace. While options A and D are mentioned in the text, they are specific points rather than the main idea. Option B is not covered at all.</p>
+
+            <h3 class="text-2xl font-bold mb-3 text-indigo-700">Scanning</h3>
+            <p class="mb-2 text-gray-700 text-lg"><strong>Question 4.1:</strong> <span class="font-bold text-green-600">B. mainly well-off people in big towns</span></p>
+            <p class="text-gray-700 mb-6 text-base">Section C explains that in many developing countries, “it is usually the elite—or the richest people in the large cities—who have access to international education.” Hence, the main beneficiaries are the wealthier urban population.</p>
+
+            <p class="mb-2 text-gray-700 text-lg"><strong>Question 4.2:</strong> <span class="font-bold text-green-600">A. learning only about the West</span></p>
+            <p class="text-gray-700 mb-6 text-base">Section D warns that globalization can lead to “westernization,” meaning “local knowledge can be lost” and “education should not be just learning about the West.” Thus, “westernization” here means focusing solely on Western content, i.e., learning only about the West.</p>
+
+            <p class="mb-2 text-gray-700 text-lg"><strong>Question 4.3:</strong> <span class="font-bold text-green-600">C. They are focused on attracting students.</span></p>
+            <p class="text-gray-700 mb-0 text-base">Section E describes how universities now act like businesses—competing for overseas students through fairs, publicity, and enhanced “customer care.” This shows they are “focused on attracting students.”</p>
+        </div>
+
+        <!-- Toggle Answers Button -->
+        <button id="toggle-answers" class="w-full px-8 py-4 bg-gray-700 text-white font-bold rounded-lg hover:bg-gray-800 transition-colors duration-300 shadow-lg transform hover:scale-105 active:scale-95 text-lg">Show Answer Key & Explanations</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Correct answers for Vocabulary Matching
+            const vocabAnswers = {
+                'vocab-1': 'A', // blended learning
+                'vocab-2': 'C', // lifelong learning
+                'vocab-3': 'B', // webinar
+                'vocab-4': 'D', // distance learning
+                'vocab-5': 'E'  // publicity
+            };
+
+            // Correct answers for Skimming
+            const skimmingAnswers = {
+                'skimming-q1': 'C'
+            };
+
+            // Correct answers for Scanning
+            const scanningAnswers = {
+                'scanning-q4-1': 'B',
+                'scanning-q4-2': 'A',
+                'scanning-q4-3': 'C'
+            };
+
+            // Event Listener for Vocabulary Check Button
+            document.getElementById('check-vocab').addEventListener('click', () => {
+                for (const [id, correctAnswer] of Object.entries(vocabAnswers)) {
+                    const selectElement = document.getElementById(id);
+                    // Get the feedback element associated with this vocabulary item
+                    const feedbackElement = document.getElementById(`${id.replace('vocab-', 'vocab-feedback-')}`);
+
+                    // Check if a selection has been made
+                    if (selectElement.value === '') {
+                        feedbackElement.textContent = 'Please select an answer.';
+                        feedbackElement.className = 'text-sm font-semibold text-yellow-600';
+                    } else if (selectElement.value === correctAnswer) {
+                        feedbackElement.textContent = 'Correct!';
+                        feedbackElement.className = 'text-sm font-semibold text-green-600';
+                    } else {
+                        feedbackElement.textContent = `Incorrect. Correct is ${correctAnswer}.`;
+                        feedbackElement.className = 'text-sm font-semibold text-red-600';
+                    }
+                }
+            });
+
+            // Event Listener for Skimming Check Button
+            document.getElementById('check-skimming').addEventListener('click', () => {
+                for (const [name, correctAnswer] of Object.entries(skimmingAnswers)) {
+                    // Find the selected radio button for this question
+                    const selectedRadio = document.querySelector(`input[name="${name}"]:checked`);
+                    // Get the feedback element associated with this question
+                    const feedbackElement = document.getElementById(`${name.replace('skimming-q', 'skimming-feedback-')}`);
+
+                    // Check if a radio button has been selected
+                    if (selectedRadio) {
+                        if (selectedRadio.value === correctAnswer) {
+                            feedbackElement.textContent = 'Correct!';
+                            feedbackElement.className = 'mt-4 block text-base font-semibold text-green-600';
+                        } else {
+                            feedbackElement.textContent = `Incorrect. Correct is ${correctAnswer}.`;
+                            feedbackElement.className = 'mt-4 block text-base font-semibold text-red-600';
+                        }
+                    } else {
+                        feedbackElement.textContent = 'Please select an answer.';
+                        feedbackElement.className = 'mt-4 block text-base font-semibold text-yellow-600';
+                    }
+                }
+            });
+
+            // Event Listener for Scanning Check Button
+            document.getElementById('check-scanning').addEventListener('click', () => {
+                for (const [name, correctAnswer] of Object.entries(scanningAnswers)) {
+                    // Find the selected radio button for this question
+                    const selectedRadio = document.querySelector(`input[name="${name}"]:checked`);
+                    // Get the feedback element associated with this question
+                    const feedbackElement = document.getElementById(`${name.replace('scanning-q', 'scanning-feedback-')}`);
+
+                    // Check if a radio button has been selected
+                    if (selectedRadio) {
+                        if (selectedRadio.value === correctAnswer) {
+                            feedbackElement.textContent = 'Correct!';
+                            feedbackElement.className = 'mt-4 block text-base font-semibold text-green-600';
+                        } else {
+                            feedbackElement.textContent = `Incorrect. Correct is ${correctAnswer}.`;
+                            feedbackElement.className = 'mt-4 block text-base font-semibold text-red-600';
+                        }
+                    } else {
+                        feedbackElement.textContent = 'Please select an answer.';
+                        feedbackElement.className = 'mt-4 block text-base font-semibold text-yellow-600';
+                    }
+                }
+            });
+
+            // Event Listener for Toggle Answer Key Button
+            document.getElementById('toggle-answers').addEventListener('click', () => {
+                const answersSection = document.getElementById('answers-section');
+                const button = document.getElementById('toggle-answers');
+
+                // Toggle the 'hidden' class to show/hide the answers section
+                if (answersSection.classList.contains('hidden')) {
+                    answersSection.classList.remove('hidden');
+                    button.textContent = 'Hide Answer Key & Explanations';
+                    // Change button color to indicate it's active/answers are shown
+                    button.classList.remove('bg-gray-700', 'hover:bg-gray-800');
+                    button.classList.add('bg-gray-500', 'hover:bg-gray-600');
+                } else {
+                    answersSection.classList.add('hidden');
+                    button.textContent = 'Show Answer Key & Explanations';
+                    // Revert button color
+                    button.classList.remove('bg-gray-500', 'hover:bg-gray-600');
+                    button.classList.add('bg-gray-700', 'hover:bg-gray-800');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
