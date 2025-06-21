@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Passage: Interactive Worksheet</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Changed to white */
+        }
+        /* Style for disabled radio buttons */
+        input[type='radio'].form-radio:disabled {
+            opacity: 0.7; /* Make them slightly faded when disabled */
+            cursor: not-allowed;
+        }
+
+        /* Style for radio buttons */
+        input[type='radio'].form-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            border-radius: 100%;
+            height: 1.25em;
+            width: 1.25em;
+            border: 2px solid #D1D5DB; /* gray-300 */
+            background-color: #F9FAFB; /* gray-50 */
+            transition: all 0.2s ease-in-out;
+        }
+        input[type='radio'].form-radio:checked {
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+        }
+        input[type='radio'].form-radio:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* blue-500 with opacity */
+        }
+
+        /* Style for disabled checkboxes */
+        input[type='checkbox'].form-checkbox:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        /* Style for checkboxes */
+        input[type='checkbox'].form-checkbox {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            user-select: none;
+            flex-shrink: 0;
+            border-radius: 0.25rem; /* square corners */
+            height: 1.25em;
+            width: 1.25em;
+            border: 2px solid #D1D5DB; /* gray-300 */
+            background-color: #F9FAFB; /* gray-50 */
+            transition: all 0.2s ease-in-out;
+        }
+        input[type='checkbox'].form-checkbox:checked {
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 24 24' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3e%3c/svg%3e"); /* checkmark */
+        }
+        input[type='checkbox'].form-checkbox:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* blue-500 with opacity */
+        }
+
+        /* Ensure input fields don't wrap text onto the next line awkwardly */
+        .input-container {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping for small screens */
+            align-items: center;
+            gap: 0.5rem; /* Space between elements */
+        }
+        .input-container input[type="text"] {
+            flex-grow: 1; /* Allow input to grow */
+            min-width: 150px; /* Minimum width for input */
+        }
+        /* Highlight styles */
+        .highlight-yellow { background-color: #FEF9C3; } /* Yellow-100 */
+        .highlight-blue { background-color: #DBEAFE; } /* Blue-100 */
+        .highlight-green { background-color: #D1FAE5; } /* Green-100 */
+        .highlight-pink { background-color: #FCE7F3; } /* Pink-100 */
+        .highlighted-text {
+            /* Ensures highlighted text is treated as a single unit for selection */
+            display: inline;
+        }
+
+        /* Adjust for very small screens if necessary */
+        @media (max-width: 640px) {
+            .input-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .input-container input {
+                width: 100%; /* Full width on small screens */
+            }
+            /* Adjusted for TFNG questions to ensure stacking on small screens too */
+            .tfng-question .question-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .tfng-question .options-row {
+                justify-content: flex-start; /* Align radio buttons to start */
+                margin-left: 0; /* Remove specific left margin */
+                padding-left: 2rem; /* Add padding for alignment under number */
+            }
+            .multi-choice-question .question-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .multi-choice-question .options-row {
+                justify-content: flex-start; /* Align checkboxes to start */
+                margin-left: 0;
+                padding-left: 2rem;
+            }
+            .heading-question .options-row select,
+            .summary-question .options-row select,
+            .sentence-completion-question .options-row select {
+                width: 100%; /* Full width on small screens */
+            }
+        }
+        .diagram-container {
+            position: relative;
+            display: inline-block;
+        }
+        .diagram-input {
+            position: absolute;
+            top: var(--top);
+            left: var(--left);
+            width: var(--width);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-6 sm:p-8 md:p-10 rounded-xl  w-full max-w-4xl border border-gray-200">
+       
+
+        <div id="dictationContent" class="space-y-8 text-gray-700 text-base sm:text-lg leading-relaxed select-text">
+
+            <h2 class="text-1xl sm:text-1xl font-bold text-gray-800 mt-6 mb-4">
+                Questions 27–31
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Complete each sentence with the correct ending, <span class="font-bold">A-F</span>, below.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Write the correct letter, <span class="font-bold">A-F</span>, in boxes 27-31 on your answer sheet.
+            </p>
+            <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-4">List of Endings</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-6 ">
+                <li>A may be provided through methods used in biological research.</li>
+                <li>B are the reason for their survival.</li>
+                <li>C show considerable global variation.</li>
+                <li>D contain animals which transform to become humans.</li>
+                <li>E were originally spoken rather than written.</li>
+                <li>F have been developed without factual basis.</li>
+            </ul>
+
+            <div class="space-y-4">
+                <div class="sentence-completion-question flex items-start gap-2" data-question-number="27" data-correct-answer="C">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">27</span>
+                    <p class="flex-grow">In fairy tales, details of the plot
+                        <select id="sentenceEnding27" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                            <option value="">Select Ending</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>.
+                    </p>
+                </div>
+                <div class="sentence-completion-question flex items-start gap-2" data-question-number="28" data-correct-answer="B">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">28</span>
+                    <p class="flex-grow">Tehrani rejects the idea that the useful lessons for life in fairy tales
+                        <select id="sentenceEnding28" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                            <option value="">Select Ending</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>.
+                    </p>
+                </div>
+                <div class="sentence-completion-question flex items-start gap-2" data-question-number="29" data-correct-answer="F">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">29</span>
+                    <p class="flex-grow">Various theories about the social significance of fairy tales
+                        <select id="sentenceEnding29" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                            <option value="">Select Ending</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>.
+                    </p>
+                </div>
+                <div class="sentence-completion-question flex items-start gap-2" data-question-number="30" data-correct-answer="A">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">30</span>
+                    <p class="flex-grow">Insights into the development of fairy tales
+                        <select id="sentenceEnding30" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                            <option value="">Select Ending</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>.
+                    </p>
+                </div>
+                <div class="sentence-completion-question flex items-start gap-2" data-question-number="31" data-correct-answer="E">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">31</span>
+                    <p class="flex-grow">All the fairy tales analysed by Tehrani
+                        <select id="sentenceEnding31" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                            <option value="">Select Ending</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>.
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="text-1xl sm:text-1xl font-bold text-gray-800 mt-8 mb-4">
+                Questions 32–36
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Complete the summary using the list of words, <span class="font-bold">A-I</span>, below.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Write the correct letter, <span class="font-bold">A-I</span>, in boxes 32-36 on your answer sheet.
+            </p>
+
+            <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-4">Phylogenetic analysis of Little Red Riding Hood</h3>
+            <div class="space-y-4">
+                <p class="text-gray-700">Tehrani used techniques from evolutionary biology to find out if <span class="font-semibold">32</span>
+                    <select id="summaryBlank32" data-correct-answer="D"
+                            class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                        <option value="">Select</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                    </select> existed among 58 stories from around the world. He also wanted to know which aspects of the stories had fewest <span class="font-semibold">33</span>
+                    <select id="summaryBlank33" data-correct-answer="F"
+                            class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                        <option value="">Select</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                    </select>, as he believed these aspects would be the most important ones. Contrary to other beliefs, he found that some <span class="font-semibold">34</span>
+                    <select id="summaryBlank34" data-correct-answer="B"
+                            class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                        <option value="">Select</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                    </select> that were included in a story tended to change over time, and that the middle of a story seemed no more important than the other parts. He was also surprised that parts of a story which seemed to provide some sort of <span class="font-semibold">35</span>
+                    <select id="summaryBlank35" data-correct-answer="C"
+                            class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                        <option value="">Select</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                    </select> were unimportant. The aspect that he found most important in a story’s survival was <span class="font-semibold">36</span>
+                    <select id="summaryBlank36" data-correct-answer="G"
+                            class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ml-2">
+                        <option value="">Select</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                    </select>.
+                </p>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-4">List of words</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-6 ">
+                <li>A ending</li>
+                <li>B events</li>
+                <li>C warning</li>
+                <li>D links</li>
+                <li>E records</li>
+                <li>F variations</li>
+                <li>G horror</li>
+                <li>H people</li>
+                <li>I plot</li>
+            </ul>
+
+            <h2 class="text-1xl sm:text-1xl font-bold text-gray-800 mt-8 mb-4">
+                Questions 37–40
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 mb-4">
+                Choose the correct letter, <span class="font-bold">A, B, C or D</span>.
+            </p>
+            <p class="text-base sm:text-lg text-gray-600 mb-6">
+                Write the correct letter in boxes 37-40 on your answer sheet.
+            </p>
+
+            <div class="multiple-choice-single-answer-question border-b border-gray-200 pb-4 pt-4" data-question-number="37" data-correct-answer="B">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">37</span>
+                    <p class="flex-grow">What method did Jamie Tehrani use to test his ideas about fairy tales?</p>
+                </div>
+                <div class="flex flex-col space-y-2 mt-2 pl-10 options-row">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc37" value="A">
+                        <span class="ml-2 text-base sm:text-lg">A. He compared oral and written forms of the same stories.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc37" value="B">
+                        <span class="ml-2 text-base sm:text-lg">B. He looked at many different forms of the same basic story.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc37" value="C">
+                        <span class="ml-2 text-base sm:text-lg">C. He looked at unrelated stories from many different countries.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc37" value="D">
+                        <span class="ml-2 text-base sm:text-lg">D. He contrasted the development of fairy tales with that of living creatures.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="multiple-choice-single-answer-question border-b border-gray-200 pb-4 pt-4" data-question-number="38" data-correct-answer="D">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">38</span>
+                    <p class="flex-grow">When discussing Tehrani’s views, Jack Zipes suggests that</p>
+                </div>
+                <div class="flex flex-col space-y-2 mt-2 pl-10 options-row">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc38" value="A">
+                        <span class="ml-2 text-base sm:text-lg">A. Tehrani ignores key changes in the role of women.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc38" value="B">
+                        <span class="ml-2 text-base sm:text-lg">B. stories which are too horrific are not always taken seriously.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc38" value="C">
+                        <span class="ml-2 text-base sm:text-lg">C. Tehrani overemphasises the importance of violence in stories.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc38" value="D">
+                        <span class="ml-2 text-base sm:text-lg">D. features of stories only survive if they have a deeper significance.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="multiple-choice-single-answer-question border-b border-gray-200 pb-4 pt-4" data-question-number="39" data-correct-answer="A">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">39</span>
+                    <p class="flex-grow">Why does Tehrani refer to Chinese and Japanese fairy tales?</p>
+                </div>
+                <div class="flex flex-col space-y-2 mt-2 pl-10 options-row">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc39" value="A">
+                        <span class="ml-2 text-base sm:text-lg">A. to indicate that Jack Zipes’ theory is incorrect</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc39" value="B">
+                        <span class="ml-2 text-base sm:text-lg">B. to suggest that crime is a global problem</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc39" value="C">
+                        <span class="ml-2 text-base sm:text-lg">C. to imply that all fairy tales have a similar meaning</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc39" value="D">
+                        <span class="ml-2 text-base sm:text-lg">D. to add more evidence for Jack Zipes’ ideas</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="multiple-choice-single-answer-question border-b border-gray-200 pb-4 pt-4" data-question-number="40" data-correct-answer="A">
+                <div class="flex items-start gap-2 question-row">
+                    <span class="font-semibold text-xl flex-shrink-0 w-8 text-right">40</span>
+                    <p class="flex-grow">What does Mathias Clasen believe about fairy tales?</p>
+                </div>
+                <div class="flex flex-col space-y-2 mt-2 pl-10 options-row">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc40" value="A">
+                        <span class="ml-2 text-base sm:text-lg">A. They are a safe way of learning to deal with fear.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc40" value="B">
+                        <span class="ml-2 text-base sm:text-lg">B. They are a type of entertainment that some people avoid.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc40" value="C">
+                        <span class="ml-2 text-base sm:text-lg">C. They reflect the changing values of our society.</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" class="form-radio text-blue-600" name="mc40" value="D">
+                        <span class="ml-2 text-base sm:text-lg">D. They reduce our ability to deal with real-world problems.</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <button id="checkAnswersBtn"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    disabled>
+                Check Answers
+            </button>
+            <button id="saveResultsBtn"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                    disabled>
+                Download Results (PDF)
+            </button>
+        </div>
+
+        <div id="feedback" class="mt-6 text-center text-lg font-semibold text-gray-800"></div>
+
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500 transition-colors duration-200" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500 transition-colors duration-200" data-color="highlight-pink"></div>
+    </div>
+
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select all relevant question types
+            const sentenceCompletionQuestions = document.querySelectorAll('.sentence-completion-question');
+            const summaryQuestions = document.querySelectorAll('.summary-question');
+            const multipleChoiceSingleAnswerQuestions = document.querySelectorAll('.multiple-choice-single-answer-question');
+
+            const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+            const saveResultsBtn = document.getElementById('saveResultsBtn');
+            const feedbackDiv = document.getElementById('feedback');
+            const dictationContent = document.getElementById('dictationContent');
+
+            // Floating toolbar elements
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const toolbarClearBtn = document.getElementById('toolbarClearBtn');
+            const toolbarYellow = document.getElementById('toolbarYellow');
+            const toolbarBlue = document.getElementById('toolbarBlue');
+            const toolbarGreen = document.getElementById('toolbarGreen');
+            const toolbarPink = document.getElementById('toolbarPink');
+
+            let currentHighlights = []; // Stores highlight data: { text: "...", color: "..." }
+            let lastSelectionRange = null; // Stores the last text selection range
+            let answersCheckedFlag = false; // Flag to track if answers have been checked
+
+            // --- Highlighting Logic ---
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                let range;
+
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    feedbackDiv.textContent = "No text selected or previously selected to highlight.";
+                    feedbackDiv.classList.add('text-red-600');
+                    return;
+                }
+
+                const selectedText = range.toString().trim();
+                if (!selectedText) return;
+
+                const span = document.createElement('span');
+                span.classList.add(colorClass);
+                span.classList.add('highlighted-text');
+
+                try {
+                    const contents = range.extractContents();
+                    span.appendChild(contents);
+                    range.insertNode(span);
+
+                    const existingHighlight = currentHighlights.find(
+                        h => h.text === selectedText && h.color === colorClass.replace('highlight-', '')
+                    );
+                    if (!existingHighlight) {
+                        currentHighlights.push({
+                            text: selectedText,
+                            color: colorClass.replace('highlight-', '')
+                        });
+                    }
+
+                    selection.removeAllRanges();
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                } catch (e) {
+                    console.error("Error applying highlight:", e);
+                    feedbackDiv.textContent = "Could not highlight complex selection. Try selecting less text.";
+                    feedbackDiv.classList.add('text-red-600');
+                }
+            }
+
+            function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                let range;
+
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    feedbackDiv.textContent = "No text selected or previously selected to clear highlight.";
+                    feedbackDiv.classList.add('text-red-600');
+                    return;
+                }
+
+                const selectedNode = range.commonAncestorContainer;
+                let highlightedSpan = null;
+
+                if (selectedNode && selectedNode.nodeType === Node.ELEMENT_NODE && selectedNode.classList.contains('highlighted-text')) {
+                    highlightedSpan = selectedNode;
+                } else {
+                    let currentNode = selectedNode;
+                    while (currentNode && currentNode !== dictationContent && currentNode.parentNode) {
+                        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.classList.contains('highlighted-text')) {
+                            highlightedSpan = currentNode;
+                            break;
+                        }
+                        currentNode = currentNode.parentNode;
+                    }
+                }
+
+                if (highlightedSpan && highlightedSpan.parentNode) {
+                    const textContent = highlightedSpan.textContent;
+                    highlightedSpan.parentNode.replaceChild(document.createTextNode(textContent), highlightedSpan);
+
+                    currentHighlights = currentHighlights.filter(h => h.text.toLowerCase() !== textContent.toLowerCase());
+
+                    selection.removeAllRanges();
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                    feedbackDiv.textContent = "Highlight cleared.";
+                    feedbackDiv.classList.remove('text-green-600', 'text-red-600', 'text-blue-600');
+                } else {
+                    feedbackDiv.textContent = "No highlight found to clear for this selection.";
+                    feedbackDiv.classList.add('text-red-600');
+                }
+            }
+
+            // --- Event Listeners for Toolbar ---
+            toolbarYellow.addEventListener('click', () => applyHighlight('highlight-yellow'));
+            toolbarBlue.addEventListener('click', () => applyHighlight('highlight-blue'));
+            toolbarGreen.addEventListener('click', () => applyHighlight('highlight-green'));
+            toolbarPink.addEventListener('click', () => applyHighlight('highlight-pink'));
+            toolbarClearBtn.addEventListener('click', clearSelectedHighlight);
+
+            dictationContent.addEventListener('mouseup', (event) => {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0);
+                    const rect = lastSelectionRange.getBoundingClientRect();
+                    const toolbarHeight = floatingToolbar.offsetHeight;
+                    const toolbarWidth = floatingToolbar.offsetWidth;
+
+                    floatingToolbar.style.top = `${rect.top + window.scrollY - toolbarHeight - 10}px`;
+                    let leftPos = rect.left + window.scrollX + (rect.width / 2) - (toolbarWidth / 2);
+                    leftPos = Math.max(10, leftPos);
+                    leftPos = Math.min(leftPos, window.innerWidth - toolbarWidth - 10);
+                    floatingToolbar.style.left = `${leftPos}px`;
+
+                    floatingToolbar.classList.remove('hidden');
+                } else {
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                }
+            });
+
+            document.addEventListener('mousedown', (event) => {
+                if (!floatingToolbar.contains(event.target) && !dictationContent.contains(event.target)) {
+                    floatingToolbar.classList.add('hidden');
+                    lastSelectionRange = null;
+                }
+            });
+
+            // --- Worksheet Functionality ---
+            function getResults() {
+                const results = [];
+                let correctCount = 0;
+                let totalQuestions = 0;
+
+                sentenceCompletionQuestions.forEach(qDiv => {
+                    totalQuestions++;
+                    const questionNumber = qDiv.dataset.questionNumber;
+                    const correctAnswer = qDiv.dataset.correctAnswer.toLowerCase();
+                    const selectedOption = qDiv.querySelector(`select#sentenceEnding${questionNumber}`);
+                    const userAnswer = selectedOption ? selectedOption.value.toLowerCase() : "No answer";
+                    const statement = qDiv.querySelector('p').textContent.trim();
+
+                    let isCorrect = (userAnswer === correctAnswer);
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'SENTENCE_COMPLETION',
+                        questionNumber: parseInt(questionNumber),
+                        statement: statement,
+                        userAnswer: selectedOption ? selectedOption.value : "No answer",
+                        correctAnswer: qDiv.dataset.correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+
+                summaryQuestions.forEach(qDiv => {
+                    totalQuestions++;
+                    const questionNumber = qDiv.dataset.questionNumber;
+                    const correctAnswer = qDiv.dataset.correctAnswer.toLowerCase();
+                    const selectedOption = qDiv.querySelector(`select#summaryBlank${questionNumber}`);
+                    const userAnswer = selectedOption ? selectedOption.value.toLowerCase() : "No answer";
+                    const questionText = `Blank ${questionNumber} in summary`; // Adjusted for clarity in PDF
+
+                    let isCorrect = (userAnswer === correctAnswer);
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'SUMMARY_BLANK',
+                        questionNumber: parseInt(questionNumber),
+                        statement: questionText,
+                        userAnswer: selectedOption ? selectedOption.value : "No answer",
+                        correctAnswer: qDiv.dataset.correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+                
+                multipleChoiceSingleAnswerQuestions.forEach(qDiv => {
+                    totalQuestions++;
+                    const questionNumber = qDiv.dataset.questionNumber;
+                    const correctAnswer = qDiv.dataset.correctAnswer.toLowerCase();
+                    const selectedRadio = qDiv.querySelector(`input[name="mc${questionNumber}"]:checked`);
+                    const userAnswer = selectedRadio ? selectedRadio.value.toLowerCase() : "No answer";
+                    const statement = qDiv.querySelector('p').textContent.trim();
+
+                    let isCorrect = (userAnswer === correctAnswer);
+                    if (isCorrect) {
+                        correctCount++;
+                    }
+                    results.push({
+                        type: 'MULTIPLE_CHOICE_SINGLE',
+                        questionNumber: parseInt(questionNumber),
+                        statement: statement,
+                        userAnswer: selectedRadio ? selectedRadio.value : "No answer",
+                        correctAnswer: qDiv.dataset.correctAnswer,
+                        isCorrect: isCorrect
+                    });
+                });
+
+                return { results, correctCount, totalQuestions };
+            }
+
+            // Function to check if all questions have an answer
+            function areAllQuestionsAnswered() {
+                let allAnswered = true;
+
+                sentenceCompletionQuestions.forEach(qDiv => {
+                    const selectedOption = qDiv.querySelector('select');
+                    if (!selectedOption || selectedOption.value === "") {
+                        allAnswered = false;
+                    }
+                });
+
+                summaryQuestions.forEach(qDiv => {
+                    const selectedOption = qDiv.querySelector('select');
+                    if (!selectedOption || selectedOption.value === "") {
+                        allAnswered = false;
+                    }
+                });
+
+                multipleChoiceSingleAnswerQuestions.forEach(qDiv => {
+                    const selectedRadio = qDiv.querySelector(`input[name="mc${qDiv.dataset.questionNumber}"]:checked`); // Corrected: qDiv.dataset.question-number to qDiv.dataset.questionNumber
+                    if (!selectedRadio) {
+                        allAnswered = false;
+                    }
+                });
+                
+                return allAnswered;
+            }
+
+            // Function to update button states based on completion and answers checked
+            function updateButtonStates() {
+                if (areAllQuestionsAnswered()) {
+                    checkAnswersBtn.disabled = false;
+                    checkAnswersBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    checkAnswersBtn.disabled = true;
+                    checkAnswersBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+
+                if (answersCheckedFlag) {
+                    saveResultsBtn.disabled = false;
+                    saveResultsBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    saveResultsBtn.disabled = true;
+                    saveResultsBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            // Function to lock answers after checking
+            function lockAnswers() {
+                sentenceCompletionQuestions.forEach(qDiv => {
+                    const selectElement = qDiv.querySelector('select');
+                    if (selectElement) selectElement.disabled = true;
+                });
+                summaryQuestions.forEach(qDiv => {
+                    const selectElement = qDiv.querySelector('select');
+                    if (selectElement) selectElement.disabled = true;
+                });
+                multipleChoiceSingleAnswerQuestions.forEach(qDiv => {
+                    qDiv.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.disabled = true;
+                    });
+                });
+            }
+
+            // Initial state for buttons
+            updateButtonStates();
+
+            checkAnswersBtn.addEventListener('click', () => {
+                getResults();
+                lockAnswers();
+                answersCheckedFlag = true;
+                updateButtonStates();
+                feedbackDiv.textContent = "Answers checked! Download your PDF for results.";
+                feedbackDiv.classList.remove('text-green-600', 'text-red-600', 'text-blue-600');
+            });
+
+            saveResultsBtn.addEventListener('click', () => {
+                const { results: allResults, correctCount, totalQuestions } = getResults();
+
+                feedbackDiv.textContent = "Generating PDF...";
+                feedbackDiv.classList.remove('text-green-600', 'text-red-600');
+                feedbackDiv.classList.add('text-blue-600');
+
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    doc.setFontSize(22);
+                    doc.text("Reading Passage: Your Results", 105, 20, null, null, "center");
+
+                    doc.setFontSize(14);
+                    doc.text(`Report generated on: ${new Date().toLocaleString()}`, 10, 30);
+                    doc.text(`Total Score: ${correctCount} out of ${totalQuestions} correct!`, 10, 40);
+
+                    // Answers Table
+                    doc.setFontSize(16);
+                    doc.text("Your Answers", 10, 60);
+
+                    allResults.sort((a, b) => {
+                        const numA = parseInt(a.questionNumber.toString().split('-')[0]);
+                        const numB = parseInt(b.questionNumber.toString().split('-')[0]);
+                        return numA - numB;
+                    });
+
+
+                    const tableColumn = ["Question #", "Your Answer", "Correct Answer", "Status"];
+                    const tableRows = [];
+
+                    allResults.forEach(result => {
+                        const status = result.isCorrect ? "Correct" : "Incorrect";
+                        tableRows.push([
+                            result.questionNumber.toString(),
+                            result.userAnswer || "No answer",
+                            result.correctAnswer,
+                            status
+                        ]);
+                    });
+
+                    doc.autoTable({
+                        head: [tableColumn],
+                        body: tableRows,
+                        startY: 65,
+                        theme: 'striped',
+                        styles: {
+                            fontSize: 10,
+                            cellPadding: 2,
+                            fillColor: [255, 255, 255],
+                            textColor: [51, 51, 51],
+                            lineColor: [200, 200, 200],
+                            lineWidth: 0.1,
+                            overflow: 'linebreak',
+                        },
+                        headStyles: {
+                            fillColor: [220, 230, 240],
+                            textColor: [0, 0, 0],
+                            fontStyle: 'bold'
+                        },
+                        columnStyles: {
+                            0: { cellWidth: 20 },
+                            1: { cellWidth: 55 },
+                            2: { cellWidth: 55 },
+                            3: { cellWidth: 30, halign: 'center' }
+                        },
+                        didDrawCell: (data) => {
+                            if (data.section === 'body' && data.column.index === 3) {
+                                const status = data.cell.text[0];
+                                if (status === 'Correct') {
+                                    doc.setFillColor(144, 238, 144);
+                                } else {
+                                    doc.setFillColor(255, 182, 193);
+                                }
+                                doc.rect(data.cell.x + data.cell.padding('left'), data.cell.y + data.cell.padding('top'), data.cell.width - data.cell.padding('left') - data.cell.padding('right'), data.cell.height - data.cell.padding('top') - data.cell.padding('bottom'), 'F');
+                                doc.setTextColor(0, 0, 0);
+                                doc.text(status, data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2, { align: 'center', baseline: 'middle' });
+                            }
+                        }
+                    });
+
+                    let finalY = doc.lastAutoTable.finalY + 15;
+                    doc.setFontSize(16);
+                    doc.text("Your Highlights", 10, finalY);
+                    finalY += 10;
+
+                    if (currentHighlights.length > 0) {
+                        doc.setFontSize(12);
+                        currentHighlights.forEach((h) => {
+                            const textLines = doc.splitTextToSize(`- "${h.text}" (Color: ${h.color})`, doc.internal.pageSize.width - 25);
+                            doc.text(textLines, 15, finalY);
+                            finalY += (textLines.length * 7);
+                        });
+                    } else {
+                        doc.setFontSize(12);
+                        doc.setTextColor(150, 150, 150);
+                        doc.text("No highlights were made.", 15, finalY);
+                    }
+
+                    const filename = `reading_passage_results_${new Date().toISOString().slice(0,10)}.pdf`;
+                    doc.save(filename);
+
+                    feedbackDiv.textContent = "Results PDF generated and downloaded!";
+                    feedbackDiv.classList.remove('text-blue-600');
+                    feedbackDiv.classList.add('text-green-600');
+
+                } catch (error) {
+                    feedbackDiv.textContent = `An error occurred during PDF generation: ${error.message}`;
+                    feedbackDiv.classList.remove('text-blue-600');
+                    feedbackDiv.classList.add('text-red-600');
+                    console.error('Error generating PDF:', error);
+                }
+            });
+
+            // Event listeners to update button states when input changes
+            sentenceCompletionQuestions.forEach(qDiv => {
+                const selectElement = qDiv.querySelector('select');
+                if (selectElement) {
+                    selectElement.addEventListener('change', () => {
+                        feedbackDiv.textContent = '';
+                        answersCheckedFlag = false;
+                        updateButtonStates();
+                    });
+                }
+            });
+
+            summaryQuestions.forEach(qDiv => {
+                const selectElement = qDiv.querySelector('select');
+                if (selectElement) {
+                    selectElement.addEventListener('change', () => {
+                        feedbackDiv.textContent = '';
+                        answersCheckedFlag = false;
+                        updateButtonStates();
+                    });
+                }
+            });
+
+            multipleChoiceSingleAnswerQuestions.forEach(qDiv => {
+                qDiv.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        feedbackDiv.textContent = '';
+                        answersCheckedFlag = false;
+                        updateButtonStates();
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

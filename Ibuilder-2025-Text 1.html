@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Passage: Henry Moore (1898-1986)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Ensures white background */
+        }
+        /* Highlight styles - Copied from the provided HTML */
+        .highlight-yellow { background-color: #FEF9C3; } /* Yellow-100 */
+        .highlight-blue { background-color: #DBEAFE; } /* Blue-100 */
+        .highlight-green { background-color: #D1FAE5; } /* Green-100 */
+        .highlight-pink { background-color: #FCE7F3; } /* Pink-100 */
+        .highlighted-text {
+            /* Ensures highlighted text is treated as a single unit for selection */
+            display: inline;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 bg-white">
+    <div class="bg-white p-6 sm:p-8 md:p-10 rounded-xl w-full max-w-4xl border border-gray-200 shadow-lg">
+        <div id="readingPassageContent" class="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed select-text">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Henry Moore (1898-1986)</h1>
+            <p>The British sculptor Henry Moore was a leading figure in the 20th-century art world</p>
+
+            <p>Henry Moore was born in Castleford, a small town near Leeds in the north of England. He was the seventh child of Raymond Moore and his wife Mary Baker. He studied at Castleford Grammar School from 1909 to 1915, where his early interest in art was encouraged by his teacher Alice Gostick. After leaving school, Moore hoped to become a sculptor, but instead he complied with his father’s wish that he train as a schoolteacher. He had to abandon his training in 1917 when he was sent to France to fight in the First World War.</p>
+
+            <p>After the war, Moore enrolled at the Leeds School of Art, where he studied for two years. In his first year, he spent most of his time drawing. Although he wanted to study sculpture, no teacher was appointed until his second year. At the end of that year, he passed the sculpture examination and was awarded a scholarship to the Royal College of Art in London. In September 1921, he moved to London and began three years of advanced study in sculpture.</p>
+
+            <p>Alongside the instruction he received at the Royal College, Moore visited many of the London museums, particularly the British Museum, which had a wide-ranging collection of ancient sculpture. During these visits, he discovered the power and beauty of ancient Egyptian and African sculpture. As he became increasingly interested in these ‘primitive’ forms of art, he turned away from European sculptural traditions.</p>
+
+            <p>After graduating, Moore spent the first six months of 1925 travelling in France. When he visited the Trocadero Museum in Paris, he was impressed by a cast of a Mayan* sculpture of the rain spirit. It was a male reclining figure with its knees drawn up together, and its head at a right angle to its body. Moore became fascinated with this stone sculpture, which he thought had a power and originality that no other stone sculpture possessed. He himself started carving a variety of subjects in stone, including depiction of reclining women, mother-and-child groups, and masks.</p>
+
+            <p>Moore’s exceptional talent soon gained recognition, and in 1926 he started work as a sculpture instructor at the Royal College. In 1933, he became a member of a group of young artists called Unit One. The aim of the group was to convince the English public of the merits of the emerging international movement in modern art and architecture.</p>
+
+            <p>Around this time, Moore moved away from the human figure to experiment with abstract shapes. In 1931, he held an exhibition at the Leicester Galleries in London. His work was enthusiastically welcomed by fellow sculptors, but the reviews in the press were extremely negative and turned Moore into a notorious figure. There were calls for his resignation from the Royal College, and the following year, when his contract expired, he left to start a sculpture department at the Chelsea School of Art in London.</p>
+
+            <p>Throughout the 1930s, Moore did not show any inclination to please the British public. He became interested in the paintings of the Spanish artist Pablo Picasso, whose work inspired him to distort the human body in a radical way. At times, he seemed to abandon the human figure altogether. The pages of his sketchbooks from this period show his ideas for abstract sculptures that bore little resemblance to the human form.</p>
+
+            <p>In 1940, during the Second World War, Moore stopped teaching at the Chelsea School and moved to a farmhouse about 20 miles north of London. A shortage of materials forced him to focus on drawing. He did numerous small sketches of Londoners, later turning these ideas into large coloured drawings in his studio. In 1942, he returned to Castleford to make a series of sketches of the miners who worked there.</p>
+
+            <p>In 1944, Harlow, a town near London, offered Moore a commission for a sculpture depicting a family. The resulting work signifies a dramatic change in Moore’s style, away from the experimentation of the 1930s towards a more natural and humanistic subject matter. He did dozens of studies in clay for the sculpture, and these were cast in bronze and issued in editions of seven to nine copies each. In this way, Moore’s work became available to collectors all over the world. The boost to his income enabled him to take on ambitious projects and start working on the scale he felt his sculpture demanded.</p>
+
+            <p>Critics who had begun to think that Moore had become less revolutionary were proven wrong by the appearance, in 1950, of the first of Moore’s series of standing figures in bronze, with their harsh and angular pierced forms and distinct impression of menace. Moore also varied his subject matter in the 1950s with such works as <em>Warrior with Shield</em> and <em>Falling Warrior</em>. These were rare examples of Moore’s use of the male figure and owe something to his visit to Greece in 1951, when he had the opportunity to study ancient works of art.</p>
+
+            <p>In his final years, Moore created the Henry Moore Foundation to promote art appreciation and to display his work. Moore was the first modern English sculptor to achieve international critical acclaim and he is still regarded as one of the most important sculptors of the 20th century.
+            —<br>
+            *Mayan: belonging to an ancient civilisation that inhabited parts of current-day Mexico, Guatemala, Belize, El Salvador and Honduras.</p>
+        </div>
+    </div>
+
+    <!-- Floating Highlight Toolbar -->
+    <div id="floatingToolbar" class="absolute hidden bg-gray-800 p-2 rounded-lg shadow-xl flex items-center space-x-2 z-50">
+        <button id="toolbarClearBtn" title="Clear Highlight" class="p-1 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-lg leading-none flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="toolbarYellow" title="Highlight Yellow" class="w-6 h-6 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200" data-color="highlight-yellow"></div>
+        <div id="toolbarBlue" title="Highlight Blue" class="w-6 h-6 rounded-full cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200" data-color="highlight-blue"></div>
+        <div id="toolbarGreen" title="Highlight Green" class="w-6 h-6 rounded-full cursor-pointer bg-green-400 hover:bg-green-500 transition-colors duration-200" data-color="highlight-green"></div>
+        <div id="toolbarPink" title="Highlight Pink" class="w-6 h-6 rounded-full cursor-pointer bg-pink-400 hover:bg-pink-500 transition-colors duration-200" data-color="highlight-pink"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const readingPassageContent = document.getElementById('readingPassageContent');
+            const floatingToolbar = document.getElementById('floatingToolbar');
+            const toolbarClearBtn = document.getElementById('toolbarClearBtn');
+            const toolbarYellow = document.getElementById('toolbarYellow');
+            const toolbarBlue = document.getElementById('toolbarBlue');
+            const toolbarGreen = document.getElementById('toolbarGreen');
+            const toolbarPink = document.getElementById('toolbarPink');
+
+            let lastSelectionRange = null;
+
+            // Function to apply highlight to selected text
+            function applyHighlight(colorClass) {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges(); // Clear current selection before re-adding
+                    selection.addRange(range);
+                } else {
+                    // No text selected or previously selected
+                    console.log("No text selected to highlight.");
+                    return;
+                }
+
+                const selectedText = range.toString().trim();
+                if (!selectedText) return; // Do nothing if selection is empty
+
+                const span = document.createElement('span');
+                span.classList.add(colorClass);
+                span.classList.add('highlighted-text'); // Add a class to identify highlighted spans
+
+                try {
+                    // Extract the selected content and put it into the new span
+                    const contents = range.extractContents();
+                    span.appendChild(contents);
+                    range.insertNode(span); // Insert the new span back into the document
+
+                    selection.removeAllRanges(); // Clear the selection after highlighting
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } catch (e) {
+                    console.error("Error applying highlight:", e);
+                    // Provide user feedback if highlighting fails for complex selections
+                    // (e.g., selection spanning across multiple non-text nodes)
+                }
+            }
+
+            // Function to clear highlight from selected text
+            function clearSelectedHighlight() {
+                const selection = window.getSelection();
+                let range;
+
+                // Use current selection if available, otherwise use the last stored selection
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    range = selection.getRangeAt(0);
+                } else if (lastSelectionRange) {
+                    range = lastSelectionRange;
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                } else {
+                    console.log("No text selected to clear highlight.");
+                    return;
+                }
+
+                const selectedNode = range.commonAncestorContainer;
+                let highlightedSpan = null;
+
+                // Check if the selected node itself is a highlighted span
+                if (selectedNode && selectedNode.nodeType === Node.ELEMENT_NODE && selectedNode.classList.contains('highlighted-text')) {
+                    highlightedSpan = selectedNode;
+                } else {
+                    // Traverse up the DOM tree from the selected node to find a parent highlight span
+                    let currentNode = selectedNode;
+                    while (currentNode && currentNode !== readingPassageContent && currentNode.parentNode) {
+                        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.classList.contains('highlighted-text')) {
+                            highlightedSpan = currentNode;
+                            break;
+                        }
+                        currentNode = currentNode.parentNode;
+                    }
+                }
+
+                if (highlightedSpan && highlightedSpan.parentNode) {
+                    // Replace the highlighted span with its plain text content
+                    const textContent = highlightedSpan.textContent;
+                    highlightedSpan.parentNode.replaceChild(document.createTextNode(textContent), highlightedSpan);
+
+                    selection.removeAllRanges(); // Clear the selection
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                } else {
+                    console.log("No highlight found to clear for this selection.");
+                }
+            }
+
+            // Event listeners for toolbar buttons
+            toolbarYellow.addEventListener('click', () => applyHighlight('highlight-yellow'));
+            toolbarBlue.addEventListener('click', () => applyHighlight('highlight-blue'));
+            toolbarGreen.addEventListener('click', () => applyHighlight('highlight-green'));
+            toolbarPink.addEventListener('click', () => applyHighlight('highlight-pink'));
+            toolbarClearBtn.addEventListener('click', clearSelectedHighlight);
+
+            // Show/hide toolbar on text selection (mouseup event)
+            readingPassageContent.addEventListener('mouseup', (event) => {
+                const selection = window.getSelection();
+                // Check if there's a selection and it's not collapsed (i.e., actual text is selected)
+                if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                    lastSelectionRange = selection.getRangeAt(0); // Store the current selection range
+                    const rect = lastSelectionRange.getBoundingClientRect(); // Get the bounding box of the selection
+                    const toolbarHeight = floatingToolbar.offsetHeight;
+                    const toolbarWidth = floatingToolbar.offsetWidth;
+
+                    // Position the toolbar above the selected text
+                    floatingToolbar.style.top = `${rect.top + window.scrollY - toolbarHeight - 10}px`;
+                    // Center the toolbar horizontally above the selection
+                    let leftPos = rect.left + window.scrollX + (rect.width / 2) - (toolbarWidth / 2);
+                    // Ensure the toolbar stays within the viewport boundaries
+                    leftPos = Math.max(10, leftPos); // Prevent going too far left
+                    leftPos = Math.min(leftPos, window.innerWidth - toolbarWidth - 10); // Prevent going too far right
+                    floatingToolbar.style.left = `${leftPos}px`;
+
+                    floatingToolbar.classList.remove('hidden'); // Show the toolbar
+                } else {
+                    floatingToolbar.classList.add('hidden'); // Hide if no selection
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+
+            // Hide toolbar when clicking outside the toolbar or passage content
+            document.addEventListener('mousedown', (event) => {
+                // If the click is not inside the toolbar and not inside the reading passage content
+                if (!floatingToolbar.contains(event.target) && !readingPassageContent.contains(event.target)) {
+                    floatingToolbar.classList.add('hidden'); // Hide the toolbar
+                    lastSelectionRange = null; // Clear last stored range
+                }
+            });
+        });
+    </script>
+</body>
+</html>
