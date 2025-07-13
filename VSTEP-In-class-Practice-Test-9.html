@@ -117,6 +117,43 @@
             pointer-events: none; /* Disable all interactions */
             opacity: 0.7; /* Visually indicate it's frozen */
         }
+
+        /* Tab specific styles */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            background-color: #e2e8f0; /* gray-200 */
+            color: #4a5568; /* gray-700 */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            margin: 0 0.25rem; /* Small margin between tabs */
+        }
+        .tab-button:hover {
+            background-color: #cbd5e0; /* gray-300 */
+        }
+        .tab-button.active {
+            background-color: white;
+            border-color: #e5e7eb;
+            color: #4338ca; /* indigo-700 */
+            border-bottom-color: transparent; /* Hide bottom border for active tab */
+            z-index: 10; /* Bring active tab to front */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body class="p-4 sm:p-6 md:p-8">
@@ -129,431 +166,447 @@
             Time Remaining: <span id="countdown-timer">60:00</span>
         </div>
 
-        <!-- Passage 1 Section -->
-        <div class="passage-container">
-            <div class="passage-text-column">
-                <h3 class="text-xl font-bold text-indigo-600 mb-4">The Glen Nevis River Race</h3>
-                <div class="text-gray-700 leading-relaxed">
-                    <p class="mb-3">Glen Nevis is known as the. ‘outdoor capital’ of Scotland. Britain’s highest mountain, Ben Nevis, rises above the area, while the waters of the River Nevis flow through the rocky valley below. The spectacular scenery attracts walkers and climbers all through the seasons, despite the cold weather in winter.</p>
-                    <p class="mb-3">During the summer months, one of the most exciting activities is the annual Glen Nevis River Race, in which competitors uses a lilo, a plastic bed filled with air normally used for camping or floating in the sea, or another kind of beach toy to race along the river. There are rocks, waterfalls and sections with scary names like Dead Dog Pool and the Leg Breaker for them to get through though there are areas of calmer waters too.</p>
-                    <p class="mb-3">Competitors set off at 30 second intervals by jumping with their lilos from a tiny shelf in a rock into the fast-flowing water 12 metres below. It can take anything from 20 minutes to over two hours to complete the course, depending on the level of the river and the abilities of the competitor.</p>
-                    <p class="mb-3">There is much discussion amongst people who take part regularly about which type of lilo works best for the race. Some prefer short wide ones, while others say that a long narrow one is better. But since you can use anything that floats, all kinds of beach toys such as bananas, sharks and crocodiles can be floating down the river.</p>
-                    <p class="mb-3">The only rules are that competitors must be at least 16 years old, and should provide their own crash helmet, a rubber wet suit and a life jacket. Gloves and old trainers are recommended to protect against knocks and bumps. The most important qualification, however, is a sense of fun.</p>
-                    <p class="mb-3">The race is full of exciting moments, and the greatest of these is at the Lower Falls Leap, where terrified competitors have to jump over a ten-metre waterfall not far from the finish. More than 3,000 athletes have taken part in the race during its 30-year history. Their £30 entry fee helps to raise money for the mountain rescue team, whose members provide an essential service in the region for free. The race is a popular afternoon out for visitors and it costs nothing to watch, although any money given is gratefully accepted.</p>
-                    <p>The prizes may not be fantastic, but everyone receives a certificate of completion and the winner gets the tittle River Race Champion and all agree that it has been worth it for the satisfying feeling of reaching the end safely.</p>
-                </div>
-            </div>
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('passage1')">Passage 1</button>
+            <button class="tab-button" onclick="openTab('passage2')">Passage 2</button>
+            <button class="tab-button" onclick="openTab('passage3')">Passage 3</button>
+            <button class="tab-button" onclick="openTab('passage4')">Passage 4</button>
+        </div>
 
-            <div class="questions-column">
-                <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 1 – Questions 1-10</h4>
-                <form id="form1">
-                    <!-- Question 1 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">1. Visitor come to Glen Nevis to</p>
-                        <label class="option-label"><input type="radio" name="q1" value="A"> A. enjoy the cold weather and spectacular scenery</label>
-                        <label class="option-label"><input type="radio" name="q1" value="B"> B. practise walking</label>
-                        <label class="option-label"><input type="radio" name="q1" value="C"> C. challenge themselves with climbing activities</label>
-                        <label class="option-label"><input type="radio" name="q1" value="D"> D. enjoy outdoor activities</label>
+        <!-- Passage 1 Section -->
+        <div id="passage1" class="tab-content active">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">The Glen Nevis River Race</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">Glen Nevis is known as the. ‘outdoor capital’ of Scotland. Britain’s highest mountain, Ben Nevis, rises above the area, while the waters of the River Nevis flow through the rocky valley below. The spectacular scenery attracts walkers and climbers all through the seasons, despite the cold weather in winter.</p>
+                        <p class="mb-3">During the summer months, one of the most exciting activities is the annual Glen Nevis River Race, in which competitors uses a lilo, a plastic bed filled with air normally used for camping or floating in the sea, or another kind of beach toy to race along the river. There are rocks, waterfalls and sections with scary names like Dead Dog Pool and the Leg Breaker for them to get through though there are areas of calmer waters too.</p>
+                        <p class="mb-3">Competitors set off at 30 second intervals by jumping with their lilos from a tiny shelf in a rock into the fast-flowing water 12 metres below. It can take anything from 20 minutes to over two hours to complete the course, depending on the level of the river and the abilities of the competitor.</p>
+                        <p class="mb-3">There is much discussion amongst people who take part regularly about which type of lilo works best for the race. Some prefer short wide ones, while others say that a long narrow one is better. But since you can use anything that floats, all kinds of beach toys such as bananas, sharks and crocodiles can be floating down the river.</p>
+                        <p class="mb-3">The only rules are that competitors must be at least 16 years old, and should provide their own crash helmet, a rubber wet suit and a life jacket. Gloves and old trainers are recommended to protect against knocks and bumps. The most important qualification, however, is a sense of fun.</p>
+                        <p class="mb-3">The race is full of exciting moments, and the greatest of these is at the Lower Falls Leap, where terrified competitors have to jump over a ten-metre waterfall not far from the finish. More than 3,000 athletes have taken part in the race during its 30-year history. Their £30 entry fee helps to raise money for the mountain rescue team, whose members provide an essential service in the region for free. The race is a popular afternoon out for visitors and it costs nothing to watch, although any money given is gratefully accepted.</p>
+                        <p>The prizes may not be fantastic, but everyone receives a certificate of completion and the winner gets the tittle River Race Champion and all agree that it has been worth it for the satisfying feeling of reaching the end safely.</p>
                     </div>
-                    <!-- Question 2 -->
-                    <div class="question-item" data-correct-answer="C">
-                        <p class="font-medium mb-2">2. Parts of the course of the River Race are</p>
-                        <label class="option-label"><input type="radio" name="q2" value="A"> A. really typical</label>
-                        <label class="option-label"><input type="radio" name="q2" value="B"> B. quite easy to conquer</label>
-                        <label class="option-label"><input type="radio" name="q2" value="C"> C. less rough than others</label>
-                        <label class="option-label"><input type="radio" name="q2" value="D"> D. really dangerous</label>
-                    </div>
-                    <!-- Question 3 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">3. All competitors are able to</p>
-                        <label class="option-label"><input type="radio" name="q3" value="A"> A. begin the race as ssoon as they are ready</label>
-                        <label class="option-label"><input type="radio" name="q3" value="B"> B. finish the course within 20 minutes</label>
-                        <label class="option-label"><input type="radio" name="q3" value="C"> C. swim for 12 metres</label>
-                        <label class="option-label"><input type="radio" name="q3" value="D"> D. carry out the game based on their own strength</label>
-                    </div>
-                    <!-- Question 4 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">4. Types of lilo used can be</p>
-                        <label class="option-label"><input type="radio" name="q4" value="A"> A. restricted to certain ones</label>
-                        <label class="option-label"><input type="radio" name="q4" value="B"> B. varied as long as they can float</label>
-                        <label class="option-label"><input type="radio" name="q4" value="C"> C. really important</label>
-                        <label class="option-label"><input type="radio" name="q4" value="D"> D. divided into two types</label>
-                    </div>
-                    <!-- Question 5 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">5. Competitors must</p>
-                        <label class="option-label"><input type="radio" name="q5" value="A"> A. prepare their own safety clothing</label>
-                        <label class="option-label"><input type="radio" name="q5" value="B"> B. use safety clothing of the organisers</label>
-                        <label class="option-label"><input type="radio" name="q5" value="C"> C. be more than 16 years old</label>
-                        <label class="option-label"><input type="radio" name="q5" value="D"> D. use new trainers</label>
-                    </div>
-                    <!-- Question 6 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">6. The Lower Falls Leap</p>
-                        <label class="option-label"><input type="radio" name="q6" value="A"> A. is the most frightening part</label>
-                        <label class="option-label"><input type="radio" name="q6" value="B"> B. requires competitors to swim over ten metres</label>
-                        <label class="option-label"><input type="radio" name="q6" value="C"> C. has been taken by 3,000 athletes</label>
-                        <label class="option-label"><input type="radio" name="q6" value="D"> D. is the last challenge</label>
-                    </div>
-                    <!-- Question 7 -->
-                    <div class="question-item" data-correct-answer="C">
-                        <p class="font-medium mb-2">7. Members in the rescue team</p>
-                        <label class="option-label"><input type="radio" name="q7" value="A"> A. help raise money</label>
-                        <label class="option-label"><input type="radio" name="q7" value="B"> B. receive £30 each</label>
-                        <label class="option-label"><input type="radio" name="q7" value="C"> C. work voluntarily</label>
-                        <label class="option-label"><input type="radio" name="q7" value="D"> D. are paid professionals</label>
-                    </div>
-                    <!-- Question 8 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">8. Visitors who come to see the race</p>
-                        <label class="option-label"><input type="radio" name="q8" value="A"> A. should buy the tickets</label>
-                        <label class="option-label"><input type="radio" name="q8" value="B"> B. could donate for some money</label>
-                        <label class="option-label"><input type="radio" name="q8" value="C"> C. should be there in the morning</label>
-                        <label class="option-label"><input type="radio" name="q8" value="D"> D. are fully charged</label>
-                    </div>
-                    <!-- Question 9 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">9. Certificates of completion is</p>
-                        <label class="option-label"><input type="radio" name="q9" value="A"> A. given to all people there</label>
-                        <label class="option-label"><input type="radio" name="q9" value="B"> B. only given to the winner</label>
-                        <label class="option-label"><input type="radio" name="q9" value="C"> C. not really interesting</label>
-                        <label class="option-label"><input type="radio" name="q9" value="D"> D. a great encouragement for competitors</label>
-                    </div>
-                    <!-- Question 10 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">10. Which of the following is NOT mentioned?</p>
-                        <label class="option-label"><input type="radio" name="q10" value="A"> A. Some people return to do the race again and again</label>
-                        <label class="option-label"><input type="radio" name="q10" value="B"> B. All competitors need to be serious about the race</label>
-                        <label class="option-label"><input type="radio" name="q10" value="C"> C. Competitors must bring lilos during the race</label>
-                        <label class="option-label"><input type="radio" name="q10" value="D"> D. The race takes place at Glen Nevis river</label>
-                    </div>
-                    <div id="score-form1" class="score-display"></div>
-                    <div class="flex justify-center space-x-4 mt-6">
-                        <button type="button" onclick="checkAnswers('form1', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
-                        <button type="button" onclick="resetForm('form1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
-                    </div>
-                </form>
+                </div>
+
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 1 – Questions 1-10</h4>
+                    <form id="form1">
+                        <!-- Question 1 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">1. Visitor come to Glen Nevis to</p>
+                            <label class="option-label"><input type="radio" name="q1" value="A"> A. enjoy the cold weather and spectacular scenery</label>
+                            <label class="option-label"><input type="radio" name="q1" value="B"> B. practise walking</label>
+                            <label class="option-label"><input type="radio" name="q1" value="C"> C. challenge themselves with climbing activities</label>
+                            <label class="option-label"><input type="radio" name="q1" value="D"> D. enjoy outdoor activities</label>
+                        </div>
+                        <!-- Question 2 -->
+                        <div class="question-item" data-correct-answer="C">
+                            <p class="font-medium mb-2">2. Parts of the course of the River Race are</p>
+                            <label class="option-label"><input type="radio" name="q2" value="A"> A. really typical</label>
+                            <label class="option-label"><input type="radio" name="q2" value="B"> B. quite easy to conquer</label>
+                            <label class="option-label"><input type="radio" name="q2" value="C"> C. less rough than others</label>
+                            <label class="option-label"><input type="radio" name="q2" value="D"> D. really dangerous</label>
+                        </div>
+                        <!-- Question 3 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">3. All competitors are able to</p>
+                            <label class="option-label"><input type="radio" name="q3" value="A"> A. begin the race as ssoon as they are ready</label>
+                            <label class="option-label"><input type="radio" name="q3" value="B"> B. finish the course within 20 minutes</label>
+                            <label class="option-label"><input type="radio" name="q3" value="C"> C. swim for 12 metres</label>
+                            <label class="option-label"><input type="radio" name="q3" value="D"> D. carry out the game based on their own strength</label>
+                        </div>
+                        <!-- Question 4 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">4. Types of lilo used can be</p>
+                            <label class="option-label"><input type="radio" name="q4" value="A"> A. restricted to certain ones</label>
+                            <label class="option-label"><input type="radio" name="q4" value="B"> B. varied as long as they can float</label>
+                            <label class="option-label"><input type="radio" name="q4" value="C"> C. really important</label>
+                            <label class="option-label"><input type="radio" name="q4" value="D"> D. divided into two types</label>
+                        </div>
+                        <!-- Question 5 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">5. Competitors must</p>
+                            <label class="option-label"><input type="radio" name="q5" value="A"> A. prepare their own safety clothing</label>
+                            <label class="option-label"><input type="radio" name="q5" value="B"> B. use safety clothing of the organisers</label>
+                            <label class="option-label"><input type="radio" name="q5" value="C"> C. be more than 16 years old</label>
+                            <label class="option-label"><input type="radio" name="q5" value="D"> D. use new trainers</label>
+                        </div>
+                        <!-- Question 6 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">6. The Lower Falls Leap</p>
+                            <label class="option-label"><input type="radio" name="q6" value="A"> A. is the most frightening part</label>
+                            <label class="option-label"><input type="radio" name="q6" value="B"> B. requires competitors to swim over ten metres</label>
+                            <label class="option-label"><input type="radio" name="q6" value="C"> C. has been taken by 3,000 athletes</label>
+                            <label class="option-label"><input type="radio" name="q6" value="D"> D. is the last challenge</label>
+                        </div>
+                        <!-- Question 7 -->
+                        <div class="question-item" data-correct-answer="C">
+                            <p class="font-medium mb-2">7. Members in the rescue team</p>
+                            <label class="option-label"><input type="radio" name="q7" value="A"> A. help raise money</label>
+                            <label class="option-label"><input type="radio" name="q7" value="B"> B. receive £30 each</label>
+                            <label class="option-label"><input type="radio" name="q7" value="C"> C. work voluntarily</label>
+                            <label class="option-label"><input type="radio" name="q7" value="D"> D. are paid professionals</label>
+                        </div>
+                        <!-- Question 8 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">8. Visitors who come to see the race</p>
+                            <label class="option-label"><input type="radio" name="q8" value="A"> A. should buy the tickets</label>
+                            <label class="option-label"><input type="radio" name="q8" value="B"> B. could donate for some money</label>
+                            <label class="option-label"><input type="radio" name="q8" value="C"> C. should be there in the morning</label>
+                            <label class="option-label"><input type="radio" name="q8" value="D"> D. are fully charged</label>
+                        </div>
+                        <!-- Question 9 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">9. Certificates of completion is</p>
+                            <label class="option-label"><input type="radio" name="q9" value="A"> A. given to all people there</label>
+                            <label class="option-label"><input type="radio" name="q9" value="B"> B. only given to the winner</label>
+                            <label class="option-label"><input type="radio" name="q9" value="C"> C. not really interesting</label>
+                            <label class="option-label"><input type="radio" name="q9" value="D"> D. a great encouragement for competitors</label>
+                        </div>
+                        <!-- Question 10 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">10. Which of the following is NOT mentioned?</p>
+                            <label class="option-label"><input type="radio" name="q10" value="A"> A. Some people return to do the race again and again</label>
+                            <label class="option-label"><input type="radio" name="q10" value="B"> B. All competitors need to be serious about the race</label>
+                            <label class="option-label"><input type="radio" name="q10" value="C"> C. Competitors must bring lilos during the race</label>
+                            <label class="option-label"><input type="radio" name="q10" value="D"> D. The race takes place at Glen Nevis river</label>
+                        </div>
+                        <div id="score-form1" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form1', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
         <!-- Passage 2 Section -->
-        <div class="passage-container">
-            <div class="passage-text-column">
-                <h3 class="text-xl font-bold text-indigo-600 mb-4">Robert Capa</h3>
-                <div class="text-gray-700 leading-relaxed">
-                    <p class="mb-3">Robert Capa is a name that has for many years been synonymous with war photography. Born in Hungary in 1913 as Friedmann Endre Ernő, Capa was forced to leave his native country after his involvement in anti-government protests. Capa had originally wanted to become a writer, but after his arrival in Berlin had first found work as a photographer. He later left Germany and moved to France due to the rise in Nazism. He tried to find work as a freelance journalist and it was here that he changed his name to Robert Capa, mainly because he thought it would sound more American.</p>
-                    <p class="mb-3">In 1936, after the breakout of the Spanish Civil war, Capa went to Spain and it was here over the next three years that he built his reputation as a war photographer. It was here too in 1936 that he took one of his most famous pictures, The Death of a Loyalist Soldier. One of Capa’s most famous quotes was 'If your pictures aren't good enough, you're not close enough.' And he took his attitude of getting close to the action to an extreme. His photograph, The Death of a Loyalist Soldier is a prime example of this as Capa captures the very moment the soldier falls. However, many have questioned the authenticity of this photograph, claiming that it was staged.</p>
-                    <p class="mb-3">When World war II broke out, Capa was in New York, but he was soon back in Europe covering the war for Life magazine. Some of his most famous work was created on 6th June 1944 when he swam ashore with the first assault on Omaha Beach in the D-Day invasion of Normandy. Capa, armed only with two cameras, took more than one hundred photographs in the first hour of the landing, but a mistake in the darkroom during the drying of the film destroyed all but eight frames. It was the images from these frames however that inspired the visual style of Steven Spielberg's Oscar winning movie ‘Saving Private Ryan’. When Life magazine published the photographs, they claimed that they were slightly out of focus, and Capa later used this as the title of his autobiographical account of the war.</p>
-                    <p class="mb-3">Capa’s private life was no less dramatic. He was friend to many of Hollywood’s directors, actors and actresses. In 1943 he fell in love with the wife of actor John Austin. His affair with her lasted until the end of the war and became the subject of his war memoirs. He was at one time lover to actress Ingrid Bergman. Their relationship finally ended in 1946 when he refused to settle in Hollywood and went off to Turkey.</p>
-                    <p class="mb-3">In 1947 Capa was among a group of photojournalists who founded Magnum Photos. This was a co-operative organisation set up to support photographers and help them to retain ownership of the copyright to their work.</p>
-                    <p class="mb-3">Capa went on to document many other wars. He never attempted to glamorise war though, but to record the horror. He once said, "The desire of any war photographer is to be put out of business."</p>
-                    <p class="mb-3">Capa died as he had lived. After promising not to photograph any more wars, he accepted an assignment to go to Indochina to cover the first Indochina war. On May 25th 1954 Capa was accompanying a French regiment when he left his jeep to take some photographs of the advance and stepped on a land mine. He was taken to a nearby hospital, still clutching his camera, but was pronounced dead on arrival. He left behind him a testament to the horrors of war and a standard for photojournalism that few others have been able to reach.</p>
-                    <p>Capa’s legacy has lived on though and in 1966 his brother Cornell founded the International Fund for Concerned Photography in his honor. There is also a Robert Capa Gold Medal, which is given to the photographer who publishes the best photographic reporting from abroad with evidence of exceptional courage. But perhaps his greatest legacy of all are the haunting images of the human struggles that he captured.</p>
+        <div id="passage2" class="tab-content">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">Robert Capa</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">Robert Capa is a name that has for many years been synonymous with war photography. Born in Hungary in 1913 as Friedmann Endre Ernő, Capa was forced to leave his native country after his involvement in anti-government protests. Capa had originally wanted to become a writer, but after his arrival in Berlin had first found work as a photographer. He later left Germany and moved to France due to the rise in Nazism. He tried to find work as a freelance journalist and it was here that he changed his name to Robert Capa, mainly because he thought it would sound more American.</p>
+                        <p class="mb-3">In 1936, after the breakout of the Spanish Civil war, Capa went to Spain and it was here over the next three years that he built his reputation as a war photographer. It was here too in 1936 that he took one of his most famous pictures, The Death of a Loyalist Soldier. One of Capa’s most famous quotes was 'If your pictures aren't good enough, you're not close enough.' And he took his attitude of getting close to the action to an extreme. His photograph, The Death of a Loyalist Soldier is a prime example of this as Capa captures the very moment the soldier falls. However, many have questioned the authenticity of this photograph, claiming that it was staged.</p>
+                        <p class="mb-3">When World war II broke out, Capa was in New York, but he was soon back in Europe covering the war for Life magazine. Some of his most famous work was created on 6th June 1944 when he swam ashore with the first assault on Omaha Beach in the D-Day invasion of Normandy. Capa, armed only with two cameras, took more than one hundred photographs in the first hour of the landing, but a mistake in the darkroom during the drying of the film destroyed all but eight frames. It was the images from these frames however that inspired the visual style of Steven Spielberg's Oscar winning movie ‘Saving Private Ryan’. When Life magazine published the photographs, they claimed that they were slightly out of focus, and Capa later used this as the title of his autobiographical account of the war.</p>
+                        <p class="mb-3">Capa’s private life was no less dramatic. He was friend to many of Hollywood’s directors, actors and actresses. In 1943 he fell in love with the wife of actor John Austin. His affair with her lasted until the end of the war and became the subject of his war memoirs. He was at one time lover to actress Ingrid Bergman. Their relationship finally ended in 1946 when he refused to settle in Hollywood and went off to Turkey.</p>
+                        <p class="mb-3">In 1947 Capa was among a group of photojournalists who founded Magnum Photos. This was a co-operative organisation set up to support photographers and help them to retain ownership of the copyright to their work.</p>
+                        <p class="mb-3">Capa went on to document many other wars. He never attempted to glamorise war though, but to record the horror. He once said, "The desire of any war photographer is to be put out of business."</p>
+                        <p class="mb-3">Capa died as he had lived. After promising not to photograph any more wars, he accepted an assignment to go to Indochina to cover the first Indochina war. On May 25th 1954 Capa was accompanying a French regiment when he left his jeep to take some photographs of the advance and stepped on a land mine. He was taken to a nearby hospital, still clutching his camera, but was pronounced dead on arrival. He left behind him a testament to the horrors of war and a standard for photojournalism that few others have been able to reach.</p>
+                        <p>Capa’s legacy has lived on though and in 1966 his brother Cornell founded the International Fund for Concerned Photography in his honor. There is also a Robert Capa Gold Medal, which is given to the photographer who publishes the best photographic reporting from abroad with evidence of exceptional courage. But perhaps his greatest legacy of all are the haunting images of the human struggles that he captured.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="questions-column">
-                <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 2 – Questions 11-20</h4>
-                <form id="form2">
-                    <!-- Question 11 -->
-                    <div class="question-item" data-correct-answer="C">
-                        <p class="font-medium mb-2">11. Why did Capa change his name?</p>
-                        <label class="option-label"><input type="radio" name="q11" value="A"> A. To hide his identity</label>
-                        <label class="option-label"><input type="radio" name="q11" value="B"> B. Because he had been involved in protests</label>
-                        <label class="option-label"><input type="radio" name="q11" value="C"> C. To sound more American</label>
-                        <label class="option-label"><input type="radio" name="q11" value="D"> D. Because he had to leave Hungary</label>
-                    </div>
-                    <!-- Question 12 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">12. Capa originally wanted to be</p>
-                        <label class="option-label"><input type="radio" name="q12" value="A"> A. A photojournalist</label>
-                        <label class="option-label"><input type="radio" name="q12" value="B"> B. A writer</label>
-                        <label class="option-label"><input type="radio" name="q12" value="C"> C. An American</label>
-                        <label class="option-label"><input type="radio" name="q12" value="D"> D. A protestor</label>
-                    </div>
-                    <!-- Question 13 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">13. Capa went to Spain to</p>
-                        <label class="option-label"><input type="radio" name="q13" value="A"> A. fight in the civil war</label>
-                        <label class="option-label"><input type="radio" name="q13" value="B"> B. build his reputation</label>
-                        <label class="option-label"><input type="radio" name="q13" value="C"> C. have a holiday</label>
-                        <label class="option-label"><input type="radio" name="q13" value="D"> D. take photographs</label>
-                    </div>
-                    <!-- Question 14 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">14. Capa’s famous picture Death of a Loyalist Soldier</p>
-                        <label class="option-label"><input type="radio" name="q14" value="A"> A. was taken by someone else</label>
-                        <label class="option-label"><input type="radio" name="q14" value="B"> B. was definitely genuine</label>
-                        <label class="option-label"><input type="radio" name="q14" value="C"> C. wasn’t even taken in Spain</label>
-                        <label class="option-label"><input type="radio" name="q14" value="D"> D. cannot be proven genuine or staged</label>
-                    </div>
-                    <!-- Question 15 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">15. When World War II broke out Capa</p>
-                        <label class="option-label"><input type="radio" name="q15" value="A"> A. went to New York</label>
-                        <label class="option-label"><input type="radio" name="q15" value="B"> B. swam ashore on Omaha Beach</label>
-                        <label class="option-label"><input type="radio" name="q15" value="C"> C. went to Europe</label>
-                        <label class="option-label"><input type="radio" name="q15" value="D"> D. went to Normandy</label>
-                    </div>
-                    <!-- Question 16 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">16. A mistake meant that</p>
-                        <label class="option-label"><input type="radio" name="q16" value="A"> A. Most of Capa’s images of the D-Day landing were destroyed</label>
-                        <label class="option-label"><input type="radio" name="q16" value="B"> B. Capa lost both of his two cameras</label>
-                        <label class="option-label"><input type="radio" name="q16" value="C"> C. only one hundred of Capa’s photographs were published</label>
-                        <label class="option-label"><input type="radio" name="q16" value="D"> D. Capa’s images inspired an Oscar winning movie</label>
-                    </div>
-                    <!-- Question 17 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">17. Capa’s private life was</p>
-                        <label class="option-label"><input type="radio" name="q17" value="A"> A. less dramatic than his professional life</label>
-                        <label class="option-label"><input type="radio" name="q17" value="B"> B. very glamorous</label>
-                        <label class="option-label"><input type="radio" name="q17" value="C"> C. spent mostly in Hollywood</label>
-                        <label class="option-label"><input type="radio" name="q17" value="D"> D. spent in Turkey</label>
-                    </div>
-                    <!-- Question 18 -->
-                    <div class="question-item" data-correct-answer="C">
-                        <p class="font-medium mb-2">18. Capa wanted his work to</p>
-                        <label class="option-label"><input type="radio" name="q18" value="A"> A. be very famous</label>
-                        <label class="option-label"><input type="radio" name="q18" value="B"> B. show how glamorous war can be</label>
-                        <label class="option-label"><input type="radio" name="q18" value="C"> C. show the true horror of war</label>
-                        <label class="option-label"><input type="radio" name="q18" value="D"> D. make lots of money</label>
-                    </div>
-                    <!-- Question 19 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">19. Which sentence best paraphrases paragraph 3?</p>
-                        <label class="option-label"><input type="radio" name="q19" value="A"> A. Capa took some of his most famous photographs during the D-Day invasion, but most were tragically destroyed in an accident</label>
-                        <label class="option-label"><input type="radio" name="q19" value="B"> B. Capa never tried to avoid danger. He risked his life to take photographs of the DDay invasion, but then destroyed most of them</label>
-                        <label class="option-label"><input type="radio" name="q19" value="C"> C. Capa only kept the best eight D-Day photographs as the others were out of focus. These inspired the visual style of a Hollywood film</label>
-                        <label class="option-label"><input type="radio" name="q19" value="D"> D. Capa left Europe when the war broke out and went to take his most famous photographs of the D-Day invasion</label>
-                    </div>
-                    <!-- Question 20 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">20. Which sentence best paraphrases paragraph 4?</p>
-                        <label class="option-label"><input type="radio" name="q20" value="A"> A. Capa had a tragic private life and was never able to settle down and find happiness</label>
-                        <label class="option-label"><input type="radio" name="q20" value="B"> B. Despite having many good friends and lovers, Capa always put his work first</label>
-                        <label class="option-label"><input type="radio" name="q20" value="C"> C. Capa wanted to make friends with important people in Hollywood so that he could move into the movie industry</label>
-                        <label class="option-label"><input type="radio" name="q20" value="D"> D. Capa’s private life was very complicated. He could not choose between the two women he loved, so he went off to work in Turkey</label>
-                    </div>
-                    <div id="score-form2" class="score-display"></div>
-                    <div class="flex justify-center space-x-4 mt-6">
-                        <button type="button" onclick="checkAnswers('form2', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
-                        <button type="button" onclick="resetForm('form2')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
-                    </div>
-                </form>
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 2 – Questions 11-20</h4>
+                    <form id="form2">
+                        <!-- Question 11 -->
+                        <div class="question-item" data-correct-answer="C">
+                            <p class="font-medium mb-2">11. Why did Capa change his name?</p>
+                            <label class="option-label"><input type="radio" name="q11" value="A"> A. To hide his identity</label>
+                            <label class="option-label"><input type="radio" name="q11" value="B"> B. Because he had been involved in protests</label>
+                            <label class="option-label"><input type="radio" name="q11" value="C"> C. To sound more American</label>
+                            <label class="option-label"><input type="radio" name="q11" value="D"> D. Because he had to leave Hungary</label>
+                        </div>
+                        <!-- Question 12 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">12. Capa originally wanted to be</p>
+                            <label class="option-label"><input type="radio" name="q12" value="A"> A. A photojournalist</label>
+                            <label class="option-label"><input type="radio" name="q12" value="B"> B. A writer</label>
+                            <label class="option-label"><input type="radio" name="q12" value="C"> C. An American</label>
+                            <label class="option-label"><input type="radio" name="q12" value="D"> D. A protestor</label>
+                        </div>
+                        <!-- Question 13 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">13. Capa went to Spain to</p>
+                            <label class="option-label"><input type="radio" name="q13" value="A"> A. fight in the civil war</label>
+                            <label class="option-label"><input type="radio" name="q13" value="B"> B. build his reputation</label>
+                            <label class="option-label"><input type="radio" name="q13" value="C"> C. have a holiday</label>
+                            <label class="option-label"><input type="radio" name="q13" value="D"> D. take photographs</label>
+                        </div>
+                        <!-- Question 14 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">14. Capa’s famous picture Death of a Loyalist Soldier</p>
+                            <label class="option-label"><input type="radio" name="q14" value="A"> A. was taken by someone else</label>
+                            <label class="option-label"><input type="radio" name="q14" value="B"> B. was definitely genuine</label>
+                            <label class="option-label"><input type="radio" name="q14" value="C"> C. wasn’t even taken in Spain</label>
+                            <label class="option-label"><input type="radio" name="q14" value="D"> D. cannot be proven genuine or staged</label>
+                        </div>
+                        <!-- Question 15 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">15. When World War II broke out Capa</p>
+                            <label class="option-label"><input type="radio" name="q15" value="A"> A. went to New York</label>
+                            <label class="option-label"><input type="radio" name="q15" value="B"> B. swam ashore on Omaha Beach</label>
+                            <label class="option-label"><input type="radio" name="q15" value="C"> C. went to Europe</label>
+                            <label class="option-label"><input type="radio" name="q15" value="D"> D. went to Normandy</label>
+                        </div>
+                        <!-- Question 16 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">16. A mistake meant that</p>
+                            <label class="option-label"><input type="radio" name="q16" value="A"> A. Most of Capa’s images of the D-Day landing were destroyed</label>
+                            <label class="option-label"><input type="radio" name="q16" value="B"> B. Capa lost both of his two cameras</label>
+                            <label class="option-label"><input type="radio" name="q16" value="C"> C. only one hundred of Capa’s photographs were published</label>
+                            <label class="option-label"><input type="radio" name="q16" value="D"> D. Capa’s images inspired an Oscar winning movie</label>
+                        </div>
+                        <!-- Question 17 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">17. Capa’s private life was</p>
+                            <label class="option-label"><input type="radio" name="q17" value="A"> A. less dramatic than his professional life</label>
+                            <label class="option-label"><input type="radio" name="q17" value="B"> B. very glamorous</label>
+                            <label class="option-label"><input type="radio" name="q17" value="C"> C. spent mostly in Hollywood</label>
+                            <label class="option-label"><input type="radio" name="q17" value="D"> D. spent in Turkey</label>
+                        </div>
+                        <!-- Question 18 -->
+                        <div class="question-item" data-correct-answer="C">
+                            <p class="font-medium mb-2">18. Capa wanted his work to</p>
+                            <label class="option-label"><input type="radio" name="q18" value="A"> A. be very famous</label>
+                            <label class="option-label"><input type="radio" name="q18" value="B"> B. show how glamorous war can be</label>
+                            <label class="option-label"><input type="radio" name="q18" value="C"> C. show the true horror of war</label>
+                            <label class="option-label"><input type="radio" name="q18" value="D"> D. make lots of money</label>
+                        </div>
+                        <!-- Question 19 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">19. Which sentence best paraphrases paragraph 3?</p>
+                            <label class="option-label"><input type="radio" name="q19" value="A"> A. Capa took some of his most famous photographs during the D-Day invasion, but most were tragically destroyed in an accident</label>
+                            <label class="option-label"><input type="radio" name="q19" value="B"> B. Capa never tried to avoid danger. He risked his life to take photographs of the DDay invasion, but then destroyed most of them</label>
+                            <label class="option-label"><input type="radio" name="q19" value="C"> C. Capa only kept the best eight D-Day photographs as the others were out of focus. These inspired the visual style of a Hollywood film</label>
+                            <label class="option-label"><input type="radio" name="q19" value="D"> D. Capa left Europe when the war broke out and went to take his most famous photographs of the D-Day invasion</label>
+                        </div>
+                        <!-- Question 20 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">20. Which sentence best paraphrases paragraph 4?</p>
+                            <label class="option-label"><input type="radio" name="q20" value="A"> A. Capa had a tragic private life and was never able to settle down and find happiness</label>
+                            <label class="option-label"><input type="radio" name="q20" value="B"> B. Despite having many good friends and lovers, Capa always put his work first</label>
+                            <label class="option-label"><input type="radio" name="q20" value="C"> C. Capa wanted to make friends with important people in Hollywood so that he could move into the movie industry</label>
+                            <label class="option-label"><input type="radio" name="q20" value="D"> D. Capa’s private life was very complicated. He could not choose between the two women he loved, so he went off to work in Turkey</label>
+                        </div>
+                        <div id="score-form2" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form2', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form2')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
         <!-- Passage 3 Section -->
-        <div class="passage-container">
-            <div class="passage-text-column">
-                <h3 class="text-xl font-bold text-indigo-600 mb-4">The perfume story</h3>
-                <div class="text-gray-700 leading-relaxed">
-                    <p class="mb-3">The craft of perfumery has an ancient and global heritage. The art flourished in Ancient Rome, where the emperors were said to bathe in scent. After the fall of Rome, much of the knowledge was lost, but survived in Islamic civilizations in the Middle Ages. Arab and Persian pharmacists developed essential oils from the aromatic plants of the Indian peninsula. They developed the processes of distillation and suspension in alcohol, which allowed for smaller amounts of raw materials to be used than in the ancient process, by which flower petals were soaked in warm oil. This knowledge was carried back to European monasteries during the Crusades.</p>
-                    <p class="mb-3">At first, the use of fragrances was primarily associated with healing. Aromatic alcoholic waters were ingested as well as used externally. Fragrances were used to purify the air, both for spiritual and health purposes. During the Black Death, the bubonic plague was thought to have resulted from a bad odour which could be averted by inhaling pleasant fragrances such as cinnamon. The Black Death led to an aversion to using water for washing, and so perfume was commonly used as a cleaning agent.</p>
-                    <p class="mb-3">Later on, the craft of perfume re-entered Europe, and was centred in Venice, chiefly because it was an important trade route and a centre for glass-making. Having such materials at hand was essential for the distillation process. In the late seventeenth century, trade soared in France, when Louis XIV brought in policies of protectionism and patronage which stimulated the purchase of luxury goods. Here, perfumery was the preserve of glovemakers. The link arose since the tanning of leather required <strong class="font-bold">putrid</strong> substances. Consequently, the gloves were scented before they were sold and worn. A glove and perfume makers’ guild had existed here since 1190. Entering it required 7 years of formal training under a master perfumer.</p>
-                    <p class="mb-3">The trade in perfume flourished during the reign of Louis XV, as the master glove-andperfume makers, particularly those trading in Paris, received patronage from the royal court, where it is said that a different perfume was used each week. The perfumers diversified into other cosmetics including soaps, powders, white face paints and hair dyes. They were not the sole sellers of beauty products. Mercers, spicers, vinegar-makers and wig-makers were all cashing in on the popularity of perfumed products. Even simple shopkeepers were coming up with their own concoctions to sell.</p>
-                    <p class="mb-3">During the eighteenth century, more modern, capitalist perfume industry began to emerge, particularly in Britain where there was a flourishing consumer society. In France, the revolution initially disrupted the perfume trade due to its association with aristocracy, however, it regained momentum later as a wider range of markets were sought both in the domestic and overseas markets. The guild system was abolished in 1791, allowing new high-end perfumery shops to open in Paris.</p>
-                    <p class="mb-3">Perfume became less associated with health in 1810 with a Napoleonic ordinance which required perfumers to declare the ingredients of all products for internal consumption. Unwilling to divulge their secrets, traders concentrated on products for external use. Napoleon affected the industry in other ways too. With French ports blockaded by the British during the Napoleonic wars, the London perfumers were able to dominate the markets for some time.</p>
-                    <p>One of the significant changes in the nineteenth century was the idea of branding. Until then, trademarks had had little significance in the perfumery where goods were consumed locally, although they had a long history in other industries. One of the pioneers in this field was Rimmel who was nationalized as a British citizen in 1857. He took advantage of the spread of railroads to reach customers in wider markets. To do this, he built a brand which conveyed prestige and quality, and were worth paying a premium for. He recognised the role of design in enhancing the value of his products, hiring a French lithographer to create the labels for his perfume bottles.</p>
+        <div id="passage3" class="tab-content">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">The perfume story</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">The craft of perfumery has an ancient and global heritage. The art flourished in Ancient Rome, where the emperors were said to bathe in scent. After the fall of Rome, much of the knowledge was lost, but survived in Islamic civilizations in the Middle Ages. Arab and Persian pharmacists developed essential oils from the aromatic plants of the Indian peninsula. They developed the processes of distillation and suspension in alcohol, which allowed for smaller amounts of raw materials to be used than in the ancient process, by which flower petals were soaked in warm oil. This knowledge was carried back to European monasteries during the Crusades.</p>
+                        <p class="mb-3">At first, the use of fragrances was primarily associated with healing. Aromatic alcoholic waters were ingested as well as used externally. Fragrances were used to purify the air, both for spiritual and health purposes. During the Black Death, the bubonic plague was thought to have resulted from a bad odour which could be averted by inhaling pleasant fragrances such as cinnamon. The Black Death led to an aversion to using water for washing, and so perfume was commonly used as a cleaning agent.</p>
+                        <p class="mb-3">Later on, the craft of perfume re-entered Europe, and was centred in Venice, chiefly because it was an important trade route and a centre for glass-making. Having such materials at hand was essential for the distillation process. In the late seventeenth century, trade soared in France, when Louis XIV brought in policies of protectionism and patronage which stimulated the purchase of luxury goods. Here, perfumery was the preserve of glovemakers. The link arose since the tanning of leather required <strong class="font-bold">putrid</strong> substances. Consequently, the gloves were scented before they were sold and worn. A glove and perfume makers’ guild had existed here since 1190. Entering it required 7 years of formal training under a master perfumer.</p>
+                        <p class="mb-3">The trade in perfume flourished during the reign of Louis XV, as the master glove-andperfume makers, particularly those trading in Paris, received patronage from the royal court, where it is said that a different perfume was used each week. The perfumers diversified into other cosmetics including soaps, powders, white face paints and hair dyes. They were not the sole sellers of beauty products. Mercers, spicers, vinegar-makers and wig-makers were all cashing in on the popularity of perfumed products. Even simple shopkeepers were coming up with their own concoctions to sell.</p>
+                        <p class="mb-3">During the eighteenth century, more modern, capitalist perfume industry began to emerge, particularly in Britain where there was a flourishing consumer society. In France, the revolution initially disrupted the perfume trade due to its association with aristocracy, however, it regained momentum later as a wider range of markets were sought both in the domestic and overseas markets. The guild system was abolished in 1791, allowing new high-end perfumery shops to open in Paris.</p>
+                        <p class="mb-3">Perfume became less associated with health in 1810 with a Napoleonic ordinance which required perfumers to declare the ingredients of all products for internal consumption. Unwilling to divulge their secrets, traders concentrated on products for external use. Napoleon affected the industry in other ways too. With French ports blockaded by the British during the Napoleonic wars, the London perfumers were able to dominate the markets for some time.</p>
+                        <p>One of the significant changes in the nineteenth century was the idea of branding. Until then, trademarks had had little significance in the perfumery where goods were consumed locally, although they had a long history in other industries. One of the pioneers in this field was Rimmel who was nationalized as a British citizen in 1857. He took advantage of the spread of railroads to reach customers in wider markets. To do this, he built a brand which conveyed prestige and quality, and were worth paying a premium for. He recognised the role of design in enhancing the value of his products, hiring a French lithographer to create the labels for his perfume bottles.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="questions-column">
-                <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 3 – Questions 21-30</h4>
-                <form id="form3">
-                    <!-- Question 21 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">21. The purpose of the text is to</p>
-                        <label class="option-label"><input type="radio" name="q21" value="A"> A. compare the perfumes from different countries</label>
-                        <label class="option-label"><input type="radio" name="q21" value="B"> B. describe the history of perfume making</label>
-                        <label class="option-label"><input type="radio" name="q21" value="C"> C. describe the problems faced by perfumers</label>
-                        <label class="option-label"><input type="radio" name="q21" value="D"> D. explain the different uses of perfume over time</label>
-                    </div>
-                    <!-- Question 22 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">22. Which of the following is NOT true about perfume making in Islamic countries?</p>
-                        <label class="option-label"><input type="radio" name="q22" value="A"> A. They created perfume by soaking flower petals in oil</label>
-                        <label class="option-label"><input type="radio" name="q22" value="B"> B. They dominated perfume making after the fall of the Roman Empire</label>
-                        <label class="option-label"><input type="radio" name="q22" value="C"> C. They took raw materials for their perfumes from India</label>
-                        <label class="option-label"><input type="radio" name="q22" value="D"> D. They created a technique which required fewer plant materials</label>
-                    </div>
-                    <!-- Question 23 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">23. Why does the writer include this sentence in paragraph 2?</p>
-                        <p class="italic text-sm text-gray-600 mb-2">During the Black Death, the bubonic plague was thought to have resulted from a bad odour which could be averted by inhaling pleasant fragrances such as cinnamon.</p>
-                        <label class="option-label"><input type="radio" name="q23" value="A"> A. To explain why washing was not popular during the Black Death</label>
-                        <label class="option-label"><input type="radio" name="q23" value="B"> B. To show how improper use of perfume caused widespread disease.</label>
-                        <label class="option-label"><input type="radio" name="q23" value="C"> C. To illustrate how perfumes used to be ingested to treat disease</label>
-                        <label class="option-label"><input type="radio" name="q23" value="D"> D. To give an example of how fragrances were used for health purposes</label>
-                    </div>
-                    <!-- Question 24 -->
-                    <div class="question-item" data-correct-answer="C">
-                        <p class="font-medium mb-2">24. Why did the perfume industry develop in Paris?</p>
-                        <label class="option-label"><input type="radio" name="q24" value="A"> A. Because it was an important trade route</label>
-                        <label class="option-label"><input type="radio" name="q24" value="B"> B. Because of the rise in the glove-making industry</label>
-                        <label class="option-label"><input type="radio" name="q24" value="C"> C. Because of the introduction of new trade laws</label>
-                        <label class="option-label"><input type="radio" name="q24" value="D"> D. Because of a new fashion in scented gloves</label>
-                    </div>
-                    <!-- Question 25 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">25. What does “<strong class="font-bold">putrid</strong>” mean in paragraph 3?</p>
-                        <label class="option-label"><input type="radio" name="q25" value="A"> A. Bad-smelling</label>
-                        <label class="option-label"><input type="radio" name="q25" value="B"> B. Rare</label>
-                        <label class="option-label"><input type="radio" name="q25" value="C"> C. Prestigious</label>
-                        <label class="option-label"><input type="radio" name="q25" value="D"> D. Numerous</label>
-                    </div>
-                    <!-- Question 26 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">26. Which of the following people most influenced the decline of perfumes as medicine?</p>
-                        <label class="option-label"><input type="radio" name="q26" value="A"> A. Louis XIV</label>
-                        <label class="option-label"><input type="radio" name="q26" value="B"> B. Louis XV</label>
-                        <label class="option-label"><input type="radio" name="q26" value="C"> C. Rimmel</label>
-                        <label class="option-label"><input type="radio" name="q26" value="D"> D. Napoleon</label>
-                    </div>
-                    <!-- Question 27 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">27. In paragraph 4, it is implied that</p>
-                        <label class="option-label"><input type="radio" name="q27" value="A"> A. Master glove and perfume makers created a new perfume each week</label>
-                        <label class="option-label"><input type="radio" name="q27" value="B"> B. Mercers, spicers and other traders began to call themselves masters</label>
-                        <label class="option-label"><input type="radio" name="q27" value="C"> C. The Royal Court only bought perfume from masters</label>
-                        <label class="option-label"><input type="radio" name="q27" value="D"> D. Cosmetics were still only popular within the Royal Courts</label>
-                    </div>
-                    <!-- Question 28 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">28. How did the French Revolution affect the Parisian perfume industry?</p>
-                        <label class="option-label"><input type="radio" name="q28" value="A"> A. The industry declined then rose again</label>
-                        <label class="option-label"><input type="radio" name="q28" value="B"> B. The industry collapsed and took a long time to recover</label>
-                        <label class="option-label"><input type="radio" name="q28" value="C"> C. The industry was greatly boosted</label>
-                        <label class="option-label"><input type="radio" name="q28" value="D"> D. The industry lost most of its overseas customers</label>
-                    </div>
-                    <!-- Question 29 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">29. London came to lead the perfume industry because</p>
-                        <label class="option-label"><input type="radio" name="q29" value="A"> A. the French were unable to export perfumes for a period of time</label>
-                        <label class="option-label"><input type="radio" name="q29" value="B"> B. the production of perfume ceased during the Napoleonic wars</label>
-                        <label class="option-label"><input type="radio" name="q29" value="C"> C. Napoleon’s new laws affected the profitability of perfume-making</label>
-                        <label class="option-label"><input type="radio" name="q29" value="D"> D. the French Revolution meant that there were fewer customers in France</label>
-                    </div>
-                    <!-- Question 30 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">30. Which of the following is NOT true of Rimmel?</p>
-                        <label class="option-label"><input type="radio" name="q30" value="A"> A. He created attractive packaging for his products</label>
-                        <label class="option-label"><input type="radio" name="q30" value="B"> B. He was one of the first people to utilise trademarks</label>
-                        <label class="option-label"><input type="radio" name="q30" value="C"> C. His products were more expensive than other brands</label>
-                        <label class="option-label"><input type="radio" name="q30" value="D"> D. He transported his goods to potential customers by train</label>
-                    </div>
-                    <div id="score-form3" class="score-display"></div>
-                    <div class="flex justify-center space-x-4 mt-6">
-                        <button type="button" onclick="checkAnswers('form3', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
-                        <button type="button" onclick="resetForm('form3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
-                    </div>
-                </form>
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 3 – Questions 21-30</h4>
+                    <form id="form3">
+                        <!-- Question 21 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">21. The purpose of the text is to</p>
+                            <label class="option-label"><input type="radio" name="q21" value="A"> A. compare the perfumes from different countries</label>
+                            <label class="option-label"><input type="radio" name="q21" value="B"> B. describe the history of perfume making</label>
+                            <label class="option-label"><input type="radio" name="q21" value="C"> C. describe the problems faced by perfumers</label>
+                            <label class="option-label"><input type="radio" name="q21" value="D"> D. explain the different uses of perfume over time</label>
+                        </div>
+                        <!-- Question 22 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">22. Which of the following is NOT true about perfume making in Islamic countries?</p>
+                            <label class="option-label"><input type="radio" name="q22" value="A"> A. They created perfume by soaking flower petals in oil</label>
+                            <label class="option-label"><input type="radio" name="q22" value="B"> B. They dominated perfume making after the fall of the Roman Empire</label>
+                            <label class="option-label"><input type="radio" name="q22" value="C"> C. They took raw materials for their perfumes from India</label>
+                            <label class="option-label"><input type="radio" name="q22" value="D"> D. They created a technique which required fewer plant materials</label>
+                        </div>
+                        <!-- Question 23 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">23. Why does the writer include this sentence in paragraph 2?</p>
+                            <p class="italic text-sm text-gray-600 mb-2">During the Black Death, the bubonic plague was thought to have resulted from a bad odour which could be averted by inhaling pleasant fragrances such as cinnamon.</p>
+                            <label class="option-label"><input type="radio" name="q23" value="A"> A. To explain why washing was not popular during the Black Death</label>
+                            <label class="option-label"><input type="radio" name="q23" value="B"> B. To show how improper use of perfume caused widespread disease.</label>
+                            <label class="option-label"><input type="radio" name="q23" value="C"> C. To illustrate how perfumes used to be ingested to treat disease</label>
+                            <label class="option-label"><input type="radio" name="q23" value="D"> D. To give an example of how fragrances were used for health purposes</label>
+                        </div>
+                        <!-- Question 24 -->
+                        <div class="question-item" data-correct-answer="C">
+                            <p class="font-medium mb-2">24. Why did the perfume industry develop in Paris?</p>
+                            <label class="option-label"><input type="radio" name="q24" value="A"> A. Because it was an important trade route</label>
+                            <label class="option-label"><input type="radio" name="q24" value="B"> B. Because of the rise in the glove-making industry</label>
+                            <label class="option-label"><input type="radio" name="q24" value="C"> C. Because of the introduction of new trade laws</label>
+                            <label class="option-label"><input type="radio" name="q24" value="D"> D. Because of a new fashion in scented gloves</label>
+                        </div>
+                        <!-- Question 25 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">25. What does “<strong class="font-bold">putrid</strong>” mean in paragraph 3?</p>
+                            <label class="option-label"><input type="radio" name="q25" value="A"> A. Bad-smelling</label>
+                            <label class="option-label"><input type="radio" name="q25" value="B"> B. Rare</label>
+                            <label class="option-label"><input type="radio" name="q25" value="C"> C. Prestigious</label>
+                            <label class="option-label"><input type="radio" name="q25" value="D"> D. Numerous</label>
+                        </div>
+                        <!-- Question 26 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">26. Which of the following people most influenced the decline of perfumes as medicine?</p>
+                            <label class="option-label"><input type="radio" name="q26" value="A"> A. Louis XIV</label>
+                            <label class="option-label"><input type="radio" name="q26" value="B"> B. Louis XV</label>
+                            <label class="option-label"><input type="radio" name="q26" value="C"> C. Rimmel</label>
+                            <label class="option-label"><input type="radio" name="q26" value="D"> D. Napoleon</label>
+                        </div>
+                        <!-- Question 27 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">27. In paragraph 4, it is implied that</p>
+                            <label class="option-label"><input type="radio" name="q27" value="A"> A. Master glove and perfume makers created a new perfume each week</label>
+                            <label class="option-label"><input type="radio" name="q27" value="B"> B. Mercers, spicers and other traders began to call themselves masters</label>
+                            <label class="option-label"><input type="radio" name="q27" value="C"> C. The Royal Court only bought perfume from masters</label>
+                            <label class="option-label"><input type="radio" name="q27" value="D"> D. Cosmetics were still only popular within the Royal Courts</label>
+                        </div>
+                        <!-- Question 28 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">28. How did the French Revolution affect the Parisian perfume industry?</p>
+                            <label class="option-label"><input type="radio" name="q28" value="A"> A. The industry declined then rose again</label>
+                            <label class="option-label"><input type="radio" name="q28" value="B"> B. The industry collapsed and took a long time to recover</label>
+                            <label class="option-label"><input type="radio" name="q28" value="C"> C. The industry was greatly boosted</label>
+                            <label class="option-label"><input type="radio" name="q28" value="D"> D. The industry lost most of its overseas customers</label>
+                        </div>
+                        <!-- Question 29 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">29. London came to lead the perfume industry because</p>
+                            <label class="option-label"><input type="radio" name="q29" value="A"> A. the French were unable to export perfumes for a period of time</label>
+                            <label class="option-label"><input type="radio" name="q29" value="B"> B. the production of perfume ceased during the Napoleonic wars</label>
+                            <label class="option-label"><input type="radio" name="q29" value="C"> C. Napoleon’s new laws affected the profitability of perfume-making</label>
+                            <label class="option-label"><input type="radio" name="q29" value="D"> D. the French Revolution meant that there were fewer customers in France</label>
+                        </div>
+                        <!-- Question 30 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">30. Which of the following is NOT true of Rimmel?</p>
+                            <label class="option-label"><input type="radio" name="q30" value="A"> A. He created attractive packaging for his products</label>
+                            <label class="option-label"><input type="radio" name="q30" value="B"> B. He was one of the first people to utilise trademarks</label>
+                            <label class="option-label"><input type="radio" name="q30" value="C"> C. His products were more expensive than other brands</label>
+                            <label class="option-label"><input type="radio" name="q30" value="D"> D. He transported his goods to potential customers by train</label>
+                        </div>
+                        <div id="score-form3" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form3', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
         <!-- Passage 4 Section -->
-        <div class="passage-container">
-            <div class="passage-text-column">
-                <h3 class="text-xl font-bold text-indigo-600 mb-4">Armenian Culture</h3>
-                <div class="text-gray-700 leading-relaxed">
-                    <p class="mb-3">The Armenians became active in literature and many art forms at a very early point in their civilization. Metalworking and architecture have been traced back to about 1000 B.C. The beginning of truly national art is usually fixed at the onset of the Christian era. The three great artistic periods coincided with times of independence or semi-independence: from the fifth to the seventh century; the Bagratid golden age of the ninth and tenth centuries; and the era of the kingdom of Lesser Armenia in the twelfth to fourteenth centuries.</p>
-                    <p class="mb-3">Of especially high quality in the earlier periods were works in gold and bronze, as well as temples, military fortifications, and aqueducts. In the early Christian era, classical church architecture was adapted in a series of cathedrals. The circular domes typical of Armenian churches were copied in Western Europe and in Ottoman Turkey. The best example of the distinctive architectural sculpture used to adorn such churches is the early tenth-century Church of the Holy Cross on an island in Lake Van. The architecture of contemporary Erevan is distinguished by the use of pinkish tufa stone and a combination of traditional Armenian and Russian styles.</p>
-                    <p class="mb-3">Armenian painting is generally considered to have originated with the <strong class="font-bold">illumination</strong> of religious manuscripts that thrived from the ninth to the seventeenth century. Armenian painters in Cilicia and elsewhere enriched Byzantine and Western formulas with their unique use of color and their inclusion of Oriental themes acquired from the Mongols. Many unique Armenian illuminated manuscripts remain in museums in the West.</p>
-                    <p class="mb-3">The nineteenth century saw a <strong class="font-bold">blooming</strong> of Armenian painting. Artists from that period, such as the portrait painter Hacop Hovnatanian and the seascape artist Ivan Aivazovsky, continue to enjoy international reputations. Notable figures of the twentieth century include the unorthodox Alexander Bazhbeuk-Melikian, who lived a persecuted existence in Tbilisi, and the émigré surrealist Arshile Gorky (pseudonym of Vosdanik Adoian), who greatly influenced a generation of young American artists in New York. Other émigré painters in various countries have continued the tradition as well.</p>
-                    <p class="mb-3">The Armenian literary tradition began early in the fifth century A.D. with religious tracts and histories of the Armenians. The most important of these were written by Agathangelos, Egishe, Movses Khorenatsi, and Pavstos Buzand. A <strong class="font-bold">secular</strong> literature developed in the early modern period, and in the eighteenth century Armenian Catholic monks of the Mekhitarist order began publishing ancient texts, modern histories, grammars, and literature. In the nineteenth century, Armenians developed their own journalism and public theater. Khachatur Abovian wrote the first Armenian novel, Verk Haiastani (The Wounds of Armenia), in the early 1840s. Armenian literature and drama often <strong class="font-bold">depict</strong> struggles against religious and ethnic oppression and the aspirations of Armenians for security and selfexpression.</p>
+        <div id="passage4" class="tab-content">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">Armenian Culture</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">The Armenians became active in literature and many art forms at a very early point in their civilization. Metalworking and architecture have been traced back to about 1000 B.C. The beginning of truly national art is usually fixed at the onset of the Christian era. The three great artistic periods coincided with times of independence or semi-independence: from the fifth to the seventh century; the Bagratid golden age of the ninth and tenth centuries; and the era of the kingdom of Lesser Armenia in the twelfth to fourteenth centuries.</p>
+                        <p class="mb-3">Of especially high quality in the earlier periods were works in gold and bronze, as well as temples, military fortifications, and aqueducts. In the early Christian era, classical church architecture was adapted in a series of cathedrals. The circular domes typical of Armenian churches were copied in Western Europe and in Ottoman Turkey. The best example of the distinctive architectural sculpture used to adorn such churches is the early tenth-century Church of the Holy Cross on an island in Lake Van. The architecture of contemporary Erevan is distinguished by the use of pinkish tufa stone and a combination of traditional Armenian and Russian styles.</p>
+                        <p class="mb-3">Armenian painting is generally considered to have originated with the <strong class="font-bold">illumination</strong> of religious manuscripts that thrived from the ninth to the seventeenth century. Armenian painters in Cilicia and elsewhere enriched Byzantine and Western formulas with their unique use of color and their inclusion of Oriental themes acquired from the Mongols. Many unique Armenian illuminated manuscripts remain in museums in the West.</p>
+                        <p class="mb-3">The nineteenth century saw a <strong class="font-bold">blooming</strong> of Armenian painting. Artists from that period, such as the portrait painter Hacop Hovnatanian and the seascape artist Ivan Aivazovsky, continue to enjoy international reputations. Notable figures of the twentieth century include the unorthodox Alexander Bazhbeuk-Melikian, who lived a persecuted existence in Tbilisi, and the émigré surrealist Arshile Gorky (pseudonym of Vosdanik Adoian), who greatly influenced a generation of young American artists in New York. Other émigré painters in various countries have continued the tradition as well.</p>
+                        <p class="mb-3">The Armenian literary tradition began early in the fifth century A.D. with religious tracts and histories of the Armenians. The most important of these were written by Agathangelos, Egishe, Movses Khorenatsi, and Pavstos Buzand. A <strong class="font-bold">secular</strong> literature developed in the early modern period, and in the eighteenth century Armenian Catholic monks of the Mekhitarist order began publishing ancient texts, modern histories, grammars, and literature. In the nineteenth century, Armenians developed their own journalism and public theater. Khachatur Abovian wrote the first Armenian novel, Verk Haiastani (The Wounds of Armenia), in the early 1840s. Armenian literature and drama often <strong class="font-bold">depict</strong> struggles against religious and ethnic oppression and the aspirations of Armenians for security and selfexpression.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="questions-column">
-                <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 4 – Questions 31-40</h4>
-                <form id="form4">
-                    <!-- Question 31 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">31. What is the passage about?</p>
-                        <label class="option-label"><input type="radio" name="q31" value="A"> A. religion and culture in Armenia</label>
-                        <label class="option-label"><input type="radio" name="q31" value="B"> B. Christianty and church architecture in Armenia</label>
-                        <label class="option-label"><input type="radio" name="q31" value="C"> C. the history of metal working, architecture, paiting, and literture in Armenia</label>
-                        <label class="option-label"><input type="radio" name="q31" value="D"> D. the thriving of fine arts in Armenia</label>
-                    </div>
-                    <!-- Question 32 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">32. What does the passage imply?</p>
-                        <label class="option-label"><input type="radio" name="q32" value="A"> A. Paintings and literature work in Armenia were originated from Cilicia</label>
-                        <label class="option-label"><input type="radio" name="q32" value="B"> B. Armenian painting and literature originated with the adoption of Christianity</label>
-                        <label class="option-label"><input type="radio" name="q32" value="C"> C. Armenian art and literature were copied from Ottoman Turkey</label>
-                        <label class="option-label"><input type="radio" name="q32" value="D"> D. Without Christianity, there would have been no art and literature in Armenia</label>
-                    </div>
-                    <!-- Question 33 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">33. In the last paragraph, what is NOT the meaning of the word "<strong class="font-bold">secular</strong>"?</p>
-                        <label class="option-label"><input type="radio" name="q33" value="A"> A. blessed</label>
-                        <label class="option-label"><input type="radio" name="q33" value="B"> B. not religious</label>
-                        <label class="option-label"><input type="radio" name="q33" value="C"> C. civil</label>
-                        <label class="option-label"><input type="radio" name="q33" value="D"> D. non spiritual</label>
-                    </div>
-                    <!-- Question 34 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">34. In the fourth paragraph, what do the words "that period" refer to?</p>
-                        <label class="option-label"><input type="radio" name="q34" value="A"> A. the ninth century</label>
-                        <label class="option-label"><input type="radio" name="q34" value="B"> B. the seventeenth century</label>
-                        <label class="option-label"><input type="radio" name="q34" value="C"> C. the twentieth century</label>
-                        <label class="option-label"><input type="radio" name="q34" value="D"> D. the nineteenth century</label>
-                    </div>
-                    <!-- Question 35 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">35. In the third paragraph, what is NOT the meaning of the word "<strong class="font-bold">illumination</strong>."?</p>
-                        <label class="option-label"><input type="radio" name="q35" value="A"> A. illustration</label>
-                        <label class="option-label"><input type="radio" name="q35" value="B"> B. copying</label>
-                        <label class="option-label"><input type="radio" name="q35" value="C"> C. decoration</label>
-                        <label class="option-label"><input type="radio" name="q35" value="D"> D. explanation</label>
-                    </div>
-                    <!-- Question 36 -->
-                    <div class="question-item" data-correct-answer="A">
-                        <p class="font-medium mb-2">36. What did the three great artistic periods coincide with?</p>
-                        <label class="option-label"><input type="radio" name="q36" value="A"> A. times of Armenian independence or semi-independence</label>
-                        <label class="option-label"><input type="radio" name="q36" value="B"> B. the golden and brozen ages</label>
-                        <label class="option-label"><input type="radio" name="q36" value="C"> C. the illumination of religious manuscripts</label>
-                        <label class="option-label"><input type="radio" name="q36" value="D"> D. classical church architecture</label>
-                    </div>
-                    <!-- Question 37 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">37. Where does the sentence -- "Armenia accepted Christianity as its state religion in A.D. 306." -- best belong?</p>
-                        <label class="option-label"><input type="radio" name="q37" value="A"> A. at the end of the first paragraph</label>
-                        <label class="option-label"><input type="radio" name="q37" value="B"> B. at the end of the second paragraph</label>
-                        <label class="option-label"><input type="radio" name="q37" value="C"> C. in the second paragraph, after the third sentence</label>
-                        <label class="option-label"><input type="radio" name="q37" value="D"> D. in the first paragraph, after the third sentence</label>
-                    </div>
-                    <!-- Question 38 -->
-                    <div class="question-item" data-correct-answer="B">
-                        <p class="font-medium mb-2">38. What is an example of the influence Armenian art in the early Christian era?</p>
-                        <label class="option-label"><input type="radio" name="q38" value="A"> A. Byzantine artists used Armenian paint colors</label>
-                        <label class="option-label"><input type="radio" name="q38" value="B"> B. Ottoman Turkey and Europe copied the circular domes typical of Armenian churches</label>
-                        <label class="option-label"><input type="radio" name="q38" value="C"> C. Armenian artists had international reputations</label>
-                        <label class="option-label"><input type="radio" name="q38" value="D"> D. Erevan applied only Russian style in his architect work</label>
-                    </div>
-                    <!-- Question 39 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">39. In the fourth paragraph, what is NOT the meaning of the word "<strong class="font-bold">blooming</strong>"?</p>
-                        <label class="option-label"><input type="radio" name="q39" value="A"> A. flourishing</label>
-                        <label class="option-label"><input type="radio" name="q39" value="B"> B. thriving</label>
-                        <label class="option-label"><input type="radio" name="q39" value="C"> C. developing</label>
-                        <label class="option-label"><input type="radio" name="q39" value="D"> D. withering</label>
-                    </div>
-                    <!-- Question 40 -->
-                    <div class="question-item" data-correct-answer="D">
-                        <p class="font-medium mb-2">40. In the last paragraph, what is the meaning of the word "<strong class="font-bold">depict</strong>" mean?</p>
-                        <label class="option-label"><input type="radio" name="q40" value="A"> A. prevent</label>
-                        <label class="option-label"><input type="radio" name="q40" value="B"> B. distort</label>
-                        <label class="option-label"><input type="radio" name="q40" value="C"> C. hide</label>
-                        <label class="option-label"><input type="radio" name="q40" value="D"> D. describe</label>
-                    </div>
-                    <div id="score-form4" class="score-display"></div>
-                    <div class="flex justify-center space-x-4 mt-6">
-                        <button type="button" onclick="checkAnswers('form4', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
-                        <button type="button" onclick="resetForm('form4')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
-                    </div>
-                </form>
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 4 – Questions 31-40</h4>
+                    <form id="form4">
+                        <!-- Question 31 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">31. What is the passage about?</p>
+                            <label class="option-label"><input type="radio" name="q31" value="A"> A. religion and culture in Armenia</label>
+                            <label class="option-label"><input type="radio" name="q31" value="B"> B. Christianty and church architecture in Armenia</label>
+                            <label class="option-label"><input type="radio" name="q31" value="C"> C. the history of metal working, architecture, paiting, and literture in Armenia</label>
+                            <label class="option-label"><input type="radio" name="q31" value="D"> D. the thriving of fine arts in Armenia</label>
+                        </div>
+                        <!-- Question 32 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">32. What does the passage imply?</p>
+                            <label class="option-label"><input type="radio" name="q32" value="A"> A. Paintings and literature work in Armenia were originated from Cilicia</label>
+                            <label class="option-label"><input type="radio" name="q32" value="B"> B. Armenian painting and literature originated with the adoption of Christianity</label>
+                            <label class="option-label"><input type="radio" name="q32" value="C"> C. Armenian art and literature were copied from Ottoman Turkey</label>
+                            <label class="option-label"><input type="radio" name="q32" value="D"> D. Without Christianity, there would have been no art and literature in Armenia</label>
+                        </div>
+                        <!-- Question 33 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">33. In the last paragraph, what is NOT the meaning of the word "<strong class="font-bold">secular</strong>"?</p>
+                            <label class="option-label"><input type="radio" name="q33" value="A"> A. blessed</label>
+                            <label class="option-label"><input type="radio" name="q33" value="B"> B. not religious</label>
+                            <label class="option-label"><input type="radio" name="q33" value="C"> C. civil</label>
+                            <label class="option-label"><input type="radio" name="q33" value="D"> D. non spiritual</label>
+                        </div>
+                        <!-- Question 34 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">34. In the fourth paragraph, what do the words "that period" refer to?</p>
+                            <label class="option-label"><input type="radio" name="q34" value="A"> A. the ninth century</label>
+                            <label class="option-label"><input type="radio" name="q34" value="B"> B. the seventeenth century</label>
+                            <label class="option-label"><input type="radio" name="q34" value="C"> C. the twentieth century</label>
+                            <label class="option-label"><input type="radio" name="q34" value="D"> D. the nineteenth century</label>
+                        </div>
+                        <!-- Question 35 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">35. In the third paragraph, what is NOT the meaning of the word "<strong class="font-bold">illumination</strong>."?</p>
+                            <label class="option-label"><input type="radio" name="q35" value="A"> A. illustration</label>
+                            <label class="option-label"><input type="radio" name="q35" value="B"> B. copying</label>
+                            <label class="option-label"><input type="radio" name="q35" value="C"> C. decoration</label>
+                            <label class="option-label"><input type="radio" name="q35" value="D"> D. explanation</label>
+                        </div>
+                        <!-- Question 36 -->
+                        <div class="question-item" data-correct-answer="A">
+                            <p class="font-medium mb-2">36. What did the three great artistic periods coincide with?</p>
+                            <label class="option-label"><input type="radio" name="q36" value="A"> A. times of Armenian independence or semi-independence</label>
+                            <label class="option-label"><input type="radio" name="q36" value="B"> B. the golden and brozen ages</label>
+                            <label class="option-label"><input type="radio" name="q36" value="C"> C. the illumination of religious manuscripts</label>
+                            <label class="option-label"><input type="radio" name="q36" value="D"> D. classical church architecture</label>
+                        </div>
+                        <!-- Question 37 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">37. Where does the sentence -- "Armenia accepted Christianity as its state religion in A.D. 306." -- best belong?</p>
+                            <label class="option-label"><input type="radio" name="q37" value="A"> A. at the end of the first paragraph</label>
+                            <label class="option-label"><input type="radio" name="q37" value="B"> B. at the end of the second paragraph</label>
+                            <label class="option-label"><input type="radio" name="q37" value="C"> C. in the second paragraph, after the third sentence</label>
+                            <label class="option-label"><input type="radio" name="q37" value="D"> D. in the first paragraph, after the third sentence</label>
+                        </div>
+                        <!-- Question 38 -->
+                        <div class="question-item" data-correct-answer="B">
+                            <p class="font-medium mb-2">38. What is an example of the influence Armenian art in the early Christian era?</p>
+                            <label class="option-label"><input type="radio" name="q38" value="A"> A. Byzantine artists used Armenian paint colors</label>
+                            <label class="option-label"><input type="radio" name="q38" value="B"> B. Ottoman Turkey and Europe copied the circular domes typical of Armenian churches</label>
+                            <label class="option-label"><input type="radio" name="q38" value="C"> C. Armenian artists had international reputations</label>
+                            <label class="option-label"><input type="radio" name="q38" value="D"> D. Erevan applied only Russian style in his architect work</label>
+                        </div>
+                        <!-- Question 39 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">39. In the fourth paragraph, what is NOT the meaning of the word "<strong class="font-bold">blooming</strong>"?</p>
+                            <label class="option-label"><input type="radio" name="q39" value="A"> A. flourishing</label>
+                            <label class="option-label"><input type="radio" name="q39" value="B"> B. thriving</label>
+                            <label class="option-label"><input type="radio" name="q39" value="C"> C. developing</label>
+                            <label class="option-label"><input type="radio" name="q39" value="D"> D. withering</label>
+                        </div>
+                        <!-- Question 40 -->
+                        <div class="question-item" data-correct-answer="D">
+                            <p class="font-medium mb-2">40. In the last paragraph, what is the meaning of the word "<strong class="font-bold">depict</strong>" mean?</p>
+                            <label class="option-label"><input type="radio" name="q40" value="A"> A. prevent</label>
+                            <label class="option-label"><input type="radio" name="q40" value="B"> B. distort</label>
+                            <label class="option-label"><input type="radio" name="q40" value="C"> C. hide</label>
+                            <label class="option-label"><input type="radio" name="q40" value="D"> D. describe</label>
+                        </div>
+                        <div id="score-form4" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form4', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form4')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -696,6 +749,28 @@
             const scoreDisplay = document.getElementById(`score-${formId}`);
             scoreDisplay.textContent = '';
             scoreDisplay.classList.remove('correct-answer');
+        }
+
+        // Tab functionality
+        function openTab(tabId) {
+            // Get all tab content elements
+            const tabContents = document.querySelectorAll('.tab-content');
+            // Hide all tab content
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Get all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            // Deactivate all tab buttons
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            // Activate the clicked tab button
+            event.currentTarget.classList.add('active');
         }
 
         // Start the timer when the page loads
