@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Resources Test</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF and html2canvas for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Custom styles for better readability and aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            color: #333;
+        }
+        .passage-container {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+            margin-bottom: 2.5rem; /* Space between different passages */
+            padding: 1.5rem; /* Padding inside the main container for each passage */
+            border: 1px solid #e5e7eb; /* Light border for separation */
+
+            /* Flex container for left (passage) and right (questions) halves */
+            display: flex;
+            flex-direction: column; /* Default to column for small screens */
+            gap: 1.5rem; /* Gap between passage and questions */
+        }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .passage-container {
+                flex-direction: row; /* Row for larger screens */
+            }
+        }
+
+        .passage-text-column, .questions-column {
+            flex: 1; /* Each takes equal width in row layout */
+            overflow-y: auto; /* Enable scrolling for long content */
+            max-height: calc(100vh - 150px); /* Adjust based on header/footer height, to prevent excessive height */
+        }
+
+        .passage-text-column {
+            padding-right: 1.5rem; /* Space between text and questions */
+            border-right: 1px solid #e5e7eb; /* Vertical divider */
+        }
+        
+        @media (max-width: 767px) { /* On small screens, remove vertical border and add bottom border */
+            .passage-text-column {
+                padding-right: 0;
+                border-right: none;
+                padding-bottom: 1.5rem;
+                border-bottom: 1px solid #e5e7eb;
+            }
+        }
+
+        .no-passage-column {
+            flex: 1; /* Takes full width if no passage */
+        }
+
+        .question-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+        }
+        .question-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .option-label {
+            display: block;
+            padding: 0.5rem 0;
+            cursor: pointer;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: background-color 0.2s ease-in-out;
+        }
+        .option-label:hover {
+            background-color: #f3f4f6; /* hover:bg-gray-100 */
+        }
+        .option-label input[type="radio"], .option-label input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        /* Styles for correct/incorrect answers */
+        .correct-answer {
+            background-color: #d1fae5; /* green-100 */
+            border: 1px solid #34d399; /* green-400 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border: 1px solid #ef4444; /* red-400 */
+        }
+        .user-selected {
+            font-weight: bold;
+        }
+        .score-display {
+            background-color: #e0f2fe; /* light blue */
+            color: #0c4a6e; /* dark blue text */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .timer-container {
+            background-color: #fefcbf; /* yellow-100 */
+            border: 1px solid #facc15; /* yellow-400 */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #78350f; /* amber-900 */
+        }
+        .timer-container.ended {
+            background-color: #fecaca; /* red-200 */
+            border-color: #ef4444; /* red-500 */
+            color: #991b1b; /* red-800 */
+        }
+        .frozen-form {
+            pointer-events: none; /* Disable all interactions */
+            opacity: 0.7; /* Visually indicate it's frozen */
+        }
+
+        /* Tab specific styles */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            background-color: #e2e8f0; /* gray-200 */
+            color: #4a5568; /* gray-700 */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            margin: 0 0.25rem; /* Small margin between tabs */
+        }
+        .tab-button:hover {
+            background-color: #cbd5e0; /* gray-300 */
+        }
+        .tab-button.active {
+            background-color: white;
+            border-color: #e5e7eb;
+            color: #4338ca; /* indigo-700 */
+            border-bottom-color: transparent; /* Hide bottom border for active tab */
+            z-index: 10; /* Bring active tab to front */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f0f8ff; /* AliceBlue */
+            border-left: 4px solid #3498db; /* Blue border */
+            border-radius: 0.25rem;
+        }
+        /* Style for highlighted text */
+        mark {
+            background-color: #fef08a; /* Tailwind yellow-200 */
+            padding: 0.1em 0.2em;
+            border-radius: 0.2em;
+        }
+        /* Styling for the word box in 2.2 */
+        .word-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5rem;
+            background-color: #f8fafc; /* light blue-gray */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+        }
+        .word-box span {
+            background-color: #e0e7ff; /* indigo-100 */
+            padding: 0.3rem 0.6rem;
+            border-radius: 0.3rem;
+            text-align: center;
+            font-weight: 500;
+            color: #4338ca; /* indigo-700 */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6">
+        <h1 class="text-3xl font-extrabold text-center text-indigo-700 mb-4">Natural Resources Test</h1>
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Interactive Worksheet</h2>
+
+        <!-- Timer Display -->
+        <div class="timer-container">
+            Time Remaining: <span id="countdown-timer">60:00</span>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('tab1-3')">Exercises 1.1-1.3</button>
+            <button class="tab-button" onclick="openTab('tab2-combined')">Exercises 2.1-2.4</button>
+            <button class="tab-button" onclick="openTab('tabtest-practice')">Test Practice</button>
+        </div>
+
+        <!-- Tab 1: Exercises 1.1-1.3 -->
+        <div id="tab1-3" class="tab-content active">
+            <div class="passage-container">
+                <div class="questions-column no-passage-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">1.1 Answer the questions in this quiz.</h4>
+                    <form id="form1-1">
+                        <!-- Question 1 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="2 trees are needed to offset 5,000 miles of CO2 emissions.">
+                            <p class="font-medium mb-2">1. You decide to fly to an island 5,000 miles away for a holiday. How many trees would you need to plant to offset or make up for the CO₂ emissions produced by the flight?</p>
+                            <label class="option-label"><input type="radio" name="q1_1" value="A"> A. 0.2</label>
+                            <label class="option-label"><input type="radio" name="q1_1" value="B"> B. 20</label>
+                            <label class="option-label"><input type="radio" name="q1_1" value="C"> C. 2</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 2 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Machinewashing in cold water is the most environmentally friendly.">
+                            <p class="font-medium mb-2">2. Which is the most environmentally friendly way to clean your clothes?</p>
+                            <label class="option-label"><input type="radio" name="q1_2" value="A"> A. Handwash the clothes in hot water.</label>
+                            <label class="option-label"><input type="radio" name="q1_2" value="B"> B. Take them to the dry cleaners.</label>
+                            <label class="option-label"><input type="radio" name="q1_2" value="C"> C. Machinewash the clothes in cold water.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 3 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Turning lights off when leaving a room saves energy.">
+                            <p class="font-medium mb-2">3. You are tidying up your house in the evening, going back and forth between the bedroom, kitchen and living room, spending five to ten minutes in each room as you sort out the clutter. What is the best way to make sure your lights aren’t needlessly wasting energy?</p>
+                            <label class="option-label"><input type="radio" name="q1_3" value="A"> A. Keep the lights on as you go from room to room until the job is done.</label>
+                            <label class="option-label"><input type="radio" name="q1_3" value="B"> B. Turn the lights off every time you leave a room and then on again when you return.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 4 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Microwaving is the most energy-efficient for a baked potato.">
+                            <p class="font-medium mb-2">4. You decide to cook a baked potato for lunch. Which is the most energyefficient way of cooking the potato?</p>
+                            <label class="option-label"><input type="radio" name="q1_4" value="A"> A. Put it in an electric oven to cook slowly for an hour.</label>
+                            <label class="option-label"><input type="radio" name="q1_4" value="B"> B. Quickly zap it in the microwave.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 5 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Taking the train instead of driving a car has the most benefit for CO2 reduction.">
+                            <p class="font-medium mb-2">5. You want to really make a significant contribution to the reduction of CO₂ emissions. Which of these would be of the most benefit over the course of a year?</p>
+                            <label class="option-label"><input type="radio" name="q1_5" value="A"> A. Taking the train instead of driving a car.</label>
+                            <label class="option-label"><input type="radio" name="q1_5" value="B"> B. Hanging your washing out to dry rather than using the tumble dryer.</label>
+                            <label class="option-label"><input type="radio" name="q1_5" value="C"> C. Working from home one day a week.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form1-1" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form1-1', 5)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form1-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                            <button type="button" onclick="showExplanations('form1-1')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Show Explanations</button>
+                        </div>
+                    </form>
+
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4 mt-8">1.2 Listen to the answers to find out how environmentally aware you are.</h4>
+                    <div class="audio-container text-center mb-6">
+                        <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2132897529&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/little-dreamers-325309503" title="Little Dreamers" target="_blank" style="color: #cccccc; text-decoration: none;">Little Dreamers</a> · <a href="https://soundcloud.com/little-dreamers-325309503/vocab-natural-resources" title="Vocab - Natural Resources" target="_blank" style="color: #cccccc; text-decoration: none;">Vocab - Natural Resources</a></div>
+                        <p class="text-sm text-gray-500 mt-2">(CD track 16)</p>
+                    </div>
+
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4 mt-8">1.3 Complete the text with one word in each gap.</h4>
+                    <form id="form1-3">
+                        <div class="text-gray-700 leading-relaxed mb-4">
+                            <p class="mb-3">If we want to (1) __________ energy then we need to change the way we behave. We need to buy appliances that are more energy (2) __________ and limit the amount of time we use them. To reduce the (3) __________ the greenhouse gases have on our (4) __________ we should plant more trees. Trees can (5) __________ carbon dioxide and so they help to (6) __________ the fumes produced by our cars. Turning off lights even for a few minutes can (7) __________ the negative effects of turning them on again later.</p>
+                        </div>
+                        <div class="question-item" data-correct-answer="save" data-explanation="The context implies saving or conserving energy.">
+                            <p class="font-medium mb-2">1. <input type="text" name="q1_3_1" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="efficient" data-explanation="Appliances should be energy efficient.">
+                            <p class="font-medium mb-2">2. <input type="text" name="q1_3_2" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="effect" data-explanation="Greenhouse gases have an effect or impact.">
+                            <p class="font-medium mb-2">3. <input type="text" name="q1_3_3" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="atmosphere" data-explanation="Greenhouse gases impact our atmosphere.">
+                            <p class="font-medium mb-2">4. <input type="text" name="q1_3_4" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="absorb" data-explanation="Trees absorb carbon dioxide.">
+                            <p class="font-medium mb-2">5. <input type="text" name="q1_3_5" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="offset" data-explanation="Trees help to offset or counter fumes.">
+                            <p class="font-medium mb-2">6. <input type="text" name="q1_3_6" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="offset" data-explanation="Turning off lights can offset negative effects.">
+                            <p class="font-medium mb-2">7. <input type="text" name="q1_3_7" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form1-3" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form1-3', 7)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form1-3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                            <button type="button" onclick="showExplanations('form1-3')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Show Explanations</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Exercises 2.1-2.4 Combined -->
+        <div id="tab2-combined" class="tab-content">
+            <div class="passage-container">
+                <!-- 2.1 Reading Comprehension -->
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">2.1 Read the text and then answer the questions below.</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3"><strong>The future of energy</strong></p>
+                        <p class="mb-3">CO₂ plays a critical role in maintaining the balance in the Earth’s atmosphere and the air that we breathe. It is also a waste product of the fossil fuels that almost every person on the planet uses for transport and other energy requirements. Because we create CO₂ every time we drive a car, cook a meal or turn on a light, and because the gas lasts around a century in the atmosphere, the proportion of CO₂ in the atmosphere is rapidly increasing.</p>
+                        <p class="mb-3">The best evidence indicates that we need to reduce carbon dioxide emissions by 70 per cent by 2050. If you own a fourwheeldrive car and replace it with a hybrid car – a car that is powered by a combination of electricity and petrol – or a smaller standardfuel car, you can achieve a reduction of that magnitude in a day rather than half a century. Unfortunately, our past history of change is considerably slower than this. Samuel Bowser first invented the petrol pump in 1885 but it wasn’t until 1988 that all new cars manufactured in the UK were required to use unleaded petrol only.</p>
+                        <p class="mb-3">Not only do fossil fuels pose an environmental hazard but there is also a pressing need to find an alternative energy source that is renewable. Opinions as to how much oil remains vary considerably. Some say that the Earth has produced only 18 per cent of its potential yield of oil; others say supplies may run out as early as 2015. Many countries are exploring alternative energy sources such as solar energy or wind power, which uses large turbines to capture the energy of the wind.</p>
+                    </div>
+                </div>
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">2.1 Questions</h4>
+                    <form id="form2-1">
+                        <div class="question-item" data-correct-answer="carbon dioxide" data-explanation="CO₂ stands for Carbon Dioxide.">
+                            <p class="font-medium mb-2">1. How do you write CO₂ in full?</p>
+                            <input type="text" name="q2_1_1" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="fossil fuels" data-explanation="Coal and oil are fossil fuels.">
+                            <p class="font-medium mb-2">2. What do we call fuels such as coal and oil?</p>
+                            <input type="text" name="q2_1_2" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="exhaust fumes/emissions" data-explanation="Exhaust fumes or emissions come out of a car's exhaust.">
+                            <p class="font-medium mb-2">3. What are two names for the substance that comes out of the exhaust of a car?</p>
+                            <input type="text" name="q2_1_3" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="renewable" data-explanation="Fuels that can be produced at any time are renewable.">
+                            <p class="font-medium mb-2">4. What do we call fuels that can be produced at any time?</p>
+                            <input type="text" name="q2_1_4" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="solar power, wind power" data-explanation="Solar energy and wind power are mentioned as alternative energy sources.">
+                            <p class="font-medium mb-2">5. Name two types of alternative energy.</p>
+                            <input type="text" name="q2_1_5" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="B" data-explanation="A turbine uses the energy of wind, similar to a windmill.">
+                            <p class="font-medium mb-2">6. What is a turbine most similar to?</p>
+                            <label class="option-label"><input type="radio" name="q2_1_6" value="A"> A. a large engine</label>
+                            <label class="option-label"><input type="radio" name="q2_1_6" value="B"> B. a windmill</label>
+                            <label class="option-label"><input type="radio" name="q2_1_6" value="C"> C. a car</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form2-1" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form2-1', 6)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form2-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                            <button type="button" onclick="showExplanations('form2-1')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Show Explanations</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="passage-container">
+                <div class="questions-column no-passage-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">2.2 Complete the text with words from the box.</h3>
+                    <div class="word-box">
+                        <span>alternative</span>
+                        <span>converting</span>
+                        <span>eco-friendly</span>
+                        <span>emit</span>
+                        <span>engine</span>
+                        <span>fuel</span>
+                        <span>fumes</span>
+                        <span>greenhouse gases</span>
+                        <span>plant</span>
+                        <span>solar</span>
+                    </div>
+                    <div class="text-gray-700 leading-relaxed mb-4">
+                        <p class="mb-3">Fueling our cars Our love of the fuelburning car with its poisonous exhaust (1) __________ has had a devastating effect both on our environment and on oil supplies. It is unlikely we will abandon our cars in large enough numbers to resolve this problem, so there is a pressing need to find an (2) __________ fuel. Many car companies are exploring (3) __________ energy sources. Hybrid cars were first developed in 1997 and these are likely to become commonplace in the future. Hydrogen vehicles that use (4) __________ panels to extract hydrogen from water are also likely to be readily available in the near future. These vehicles (5) __________ only water vapour and so do not contribute to (6) __________. However, critics say that building a network of fuelling stations and (7) __________ existing petrol stations to hydrogen will prove too costly and will limit this vehicle’s potential. Nevertheless, countries such as the US, Germany, Japan and Iceland already have ambitious hydrogen plans. Others believe that biofuels are the future. These fuels are based on (8) __________ and so can be grown. The concept of using vegetable oil as a (9) __________ dates back to 1895 when Dr Rudolf Diesel developed the first diesel (10) __________ to run on vegetable oil. He demonstrated his engine at the World Exhibition in Paris in 1900 and described an experiment using peanut oil as fuel in his engine. In 1912, Diesel said, ‘The use of vegetable oils for engine fuels may seem insignificant today. But such oils may become in the course of time as important as petroleum and the coal tar products of the present time.’</p>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Questions 1-10</h4>
+                    <form id="form2-2">
+                        <div class="question-item" data-correct-answer="fumes" data-explanation="Refers to poisonous exhaust fumes.">
+                            <p class="font-medium mb-2">1. <input type="text" name="q2_2_1" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="alternative" data-explanation="Need to find an alternative fuel.">
+                            <p class="font-medium mb-2">2. <input type="text" name="q2_2_2" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="eco-friendly" data-explanation="Exploring eco-friendly energy sources.">
+                            <p class="font-medium mb-2">3. <input type="text" name="q2_2_3" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="solar" data-explanation="Hydrogen vehicles use solar panels.">
+                            <p class="font-medium mb-2">4. <input type="text" name="q2_2_4" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="emit" data-explanation="These vehicles emit only water vapour.">
+                            <p class="font-medium mb-2">5. <input type="text" name="q2_2_5" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="greenhouse gases" data-explanation="They do not contribute to greenhouse gases.">
+                            <p class="font-medium mb-2">6. <input type="text" name="q2_2_6" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="converting" data-explanation="Converting existing petrol stations to hydrogen.">
+                            <p class="font-medium mb-2">7. <input type="text" name="q2_2_7" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="plant" data-explanation="Biofuels are based on plants.">
+                            <p class="font-medium mb-2">8. <input type="text" name="q2_2_8" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="fuel" data-explanation="Using vegetable oil as a fuel.">
+                            <p class="font-medium mb-2">9. <input type="text" name="q2_2_9" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="engine" data-explanation="Dr Rudolf Diesel developed the first diesel engine.">
+                            <p class="font-medium mb-2">10. <input type="text" name="q2_2_10" class="border rounded px-2 py-1 w-32" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form2-2" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form2-2', 10)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form2-2')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                            <button type="button" onclick="showExplanations('form2-2')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Show Explanations</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="passage-container">
+                <div class="questions-column no-passage-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">2.3 Decide whether the sentences are true or false.</h3>
+                    <div class="text-gray-700 leading-relaxed mb-4">
+                        <p class="mb-3"><strong>Error warning!</strong> Gas is the American word for petrol. Smoke is produced when something burns. Fumes are the gases produced by chemicals such as petrol. Older cars generate a great deal of fumes. NOT a great deal of gas / a great deal of smoke.</p>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Questions</h4>
+                    <form id="form2-3">
+                        <div class="question-item" data-correct-answer="True" data-explanation="The text states hybrid cars were first developed in 1997.">
+                            <p class="font-medium mb-2">1. Cars that run on electricity and petrol appeared in 1997.</p>
+                            <label class="option-label"><input type="radio" name="q2_3_1" value="True"> True</label>
+                            <label class="option-label"><input type="radio" name="q2_3_1" value="False"> False</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="True" data-explanation="Hydrogen vehicles emit only water vapour.">
+                            <p class="font-medium mb-2">2. Water is produced from the exhausts of hydrogen cars.</p>
+                            <label class="option-label"><input type="radio" name="q2_3_2" value="True"> True</label>
+                            <label class="option-label"><input type="radio" name="q2_3_2" value="False"> False</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="False" data-explanation="Critics say building a network of fuelling stations and converting existing petrol stations to hydrogen will prove too costly.">
+                            <p class="font-medium mb-2">3. It will be relatively inexpensive to change current petrol stations for hydrogen cars.</p>
+                            <label class="option-label"><input type="radio" name="q2_3_3" value="True"> True</label>
+                            <label class="option-label"><input type="radio" name="q2_3_3" value="False"> False</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="False" data-explanation="Biofuels are based on plants and can be grown, making them renewable.">
+                            <p class="font-medium mb-2">4. Biofuels are nonrenewable.</p>
+                            <label class="option-label"><input type="radio" name="q2_3_4" value="True"> True</label>
+                            <label class="option-label"><input type="radio" name="q2_3_4" value="False"> False</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="False" data-explanation="In 1912, Diesel said, 'The use of vegetable oils for engine fuels may seem insignificant today.'">
+                            <p class="font-medium mb-2">5. In 1912 Diesel was seen as an important fuel source.</p>
+                            <label class="option-label"><input type="radio" name="q2_3_5" value="True"> True</label>
+                            <label class="option-label"><input type="radio" name="q2_3_5" value="False"> False</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form2-3" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form2-3', 5)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form2-3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                            <button type="button" onclick="showExplanations('form2-3')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Show Explanations</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="passage-container">
+                <div class="questions-column no-passage-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">2.4 Which is the odd one out? Try to explain why.</h4>
+                    <form id="form2-4">
+                        <div class="question-item" data-correct-answer="promote" data-explanation="Curb, limit, and restrict are synonyms meaning to control or reduce. Promote means to encourage or advance.">
+                            <p class="font-medium mb-2">1. curb / limit / promote / restrict</p>
+                            <input type="text" name="q2_4_1" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="electricity" data-explanation="Nuclear energy, solar energy, and wind power are sources of energy generation. Electricity is a form of energy.">
+                            <p class="font-medium mb-2">2. electricity / nuclear energy / solar energy / wind power</p>
+                            <input type="text" name="q2_4_2" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="emission" data-explanation="Economical, effective, and efficient describe qualities, while emission is a noun referring to something discharged.">
+                            <p class="font-medium mb-2">3. economical / effective / efficient / emission</p>
+                            <input type="text" name="q2_4_3" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="carbon" data-explanation="Fuel, gas, and petrol are types of fuel. Carbon is an element, often a component of fuels, but not a fuel itself in this context.">
+                            <p class="font-medium mb-2">4. carbon / fuel / gas / petrol</p>
+                            <input type="text" name="q2_4_4" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="retain" data-explanation="Emit, discharge, and release are synonyms meaning to send out. Retain means to keep or hold.">
+                            <p class="font-medium mb-2">5. emit / discharge / release / retain</p>
+                            <input type="text" name="q2_4_5" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="disposable" data-explanation="Renewable and rechargeable imply something can be used again. Disposable means designed to be thrown away after one use.">
+                            <p class="font-medium mb-2">6. renewable / disposable / rechargeable / …</p>
+                            <input type="text" name="q2_4_6" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="drastic" data-explanation="Diminish, dwindle, and deplete are synonyms meaning to decrease or reduce. Drastic means extreme or severe.">
+                            <p class="font-medium mb-2">7. diminish / dwindle / deplete / drastic</p>
+                            <input type="text" name="q2_4_7" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="extend" data-explanation="Consume, exhaust, and expend mean to use up. Extend means to make longer.">
+                            <p class="font-medium mb-2">8. consume / extend / exhaust / expend</p>
+                            <input type="text" name="q2_4_8" class="border rounded px-2 py-1 w-full" placeholder="Your Answer">
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="reserve" data-explanation="Conserve, preserve, and save are synonyms meaning to protect from harm or waste. Reserve means to set aside for future use.">
+                            <p class="font-medium mb-2">9. conserve / preserve / reserve / save</p>
+                            <input type="text" name="q2_4_9" class="border rounded px-2 py-1 w-full" placeholder="Your Answer"></p>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form2-4" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('form2-4', 9)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('form2-4')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                            <button type="button" onclick="showExplanations('form2-4')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Show Explanations</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 6: Test Practice: Academic Reading -->
+        <div id="tabtest-practice" class="tab-content">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">Test practice: Academic Reading</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">America is abuzz with talk of replacing imported oil with ‘biofuels’ produced from homegrown materials. The US Environmental Protection Agency recently honoured famous country and western singer Willie Nelson for his efforts to promote the use of biodiesel through his own ‘BioWillie’ brand, a vegetable oil–based fuel which is now being distributed at filling stations nationally. Clearly, many hurdles stand in the way of making such biofuels commercially viable with traditional sources. Indeed, it remains very difficult to forecast whether powering our vehicles with crop derivatives will ever be a truly economic proposition. Nevertheless, it is not too early to ponder what impact the widespread adoption of biofuels would have on our environment.</p>
+                        <p class="mb-3">Michael S. Briggs, a biodiesel advocate at the University of New Hampshire, has estimated that the United States would need about 140 billion gallons of biodiesel each year to replace all the petroleum-based transportation fuels currently being used. This calculation is premised on the idea that Americans could, over time, switch to using diesel vehicles, as European drivers are clearly doing – half of the new cars sold there now run on standard diesel. Although one could make a similar appraisal for the amount of sugar-derived ethanol needed to meet our needs, it is unlikely that drivers would ever want to fill up their tanks entirely with ethanol, which contains only twothirds of the energy of gasoline, whereas biodiesel is only 2 per cent less fuelefficient than petroleumbased diesel. Hence a switch to biofuels would demand no new technology and would not significantly reduce the driving range of a car or truck.</p>
+                        <p class="mb-3">The main source of biodiesel is plant oil derived from crops such as rapeseed … Consequently, the burden on freshwater supplies … would be immense.</p>
+                        <p class="mb-3">Such calculations are sobering. They suggest that weaning ourselves off petroleum fuels and growing rapeseed instead would be an environmental catastrophe. Are more productive oil crops the answer? Oil palms currently top the list because they can provide about 500 gallons of biodiesel per acre per year, which reduces the land requirement fivefold. Yet its cultivation demands a tropical climate, and its large-scale production, which currently comes from such countries as Malaysia and Indonesia, is a significant factor in the ongoing destruction of what rainforest remains there. Conservationists have been warning that palm oil production poses a dire threat to the dwindling population of orangutans, for example, which exist only in the wild in Borneo and Sumatra. So here again, the prospect of dedicating sufficient land to growing feedstock for the world’s transportation needs promises to be an environmental nightmare.</p>
+                        <p class="mb-3">There is, however, a ‘crop’ that is widely recognised as having the potential to meet the demands of a biodieselbased transportation fleet without devastating the natural landscape: algae. Algae is a singlecelled plant, some varieties of which can contain 50 per cent or more oil. They also grow much more rapidly than ordinary plants and can double in quantity within several hours.</p>
+                        <p class="mb-3">The US Department of Energy funded considerable research on biofuel production using algae after the oil problems of the 1970s, an effort known as the Aquatic Species Program. Although this programme was terminated in the 1990s, a lot of experience was gained through research and various demonstration projects. The results suggested that algae can be grown in sufficient density to produce several thousand gallons of biodiesel per acre per year – a full order of magnitude better than can be expected using palm oil and two orders of magnitude better than soybeans.</p>
+                        <p class="mb-3">It is not surprising then that many scientists and entrepreneurs are once again looking hard at the prospects for using algae to produce transportation fuels and sizeable amounts of money are being invested in various schemes for doing so. David Bayless, a professor of mechanical engineering at Ohio University, has been working with scientists to engineer a device that can grow cyanobacteria (bluegreen algae). It uses carbon dioxide from the gases emitted from powerplant chimneys and sunlight that is distributed to the growing surfaces through optical fibres. Bayless uses an enclosed bioreactor and claims to be able to produce as much as 60 grams of biomass per square metre of growing surface per day.</p>
+                        <p class="mb-3">Another recent effort is being carried out in San Diego by KentSeaTech Corporation. This company gained experience growing algae as a part of its aquaculture operations so was quick to respond when the California state government started looking for ways to treat the huge quantities of nutrientladen water which runs off from adjacent farm lands. ‘It’s no real difficult feat to turn nutrients into algae,’ says director of research Jon Van Olst, ‘but how do you get it out of the water?’ This is what Van Olst and his coworkers have been trying to achieve.</p>
+                        <p class="mb-3">The people working on these ventures are clearly eager to make growing algae a commercial success. Yet it is not hard to find experts who view such prospects as dim indeed. John Benemann, a private consultant in California, has decades of experience in this area. He is particularly sceptical about attempts to make algae production more economical by using enclosed bioreactors rather than open ponds. He points out that Japan spent hundreds of millions of dollars on such research, which never went anywhere. Even Van Olst has serious reservations. ‘It may work,’ he says, ‘but it is going to take a while and a lot of research before we get anywhere.’</p>
+                    </div>
+                </div>
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Questions 1–5: Classify the following characteristics</h4>
+                    <form id="formtest-practice-1">
+                        <p class="font-medium mb-2">Classify the following characteristics as belonging to:</p>
+                        <p class="font-medium mb-4">A. biodiesel &emsp; B. ethanol &emsp; C. ordinary diesel</p>
+
+                        <div class="question-item" data-correct-answer="A" data-explanation="Willie Nelson’s “BioWillie” brand promotes biodiesel (paragraph 1).">
+                            <p class="font-medium mb-2">1. Produced by a popular American entertainer.</p>
+                            <label class="option-label"><input type="radio" name="qtp_1" value="A"> A</label>
+                            <label class="option-label"><input type="radio" name="qtp_1" value="B"> B</label>
+                            <label class="option-label"><input type="radio" name="qtp_1" value="C"> C</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="C" data-explanation="“Half of the new cars sold [in Europe] now run on standard diesel” (paragraph 2).">
+                            <p class="font-medium mb-2">2. 50% of new cars in Europe use this fuel.</p>
+                            <label class="option-label"><input type="radio" name="qtp_2" value="A"> A</label>
+                            <label class="option-label"><input type="radio" name="qtp_2" value="B"> B</label>
+                            <label class="option-label"><input type="radio" name="qtp_2" value="C"> C</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="B" data-explanation="Ethanol “contains only two‑thirds of the energy of gasoline” (paragraph 2).">
+                            <p class="font-medium mb-2">3. Provides two thirds of the power of standard petrol.</p>
+                            <label class="option-label"><input type="radio" name="qtp_3" value="A"> A</label>
+                            <label class="option-label"><input type="radio" name="qtp_3" value="B"> B</label>
+                            <label class="option-label"><input type="radio" name="qtp_3" value="C"> C</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="A" data-explanation="Biodiesel “is only 2 per cent less fuel‑efficient than petroleum‑based diesel,” so performance is almost unchanged (paragraph 2).">
+                            <p class="font-medium mb-2">4. Your car’s performance will be almost unchanged if you change to this fuel.</p>
+                            <label class="option-label"><input type="radio" name="qtp_4" value="A"> A</label>
+                            <label class="option-label"><input type="radio" name="qtp_4" value="B"> B</label>
+                            <label class="option-label"><input type="radio" name="qtp_4" value="C"> C</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="A" data-explanation="Rapeseed biodiesel production would place an “immense” burden on freshwater supplies” (paragraph 3).">
+                            <p class="font-medium mb-2">5. Production can have a negative impact on water resources.</p>
+                            <label class="option-label"><input type="radio" name="qtp_5" value="A"> A</label>
+                            <label class="option-label"><input type="radio" name="qtp_5" value="B"> B</label>
+                            <label class="option-label"><input type="radio" name="qtp_5" value="C"> C</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4 mt-6">Questions 6–12: Do the following statements agree with the claims of the writer?</h4>
+                        <p class="font-medium mb-4">Write Yes if the statement agrees with the claims of the writer<br>Write No if the statement contradicts the claims of the writer<br>Write Not Given if it is impossible to say what the writer thinks about this</p>
+
+                        <div class="question-item" data-correct-answer="Not Given" data-explanation="The text does not state what percentage of Americans already use biodiesel.">
+                            <p class="font-medium mb-2">6. 2% of Americans already use biodiesel.</p>
+                            <label class="option-label"><input type="radio" name="qtp_6" value="Yes"> Yes</label>
+                            <label class="option-label"><input type="radio" name="qtp_6" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="qtp_6" value="Not Given"> Not Given</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="Yes" data-explanation="Americans use “considerably more than the 400 million acres currently under cultivation” (paragraph 3).">
+                            <p class="font-medium mb-2">7. At present in America, 400 million acres of land are used for agriculture.</p>
+                            <label class="option-label"><input type="radio" name="qtp_7" value="Yes"> Yes</label>
+                            <label class="option-label"><input type="radio" name="qtp_7" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="qtp_7" value="Not Given"> Not Given</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="No" data-explanation="Oil palms “reduce the land requirement fivefold” compared with rapeseed, so they require less land, not more (paragraph 3).">
+                            <p class="font-medium mb-2">8. The use of palm oil as a fuel source will require more land than using rapeseed oil.</p>
+                            <label class="option-label"><input type="radio" name="qtp_8" value="Yes"> Yes</label>
+                            <label class="option-label"><input type="radio" name="qtp_8" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="qtp_8" value="Not Given"> Not Given</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="No" data-explanation="Palm‑oil cultivation “poses a dire threat to … orang‑utans,” a negative impact on wildlife (paragraph 3).">
+                            <p class="font-medium mb-2">9. Growing biodiesel crops has had a positive effect on local wildlife in some areas.</p>
+                            <label class="option-label"><input type="radio" name="qtp_9" value="Yes"> Yes</label>
+                            <label class="option-label"><input type="radio" name="qtp_9" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="qtp_9" value="Not Given"> Not Given</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="Yes" data-explanation="Algae “grow much more rapidly than ordinary plants and can double in quantity within several hours” (paragraph 4).">
+                            <p class="font-medium mb-2">10. One advantage of algae is the speed with which it grows.</p>
+                            <label class="option-label"><input type="radio" name="qtp_10" value="Yes"> Yes</label>
+                            <label class="option-label"><input type="radio" name="qtp_10" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="qtp_10" value="Not Given"> Not Given</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="Not Given" data-explanation="Bayless’s device uses CO₂ and sunlight, but there is no comparison with solar‑power energy yields.">
+                            <p class="font-medium mb-2">11. David Bayless believes that algae can produce more energy than solar power.</p>
+                            <label class="option-label"><input type="radio" name="qtp_11" value="Yes"> Yes</label>
+                            <label class="option-label"><input type="radio" name="qtp_11" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="qtp_11" value="Not Given"> Not Given</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div class="question-item" data-correct-answer="Yes" data-explanation="“It’s no real difficult feat to turn nutrients into algae,” referring to nutrient‑laden agricultural runoff (paragraph 6).">
+                            <p class="font-medium mb-2">12. It is easy to grow algae using agricultural waste water.</p>
+                            <label class="option-label"><input type="radio" name="qtp_12" value="Yes"> Yes</label>
+                            <label class="option-label"><input type="radio" name="qtp_12" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="qtp_12" value="Not Given"> Not Given</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4 mt-6">Question 13: Choose the correct answer A, B, C or D.</h4>
+                        <div class="question-item" data-correct-answer="C" data-explanation="The article evaluates the advantages and disadvantages of various fuel types—from standard diesel to rapeseed biodiesel to algae—rather than focusing solely on one solution.">
+                            <p class="font-medium mb-2">13. What is the main purpose of this article?</p>
+                            <label class="option-label"><input type="radio" name="qtp_13" value="A"> A. To prove that biofuels could totally replace petrol in America.</label>
+                            <label class="option-label"><input type="radio" name="qtp_13" value="B"> B. To examine the environmental impact of standard fuel sources.</label>
+                            <label class="option-label"><input type="radio" name="qtp_13" value="C"> C. To assess the advantages and disadvantages of different types of fuel.</label>
+                            <label class="option-label"><input type="radio" name="qtp_13" value="D"> D. To show that an international effort is required to solve the fuel crisis.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+
+                        <div id="score-formtest-practice-1" class="score-display"></div>
+                        <div class="flex justify-center space-x-4 mt-6">
+                            <button type="button" onclick="checkAnswers('formtest-practice-1', 13)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Check Answers</button>
+                            <button type="button" onclick="resetForm('formtest-practice-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Reset</button>
+                            <button type="button" onclick="showExplanations('formtest-practice-1')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300">Show Explanations</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF Export Button -->
+        <div class="flex justify-center mt-8">
+            <button type="button" onclick="exportResultsToPdf()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors duration-300 text-xl">Export Results to PDF</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Store correct answers and explanations for each form
+        const correctAnswers = {
+            'form1-1': { // 1.1 Quiz
+                q1_1: { answer: 'C', explanation: '2 trees are needed to offset 5,000 miles of CO2 emissions.' },
+                q1_2: { answer: 'C', explanation: 'Machinewashing in cold water is the most environmentally friendly.' },
+                q1_3: { answer: 'B', explanation: 'Turning lights off when leaving a room saves energy.' },
+                q1_4: { answer: 'B', explanation: 'Microwaving is the most energy-efficient for a baked potato.' },
+                q1_5: { answer: 'A', explanation: 'Taking the train instead of driving a car has the most benefit for CO2 reduction.' }
+            },
+            'form1-3': { // 1.3 Gap Fill
+                q1_3_1: { answer: 'save', explanation: 'The context implies saving or conserving energy.' },
+                q1_3_2: { answer: 'efficient', explanation: 'Appliances should be energy efficient.' },
+                q1_3_3: { answer: 'effect', explanation: 'Greenhouse gases have an effect or impact.' },
+                q1_3_4: { answer: 'atmosphere', explanation: 'Greenhouse gases impact our atmosphere.' },
+                q1_3_5: { answer: 'absorb', explanation: 'Trees absorb carbon dioxide.' },
+                q1_3_6: { answer: 'offset', explanation: 'Trees help to offset or counter fumes.' },
+                q1_3_7: { answer: 'offset', explanation: 'Turning off lights can offset negative effects.' }
+            },
+            'form2-1': { // 2.1 Reading Comprehension
+                q2_1_1: { answer: 'carbon dioxide', explanation: 'CO₂ stands for Carbon Dioxide.' },
+                q2_1_2: { answer: 'fossil fuels', explanation: 'Coal and oil are fossil fuels.' },
+                q2_1_3: { answer: 'exhaust fumes/emissions', explanation: 'Exhaust fumes or emissions come out of a car\'s exhaust.' },
+                q2_1_4: { answer: 'renewable', explanation: 'Fuels that can be produced at any time are renewable.' },
+                q2_1_5: { answer: 'solar power, wind power', explanation: 'Solar energy and wind power are mentioned as alternative energy sources.' },
+                q2_1_6: { answer: 'B', explanation: 'A turbine uses the energy of wind, similar to a windmill.' }
+            },
+            'form2-2': { // 2.2 Vocabulary Fill
+                q2_2_1: { answer: 'fumes', explanation: 'Refers to poisonous exhaust fumes.' },
+                q2_2_2: { answer: 'alternative', explanation: 'Need to find an alternative fuel.' },
+                q2_2_3: { answer: 'eco-friendly', explanation: 'Exploring eco-friendly energy sources.' },
+                q2_2_4: { answer: 'solar', explanation: 'Hydrogen vehicles use solar panels.' },
+                q2_2_5: { answer: 'emit', explanation: 'These vehicles emit only water vapour.' },
+                q2_2_6: { answer: 'greenhouse gases', explanation: 'They do not contribute to greenhouse gases.' },
+                q2_2_7: { answer: 'converting', explanation: 'Converting existing petrol stations to hydrogen.' },
+                q2_2_8: { answer: 'plant', explanation: 'Biofuels are based on plants.' },
+                q2_2_9: { answer: 'fuel', explanation: 'Using vegetable oil as a fuel.' },
+                q2_2_10: { answer: 'engine', explanation: 'Dr Rudolf Diesel developed the first diesel engine.' }
+            },
+            'form2-3': { // 2.3 True/False
+                q2_3_1: { answer: 'True', explanation: 'The text states hybrid cars were first developed in 1997.' },
+                q2_3_2: { answer: 'True', explanation: 'Hydrogen vehicles emit only water vapour.' },
+                q2_3_3: { answer: 'False', explanation: 'Critics say building a network of fuelling stations and converting existing petrol stations to hydrogen will prove too costly.' },
+                q2_3_4: { answer: 'False', explanation: 'Biofuels are based on plants and can be grown, making them renewable.' },
+                q2_3_5: { answer: 'False', explanation: 'In 1912, Diesel said, \'The use of vegetable oils for engine fuels may seem insignificant today.\'' }
+            },
+            'form2-4': { // 2.4 Odd One Out
+                q2_4_1: { answer: 'promote', explanation: 'Curb, limit, and restrict are synonyms meaning to control or reduce. Promote means to encourage or advance.' },
+                q2_4_2: { answer: 'electricity', explanation: 'Nuclear energy, solar energy, and wind power are sources of energy generation. Electricity is a form of energy.' },
+                q2_4_3: { answer: 'emission', explanation: 'Economical, effective, and efficient describe qualities, while emission is a noun referring to something discharged.' },
+                q2_4_4: { answer: 'carbon', explanation: 'Fuel, gas, and petrol are types of fuel. Carbon is an element, often a component of fuels, but not a fuel itself in this context.' },
+                q2_4_5: { answer: 'retain', explanation: 'Emit, discharge, and release are synonyms meaning to send out. Retain means to keep or hold.' },
+                q2_4_6: { answer: 'disposable', explanation: 'Renewable and rechargeable imply something can be used again. Disposable means designed to be thrown away after one use.' },
+                q2_4_7: { answer: 'drastic', explanation: 'Diminish, dwindle, and deplete are synonyms meaning to decrease or reduce. Drastic means extreme or severe.' },
+                q2_4_8: { answer: 'extend', explanation: 'Consume, exhaust, and expend mean to use up. Extend means to make longer.' },
+                q2_4_9: { answer: 'reserve', explanation: 'Conserve, preserve, and save are synonyms meaning to protect from harm or waste. Reserve means to set aside for future use.' }
+            },
+            'formtest-practice-1': { // Test Practice: Academic Reading
+                qtp_1: { answer: 'A', explanation: 'Willie Nelson’s “BioWillie” brand promotes biodiesel (paragraph 1).' },
+                qtp_2: { answer: 'C', explanation: '“Half of the new cars sold [in Europe] now run on standard diesel” (paragraph 2).' },
+                qtp_3: { answer: 'B', explanation: 'Ethanol “contains only two‑thirds of the energy of gasoline” (paragraph 2).' },
+                qtp_4: { answer: 'A', explanation: 'Biodiesel “is only 2 per cent less fuel‑efficient than petroleum‑based diesel,” so performance is almost unchanged (paragraph 2).' },
+                qtp_5: { answer: 'A', explanation: 'Rapeseed biodiesel production would place an “immense” burden on freshwater supplies” (paragraph 3).' },
+                qtp_6: { answer: 'Not Given', explanation: 'The text does not state what percentage of Americans already use biodiesel.' },
+                qtp_7: { answer: 'Yes', explanation: 'Americans use “considerably more than the 400 million acres currently under cultivation” (paragraph 3).' },
+                qtp_8: { answer: 'No', explanation: 'Oil palms “reduce the land requirement fivefold” compared with rapeseed, so they require less land, not more (paragraph 3).' },
+                qtp_9: { answer: 'No', explanation: 'Palm‑oil cultivation “poses a dire threat to … orang‑utans,” a negative impact on wildlife (paragraph 3).' },
+                qtp_10: { answer: 'Yes', explanation: 'Algae “grow much more rapidly than ordinary plants and can double in quantity within several hours” (paragraph 4).' },
+                qtp_11: { answer: 'Not Given', explanation: 'Bayless’s device uses CO₂ and sunlight, but there is no comparison with solar‑power energy yields.' },
+                qtp_12: { answer: 'Yes', explanation: '“It’s no real difficult feat to turn nutrients into algae,” referring to nutrient‑laden agricultural runoff (paragraph 6).' },
+                qtp_13: { answer: 'C', explanation: 'The article evaluates the advantages and disadvantages of various fuel types—from standard diesel to rapeseed biodiesel to algae—rather than focusing solely on one solution.' }
+            }
+        };
+
+        let timerInterval;
+        const totalTime = 60 * 60; // 60 minutes in seconds
+        let timeLeft = totalTime;
+        const timerDisplay = document.getElementById('countdown-timer');
+        const timerContainer = document.querySelector('.timer-container');
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = formatTime(timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time's Up!";
+                    timerContainer.classList.add('ended');
+                    freezeAllForms();
+                    showAllExplanations(); // Show explanations when time's up
+                } else if (timeLeft <= 60) { // Highlight red for the last minute
+                    timerContainer.style.backgroundColor = '#fecaca'; /* red-100 */
+                    timerContainer.style.borderColor = '#ef4444'; /* red-400 */
+                    timerContainer.style.color = '#991b1b'; /* red-800 */
+                }
+            }, 1000); // Update every second
+        }
+
+        function freezeAllForms() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.classList.add('frozen-form');
+                const inputs = form.querySelectorAll('input, button');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                });
+            });
+        }
+
+        // Function to check answers for a given form
+        function checkAnswers(formId, totalQuestions) {
+            const form = document.getElementById(formId);
+            // If the form is frozen, do nothing
+            if (form.classList.contains('frozen-form')) {
+                return;
+            }
+
+            const questions = form.querySelectorAll('.question-item');
+            const answers = correctAnswers[formId];
+            let score = 0;
+
+            questions.forEach(questionDiv => {
+                const inputElement = questionDiv.querySelector('[name]'); // Get any input element
+                const questionName = inputElement.name;
+                const explanationDiv = questionDiv.querySelector('.explanation');
+
+                // Remove previous styling and hide explanation
+                questionDiv.querySelectorAll('.option-label, input[type="text"]').forEach(el => {
+                    el.classList.remove('correct-answer', 'incorrect-answer', 'user-selected');
+                });
+                explanationDiv.classList.add('hidden');
+
+                const correctAnswerData = answers[questionName];
+
+                if (inputElement.type === 'radio') { // Handle radio buttons
+                    const selectedOption = form.querySelector(`input[name="${questionName}"]:checked`);
+                    const selectedValue = selectedOption ? selectedOption.value : '';
+
+                    if (selectedOption) {
+                        const selectedLabel = selectedOption.closest('.option-label');
+                        selectedLabel.classList.add('user-selected');
+
+                        if (selectedValue === correctAnswerData.answer) {
+                            selectedLabel.classList.add('correct-answer');
+                            score++;
+                        } else {
+                            selectedLabel.classList.add('incorrect-answer');
+                            questionDiv.querySelectorAll(`input[name="${questionName}"]`).forEach(input => {
+                                if (input.value === correctAnswerData.answer) {
+                                    input.closest('.option-label').classList.add('correct-answer');
+                                }
+                            });
+                        }
+                    } else {
+                        questionDiv.querySelectorAll(`input[name="${questionName}"]`).forEach(input => {
+                            if (input.value === correctAnswerData.answer) {
+                                input.closest('.option-label').classList.add('correct-answer');
+                            }
+                        });
+                    }
+                } else if (inputElement.type === 'text') { // Handle text inputs (gap fill/short answer)
+                    const textInput = inputElement;
+                    const userAnswer = textInput.value.trim().toLowerCase();
+                    const correctAns = correctAnswerData.answer.toLowerCase();
+
+                    // Handle multiple possible correct answers separated by '/'
+                    const possibleCorrectAnswers = correctAnswerData.answer.split('/').map(s => s.trim().toLowerCase());
+
+                    if (possibleCorrectAnswers.includes(userAnswer)) {
+                        textInput.classList.add('correct-answer');
+                        score++;
+                    } else {
+                        textInput.classList.add('incorrect-answer');
+                    }
+                }
+                explanationDiv.textContent = `Correct Answer: ${correctAnswerData.answer}. ${correctAnswerData.explanation}`;
+                explanationDiv.classList.remove('hidden');
+            });
+
+            // Display the score
+            const scoreDisplay = document.getElementById(`score-${formId}`);
+            scoreDisplay.textContent = `You scored ${score} out of ${totalQuestions}!`;
+            scoreDisplay.classList.add('correct-answer'); /* Use correct-answer style for score display */
+        }
+
+        // Function to reset a form
+        function resetForm(formId) {
+            const form = document.getElementById(formId);
+            // If the form is frozen, do nothing
+            if (form.classList.contains('frozen-form')) {
+                return;
+            }
+
+            form.reset(); // Clears all input selections
+
+            // Remove all styling and hide explanations
+            form.querySelectorAll('.question-item .option-label, .question-item input[type="text"]').forEach(el => {
+                el.classList.remove('correct-answer', 'incorrect-answer', 'user-selected');
+            });
+            form.querySelectorAll('.explanation').forEach(exp => {
+                exp.classList.add('hidden');
+            });
+
+            // Clear score display
+            const scoreDisplay = document.getElementById(`score-${formId}`);
+            scoreDisplay.textContent = '';
+            scoreDisplay.classList.remove('correct-answer');
+        }
+
+        // Function to show explanations for a specific form
+        function showExplanations(formId) {
+            const form = document.getElementById(formId);
+            const questions = form.querySelectorAll('.question-item');
+            const answers = correctAnswers[formId];
+
+            questions.forEach(questionDiv => {
+                const inputElement = questionDiv.querySelector('[name]');
+                const questionName = inputElement.name;
+                const correctAnswerData = answers[questionName];
+                const explanationDiv = questionDiv.querySelector('.explanation');
+
+                // Remove all styling first
+                questionDiv.querySelectorAll('.option-label, input[type="text"]').forEach(el => {
+                    el.classList.remove('correct-answer', 'incorrect-answer', 'user-selected');
+                });
+
+                if (inputElement.type === 'radio') {
+                    questionDiv.querySelectorAll(`input[name="${questionName}"]`).forEach(input => {
+                        if (input.value === correctAnswerData.answer) {
+                            input.closest('.option-label').classList.add('correct-answer');
+                        }
+                    });
+                } else if (inputElement.type === 'text') {
+                    const textInput = inputElement;
+                    textInput.value = correctAnswerData.answer.split('/')[0].trim(); // Fill in the first correct answer
+                    textInput.classList.add('correct-answer');
+                }
+                
+                explanationDiv.textContent = `Correct Answer: ${correctAnswerData.answer}. ${correctAnswerData.explanation}`;
+                explanationDiv.classList.remove('hidden');
+            });
+        }
+
+        // Function to show explanations for ALL forms (used when timer ends)
+        function showAllExplanations() {
+            for (const formId in correctAnswers) {
+                showExplanations(formId);
+            }
+        }
+
+        // Tab functionality
+        function openTab(tabId) {
+            // Get all tab content elements
+            const tabContents = document.querySelectorAll('.tab-content');
+            // Hide all tab content
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Get all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            // Deactivate all tab buttons
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            // Activate the clicked tab button
+            event.currentTarget.classList.add('active');
+        }
+
+        // PDF Export Functionality
+        async function exportResultsToPdf() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            let yOffset = 10;
+            const margin = 10;
+            const lineHeight = 7;
+
+            doc.setFontSize(16);
+            doc.text("Natural Resources Test Results", doc.internal.pageSize.width / 2, yOffset, { align: 'center' });
+            yOffset += 10;
+
+            doc.setFontSize(10);
+            doc.text(`Report generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`, margin, yOffset);
+            yOffset += 5;
+            doc.text(`Time Remaining: ${timerDisplay.textContent}`, margin, yOffset);
+            yOffset += 15; // Space before the first table
+
+            const allResults = [];
+            let totalOverallScore = 0;
+            let totalOverallQuestions = 0;
+
+            for (const formId in correctAnswers) {
+                const form = document.getElementById(formId);
+                const formTitleElement = form.closest('.tab-content').querySelector('h4');
+                let formTitle = '';
+                // Adjusting formTitle based on the new combined tab structure
+                if (formId.startsWith('form1-')) {
+                    formTitle = document.querySelector('#tab1-3 h4').textContent.replace(/\s*Answer the questions in this quiz\.|\s*Listen to the answers to find out how environmentally aware you are\.|\s*Complete the text with one word in each gap\./g, '').trim();
+                    if (formId === 'form1-1') formTitle += ' (1.1 Quiz)';
+                    else if (formId === 'form1-3') formTitle += ' (1.3 Gap Fill)';
+                } else if (formId.startsWith('form2-')) {
+                    formTitle = document.querySelector('#tab2-combined h3').textContent.replace(/\s*Read the text and then answer the questions below\.|\s*Complete the text with words from the box\.|\s*Decide whether the sentences are true or false\.|\s*Which is the odd one out\? Try to explain why\./g, '').trim();
+                    if (formId === 'form2-1') formTitle += ' (2.1 Reading Comprehension)';
+                    else if (formId === 'form2-2') formTitle += ' (2.2 Vocabulary Fill)';
+                    else if (formId === 'form2-3') formTitle += ' (2.3 True/False)';
+                    else if (formId === 'form2-4') formTitle += ' (2.4 Odd One Out)';
+                } else if (formId.startsWith('formtest-practice-')) {
+                    formTitle = document.querySelector('#tabtest-practice h3').textContent.trim();
+                }
+
+
+                let formScore = 0;
+                let totalFormQuestions = 0;
+
+                const questions = form.querySelectorAll('.question-item');
+                questions.forEach((questionDiv, index) => {
+                    totalFormQuestions++;
+                    const inputElement = questionDiv.querySelector('[name]');
+                    const questionName = inputElement.name;
+                    const questionText = questionDiv.querySelector('p').textContent.trim();
+                    const correctAnswerData = correctAnswers[formId][questionName];
+                    let userAnswer = 'Not Answered';
+                    let status = 'Not Answered';
+
+                    if (inputElement.type === 'radio') {
+                        const selectedOption = form.querySelector(`input[name="${questionName}"]:checked`);
+                        userAnswer = selectedOption ? selectedOption.value : 'Not Answered';
+                        if (userAnswer !== 'Not Answered') {
+                            if (userAnswer === correctAnswerData.answer) {
+                                status = 'Correct';
+                                formScore++;
+                            } else {
+                                status = 'Incorrect';
+                            }
+                        }
+                    } else if (inputElement.type === 'text') {
+                        userAnswer = inputElement.value.trim();
+                        const possibleCorrectAnswers = correctAnswerData.answer.split('/').map(s => s.trim().toLowerCase());
+                        if (userAnswer !== '') {
+                            if (possibleCorrectAnswers.includes(userAnswer.toLowerCase())) {
+                                status = 'Correct';
+                                formScore++;
+                            } else {
+                                status = 'Incorrect';
+                            }
+                        }
+                    }
+
+                    allResults.push({
+                        section: formTitle,
+                        questionNum: index + 1,
+                        questionText: questionText,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswerData.answer,
+                        status: status
+                    });
+                });
+                totalOverallScore += formScore;
+                totalOverallQuestions += totalFormQuestions;
+            }
+
+            // Add overall score
+            if (yOffset + lineHeight > doc.internal.pageSize.height - margin) {
+                doc.addPage();
+                yOffset = margin;
+            }
+            doc.setFontSize(12);
+            doc.text(`Total Score: ${totalOverallScore} out of ${totalOverallQuestions} correct!`, margin, yOffset);
+            yOffset += lineHeight * 2;
+
+            // Prepare data for the table
+            const tableColumn = ["Question #", "Your Answer", "Correct Answer", "Status"];
+            const tableRows = [];
+
+            let currentSection = "";
+            let questionCounterInSection = 0;
+
+            allResults.forEach(result => {
+                if (result.section !== currentSection) {
+                    if (tableRows.length > 0) { // Add a separator row if not the very first section
+                        tableRows.push(["", "", "", ""]); // Empty row for spacing
+                    }
+                    tableRows.push([result.section, "", "", ""]); // Section title row
+                    currentSection = result.section;
+                    questionCounterInSection = 0; // Reset question counter for new section
+                }
+                questionCounterInSection++;
+                tableRows.push([
+                    questionCounterInSection,
+                    result.userAnswer,
+                    result.correctAnswer,
+                    result.status
+                ]);
+            });
+
+            // Auto-table generation for PDF
+            doc.autoTable({
+                startY: yOffset,
+                head: [tableColumn],
+                body: tableRows,
+                theme: 'grid',
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 1,
+                    valign: 'middle',
+                    halign: 'left'
+                },
+                headStyles: {
+                    fillColor: [230, 230, 230],
+                    textColor: [0, 0, 0],
+                    fontStyle: 'bold'
+                },
+                columnStyles: {
+                    0: { cellWidth: 20 }, // Question #
+                    1: { cellWidth: 60 }, // Your Answer
+                    2: { cellWidth: 60 }, // Correct Answer
+                    3: { cellWidth: 30 }  // Status
+                },
+                didParseCell: function(data) {
+                    if (data.section === 'body' && data.column.index === 3) { // Status column
+                        if (data.cell.text[0] === 'Correct') {
+                            data.cell.styles.textColor = [34, 197, 94]; // Green
+                        } else if (data.cell.text[0] === 'Incorrect') {
+                            data.cell.styles.textColor = [239, 68, 68]; // Red
+                        } else if (data.cell.text[0] === 'Not Answered') {
+                             data.cell.styles.textColor = [100, 100, 100]; // Grey
+                        }
+                    }
+                    // Style for section titles
+                    if (data.section === 'body' && data.row.raw[1] === "" && data.row.raw[2] === "" && data.row.raw[3] === "") {
+                        data.cell.styles.fontStyle = 'bold';
+                        data.cell.styles.fillColor = [240, 240, 240];
+                        data.cell.styles.halign = 'center';
+                        data.cell.colSpan = 4; // Make it span all columns
+                    }
+                }
+            });
+
+            doc.save('Natural_Resources_Test_Results.pdf');
+        }
+
+        // Start the timer when the page loads
+        document.addEventListener('DOMContentLoaded', startTimer);
+    </script>
+</body>
+</html>
