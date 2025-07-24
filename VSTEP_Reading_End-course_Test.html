@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Reading Worksheet</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for better readability and aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            color: #333;
+        }
+        .passage-container {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+            margin-bottom: 2.5rem; /* Space between different passages */
+            padding: 1.5rem; /* Padding inside the main container for each passage */
+            border: 1px solid #e5e7eb; /* Light border for separation */
+
+            /* Flex container for left (passage) and right (questions) halves */
+            display: flex;
+            flex-direction: column; /* Default to column for small screens */
+            gap: 1.5rem; /* Gap between passage and questions */
+        }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .passage-container {
+                flex-direction: row; /* Row for larger screens */
+            }
+        }
+
+        .passage-text-column, .questions-column {
+            flex: 1; /* Each takes equal width in row layout */
+            overflow-y: auto; /* Enable scrolling for long content */
+            max-height: calc(100vh - 150px); /* Adjust based on header/footer height, to prevent excessive height */
+        }
+
+        .passage-text-column {
+            padding-right: 1.5rem; /* Space between text and questions */
+            border-right: 1px solid #e5e7eb; /* Vertical divider */
+        }
+        
+        @media (max-width: 767px) { /* On small screens, remove vertical border and add bottom border */
+            .passage-text-column {
+                padding-right: 0;
+                border-right: none;
+                padding-bottom: 1.5rem;
+                border-bottom: 1px solid #e5e7eb;
+            }
+        }
+
+        .question-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+        }
+        .question-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .option-label {
+            display: block;
+            padding: 0.5rem 0;
+            cursor: pointer;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: background-color 0.2s ease-in-out;
+        }
+        .option-label:hover {
+            background-color: #f3f4f6; /* hover:bg-gray-100 */
+        }
+        .option-label input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        /* Styles for correct/incorrect answers */
+        .correct-answer {
+            background-color: #d1fae5; /* green-100 */
+            border: 1px solid #34d399; /* green-400 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border: 1px solid #ef4444; /* red-400 */
+        }
+        .user-selected {
+            font-weight: bold;
+        }
+        .score-display {
+            background-color: #e0f2fe; /* light blue */
+            color: #0c4a6e; /* dark blue text */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .timer-container {
+            background-color: #fefcbf; /* yellow-100 */
+            border: 1px solid #facc15; /* yellow-400 */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #78350f; /* amber-900 */
+        }
+        .timer-container.ended {
+            background-color: #fecaca; /* red-200 */
+            border-color: #ef4444; /* red-500 */
+            color: #991b1b; /* red-800 */
+        }
+        .frozen-form {
+            pointer-events: none; /* Disable all interactions */
+            opacity: 0.7; /* Visually indicate it's frozen */
+        }
+
+        /* Tab specific styles */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            background-color: #e2e8f0; /* gray-200 */
+            color: #4a5568; /* gray-700 */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            margin: 0 0.25rem; /* Small margin between tabs */
+        }
+        .tab-button:hover {
+            background-color: #cbd5e0; /* gray-300 */
+        }
+        .tab-button.active {
+            background-color: white;
+            border-color: #e5e7eb;
+            color: #4338ca; /* indigo-700 */
+            border-bottom-color: transparent; /* Hide bottom border for active tab */
+            z-index: 10; /* Bring active tab to front */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f0f8ff; /* AliceBlue */
+            border-left: 4px solid #3498db; /* Blue border */
+            border-radius: 0.25rem;
+        }
+        /* Style for highlighted text */
+        mark {
+            background-color: #fef08a; /* Tailwind yellow-200 */
+            padding: 0.1em 0.2em;
+            border-radius: 0.2em;
+        }
+    </style>
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF AutoTable plugin for table generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6">
+        <h1 class="text-3xl font-extrabold text-center text-indigo-700 mb-4">VSTEP</h1>
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Reading Comprehension Test</h2>
+
+        <!-- Timer Display -->
+        <div class="timer-container">
+            Time Remaining: <span id="countdown-timer">60:00</span>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('passage1')">Passage 1</button>
+            <button class="tab-button" onclick="openTab('passage2')">Passage 2</button>
+            <button class="tab-button" onclick="openTab('passage3')">Passage 3</button>
+            <button class="tab-button" onclick="openTab('passage4')">Passage 4</button>
+        </div>
+
+        <!-- Passage 1 Section -->
+        <div id="passage1" class="tab-content active">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">Songs of the Humpback Whale</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">1 One amazing characteristic of the humpback whale is its ability to sing. A male humpback whale may sing individually, or it may sing in concert with other nearby male humpback whales. One song can last as long as 15 minutes, and it can be made up of as many as seven themes that are used repeatedly throughout the song. The song consists of low moaning sounds, blasts that sound like horns, and high squeals.</p>
+                        <p class="mb-3">2 There is a lot that scientists know about the songs of the humpback whale. However, some of the things are not known <strong class="font-bold">with certainty</strong>. <mark>They are how the humpback whales produce their songs, why they are singing the songs, and when and where the humpback whales sing.</mark></p>
+                        <p class="mb-3">3 [A] It is unclear how humpback whales are able to produce sounds while they are singing. [B] This is unclear because humpback whales do not have vocal cords. [C] It is also unclear because their mouths are not moving while they are singing. [D]</p>
+                        <p class="mb-3">4 Something else that is not clear is the reason why humpback whales sing. When a male humpback whale begins singing, other male humpback whales respond. It is not female whales that respond. <mark>Perhaps the males are joining together to sing because they want female whales that are far away to hear them.</mark></p>
+                        <p class="mb-3">5 In addition to not understanding how and why humpback whales sing, scientists also do not understand fully when and where <strong class="font-bold">they</strong> produce their songs. Humpback whales from Alaska travel to Hawaii for the winter months of November through May, and then they return to Alaska. The whales rarely sing when they are in Alaska, but sometimes they do. They sing a lot more and a lot more often when they are in the waters of Hawaii.</p>
+                    </div>
+                </div>
+
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 1 – Questions 1-10</h4>
+                    <form id="form1">
+                        <!-- Question 1 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Clue (¶ 1): “One amazing characteristic …” clearly means “remarkable” or “surprising,” not “average,” “boring,” or “common”.">
+                            <p class="font-medium mb-2">1. The word “amazing” in paragraph 1 is closest in meaning to _____.</p>
+                            <label class="option-label"><input type="radio" name="q1" value="A"> A. surprising</label>
+                            <label class="option-label"><input type="radio" name="q1" value="B"> B. average</label>
+                            <label class="option-label"><input type="radio" name="q1" value="C"> C. boring</label>
+                            <label class="option-label"><input type="radio" name="q1" value="D"> D. common</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 2 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 1): Only male humpbacks sing; females do not, so a male + female duo is least likely.">
+                            <p class="font-medium mb-2">2. Based on the information in paragraph 1, which of the following would be the least likely to occur?</p>
+                            <label class="option-label"><input type="radio" name="q2" value="A"> A. Two male whales singing for 15 minutes</label>
+                            <label class="option-label"><input type="radio" name="q2" value="B"> B. A single male whale repeating five different themes</label>
+                            <label class="option-label"><input type="radio" name="q2" value="C"> C. A male and a female whale repeating seven themes</label>
+                            <label class="option-label"><input type="radio" name="q2" value="D"> D. Two male whales joining another male whale for 10 minutes of singing</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 3 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Clue (¶ 1): Mentioned: moaning, blasts, squeals. “Clicking” is never listed.">
+                            <p class="font-medium mb-2">3. What kind of whale sound is NOT mentioned in paragraph 1?</p>
+                            <label class="option-label"><input type="radio" name="q3" value="A"> A. Squealing</label>
+                            <label class="option-label"><input type="radio" name="q3" value="B"> B. Clicking</label>
+                            <label class="option-label"><input type="radio" name="q3" value="C"> C. Moaning</label>
+                            <label class="option-label"><input type="radio" name="q3" value="D"> D. Blasting</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 4 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 2): “not known with certainty” means “not known for sure.”">
+                            <p class="font-medium mb-2">4. The expression “with certainty” in paragraph 2 could best be replaced by _____. </p>
+                            <label class="option-label"><input type="radio" name="q4" value="A"> A. as a possibility</label>
+                            <label class="option-label"><input type="radio" name="q4" value="B"> B. by chance</label>
+                            <label class="option-label"><input type="radio" name="q4" value="C"> C. at most</label>
+                            <label class="option-label"><input type="radio" name="q4" value="D"> D. for sure</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 5 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Clue (¶ 2): That sentence (“They are…”) introduces the three unknown items that follow.">
+                            <p class="font-medium mb-2">5. Why does the author say “They are how and when and where the humpback whales sing” in paragraph 2?</p>
+                            <label class="option-label"><input type="radio" name="q5" value="A"> A. To add new details about the humpback whale</label>
+                            <label class="option-label"><input type="radio" name="q5" value="B"> B. To announce the organization of the information that follows</label>
+                            <label class="option-label"><input type="radio" name="q5" value="C"> C. To summarize the key points that came before</label>
+                            <label class="option-label"><input type="radio" name="q5" value="D"> D. To give an example of an idea that has already been presented</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 6 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 3[B–C]): Whales lack vocal cords and their mouths don’t move while singing.">
+                            <p class="font-medium mb-2">6. What is stated in paragraph 3 about how whales produce sounds?</p>
+                            <label class="option-label"><input type="radio" name="q6" value="A"> A. They use their vocal cords and move their mouths.</label>
+                            <label class="option-label"><input type="radio" name="q6" value="B"> B. They use their vocal cords but do not use their mouths.</label>
+                            <label class="option-label"><input type="radio" name="q6" value="C"> C. They do not use their vocal cords but do use their mouths.</label>
+                            <label class="option-label"><input type="radio" name="q6" value="D"> D. They do not use their vocal cords and do not use their mouths.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 7 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 3): After listing the three whale‑sound mysteries ([A], [B], [C]), the next slot [D] is where you’d contrast with human sound production.">
+                            <p class="font-medium mb-2">7. The following sentence could be added to paragraph 3. This is different from human production of sounds, in which vocal cords are used and the mouth is moving. Where would it best fit into the paragraph?</p>
+                            <label class="option-label"><input type="radio" name="q7" value="A"> A. [A]</label>
+                            <label class="option-label"><input type="radio" name="q7" value="B"> B. [B]</label>
+                            <label class="option-label"><input type="radio" name="q7" value="C"> C. [C]</label>
+                            <label class="option-label"><input type="radio" name="q7" value="D"> D. [D]</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 8 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Clue (¶ 4): “Perhaps … because they want female whales that are far away to hear them.”">
+                            <p class="font-medium mb-2">8. Which of the sentences below best expresses the essential information in the highlighted sentence in paragraph 4?</p>
+                            <label class="option-label"><input type="radio" name="q8" value="A"> A. Perhaps male whales sing with female whales in order to sing really loudly.</label>
+                            <label class="option-label"><input type="radio" name="q8" value="B"> B. It is possible that male whales sing together to attract distant female whales.</label>
+                            <label class="option-label"><input type="radio" name="q8" value="C"> C. Maybe male whales sing only when they are together with female whales.</label>
+                            <label class="option-label"><input type="radio" name="q8" value="D"> D. It is possible that male whales sing because they want female whales to stay away.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 9 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 5): “when they produce their songs” clearly refers back to the whales.">
+                            <p class="font-medium mb-2">9. The word “they” in paragraph 5 refers to _____. </p>
+                            <label class="option-label"><input type="radio" name="q9" value="A"> A. songs</label>
+                            <label class="option-label"><input type="radio" name="q9" value="B"> B. scientists</label>
+                            <label class="option-label"><input type="radio" name="q9" value="C"> C. winter months</label>
+                            <label class="option-label"><input type="radio" name="q9" value="D"> D. humpback whales</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 10 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 5): Whales spend November–May in Hawaii; outside that period (June–October) they are in Alaska. September falls in that window.">
+                            <p class="font-medium mb-2">10. It can be inferred from paragraph 5 that humpback whales would most likely be in Alaska in _____. </p>
+                            <label class="option-label"><input type="radio" name="q10" value="A"> A. January</label>
+                            <label class="option-label"><input type="radio" name="q10" value="B"> B. April</label>
+                            <label class="option-label"><input type="radio" name="q10" value="C"> C. September</label>
+                            <label class="option-label"><input type="radio" name="q10" value="D"> D. November</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form1" class="score-display"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Passage 2 Section -->
+        <div id="passage2" class="tab-content">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">Norman Cousins’s Laugh Therapy</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">1 In the summer of 1964, well-known writer and editor Norman Cousins became very ill. His body ached and he felt constantly tired. It was difficult for him to even move around. He consulted his physician, who did many tests. Eventually he was diagnosed as having ankylosing spondylitis, a very serious and destructive form of arthritis. His doctor told him that he would become immobilized and eventually die from the disease. He was told he had only a 1 in 500 chance of survival.</p>
+                        <p class="mb-3">2 Despite the diagnosis, Cousins was determined to overcome the disease and survive. <mark>He had always been interested in medicine and had read the book The Stress of Life (1956) by Hans Selye, an organic-chemist, which discussed how body chemistry and health can be damaged by emotional stress and negative attitudes. This made Cousins think about the possible benefits of positive attitudes and emotions.</mark> He thought, “If negative emotions produce (negative) changes in the body, wouldn’t positive emotions produce positive chemical changes? Is it possible that love, hope, faith, laughter, confidence, and the will to live have positive therapeutic value?”</p>
+                        <p class="mb-3">3 [A] He decided to concentrate on positive emotions as a remedy to heal some of the symptoms of his ailment. [B] In addition to his conventional medical treatment, he tried to put himself in situations that would <strong class="font-bold">elicit</strong> positive emotions. “Laugh therapy” became part of his treatment. He scheduled time each day for watching comedy films, reading humorous books, and doing other activities that would bring about laughter and positive emotions. [C] Within eight days of starting his “laugh therapy” program, his pain began to decrease and he was able to sleep more easily. His body chemistry even began to change, and doctors were able to see an improvement in his condition! He was able to return to work in a few months’ time and actually reached complete recovery after a few years. [D]</p>
+                        <p class="mb-3">4 <strong class="font-bold">Skeptical</strong> readers may question the doctor’s preliminary diagnosis, and argue that Cousins was not really healed because he didn’t have the disease in the first place. However, Cousins believes his recovery is the result of a mysterious mind-body interaction. His “laugh therapy” is a good example of one of the many alternative, or nonconventional, medical treatments people look to today.</p>
+                    </div>
+                </div>
+
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 2 – Questions 11-20</h4>
+                    <form id="form2">
+                        <!-- Question 11 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Clue (¶ 1): He was told he would become immobilized in the future, but at that point he was not yet immobilized.">
+                            <p class="font-medium mb-2">11. According to paragraph 1, which of the following is NOT a symptom of Norman Cousins’ illness?</p>
+                            <label class="option-label"><input type="radio" name="q11" value="A"> A. He became immobilized</label>
+                            <label class="option-label"><input type="radio" name="q11" value="B"> B. He felt continually unwell.</label>
+                            <label class="option-label"><input type="radio" name="q11" value="C"> C. He had an aching body.</label>
+                            <label class="option-label"><input type="radio" name="q11" value="D"> D. He found it hard to move.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 12 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 2): The book’s discussion led him to wonder if positive emotions could produce positive chemical changes.">
+                            <p class="font-medium mb-2">12. Based on paragraph 2, how did reading the book The Stress of Life affect Norman Cousins?</p>
+                            <label class="option-label"><input type="radio" name="q12" value="A"> A. It made Cousins decide to write a book about his illness.</label>
+                            <label class="option-label"><input type="radio" name="q12" value="B"> B. It influenced Cousins to refuse conventional medical treatment.</label>
+                            <label class="option-label"><input type="radio" name="q12" value="C"> C. It caused Cousins to become interested in medicine.</label>
+                            <label class="option-label"><input type="radio" name="q12" value="D"> D. It gave Cousins the idea of using positive emotions to heal illness.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 13 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 2): “This made Cousins think …” refers to the book’s argument about stress, i.e. its central thesis.">
+                            <p class="font-medium mb-2">13. In paragraph 2, the word “This” refers to _____. </p>
+                            <label class="option-label"><input type="radio" name="q13" value="A"> A. the idea of body chemistry</label>
+                            <label class="option-label"><input type="radio" name="q13" value="B"> B. the practice of medicine</label>
+                            <label class="option-label"><input type="radio" name="q13" value="C"> C. the problem of emotional stress</label>
+                            <label class="option-label"><input type="radio" name="q13" value="D"> D. the thesis of Hans Selye’s book</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 14 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="It accurately summarizes the main idea of the sentence. The book Cousins read linked emotional stress and negative attitudes to damage in body chemistry and health.">
+                            <p class="font-medium mb-2">14. Which of the sentences below best expresses the essential information in the highlighted sentence in paragraph 2?</p>
+                            <label class="option-label"><input type="radio" name="q14" value="A"> A. Stress and negative attitudes can cause changes in body chemistry.</label>
+                            <label class="option-label"><input type="radio" name="q14" value="B"> B. Hans Selye was an organic chemist who wrote a book called The Stress of Life.</label>
+                            <label class="option-label"><input type="radio" name="q14" value="C"> C. Cousins read a book about the effects of negative emotions on body chemistry.</label>
+                            <label class="option-label"><input type="radio" name="q14" value="D"> D. Cousins was interested in medicine, so he read the book The Stress of Life.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 15 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 3): “elicit positive emotions” = “bring forth/produce” them.">
+                            <p class="font-medium mb-2">15. The word “elicit” in paragraph 3 is closest in meaning to ____. </p>
+                            <label class="option-label"><input type="radio" name="q15" value="A"> A. end</label>
+                            <label class="option-label"><input type="radio" name="q15" value="B"> B. ignore</label>
+                            <label class="option-label"><input type="radio" name="q15" value="C"> C. produce</label>
+                            <label class="option-label"><input type="radio" name="q15" value="D"> D. question</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 16 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 3[C]): He had less pain, better sleep, body‑chemistry changes, return to work—but nothing about becoming stronger.">
+                            <p class="font-medium mb-2">16. All of the following are mentioned in paragraph 3 as benefits of Cousins’s laugh therapy EXCEPT ____.</p>
+                            <label class="option-label"><input type="radio" name="q16" value="A"> A. he had less pain</label>
+                            <label class="option-label"><input type="radio" name="q16" value="B"> B. he could return to work</label>
+                            <label class="option-label"><input type="radio" name="q16" value="C"> C. his body chemistry started to change</label>
+                            <label class="option-label"><input type="radio" name="q16" value="D"> D. he became stronger</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 17 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 3): Slot [C] ends with “Within eight days … his body chemistry … changed,” so right there you’d note “Soon his therapy began to have a positive effect.”">
+                            <p class="font-medium mb-2">17. The following sentence could be added to the text. Soon his therapy began to have a positive effect. Where would the sentence fit best?</p>
+                            <label class="option-label"><input type="radio" name="q17" value="A"> A. [A]</label>
+                            <label class="option-label"><input type="radio" name="q17" value="B"> B. [B]</label>
+                            <label class="option-label"><input type="radio" name="q17" value="C"> C. [C]</label>
+                            <label class="option-label"><input type="radio" name="q17" value="D"> D. [D]</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 18 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 4): “Skeptical readers” = readers who doubt.">
+                            <p class="font-medium mb-2">18. The word “skeptical” in paragraph 4 is closest in meaning to ____. </p>
+                            <label class="option-label"><input type="radio" name="q18" value="A"> A. intelligent</label>
+                            <label class="option-label"><input type="radio" name="q18" value="B"> B. angry</label>
+                            <label class="option-label"><input type="radio" name="q18" value="C"> C. doubting</label>
+                            <label class="option-label"><input type="radio" name="q18" value="D"> D. confused</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 19 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Clue (¶ 4): The author immediately acknowledges that some question the efficacy.">
+                            <p class="font-medium mb-2">19. According to paragraph 4, what does the author say about laugh therapy?</p>
+                            <label class="option-label"><input type="radio" name="q19" value="A"> A. Not everyone believes that laugh therapy works.</label>
+                            <label class="option-label"><input type="radio" name="q19" value="B"> B. Laugh therapy works better than conventional medicine.</label>
+                            <label class="option-label"><input type="radio" name="q19" value="C"> C. Doctors understand why laugh therapy works.</label>
+                            <label class="option-label"><input type="radio" name="q19" value="D"> D. Laugh therapy works on all types of illnesses.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 20 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Let's break down the structure of the passage: Paragraph 1 – The author introduces Cousins’s illness and diagnosis. Paragraph 2 – We see how Cousins was inspired by a book and began thinking about emotional and chemical effects. Paragraph 3 – The author describes his experiment with laugh therapy and its effects chronologically: deciding to try it → implementing it → observing results → full recovery. Paragraph 4 – The author adds a skeptical viewpoint and concludes with how Cousins’s case is an example of alternative medicine.">
+                            <p class="font-medium mb-2">20. Which of the following best describes the author’s presentation of information about Norman Cousins’s laugh therapy?</p>
+                            <label class="option-label"><input type="radio" name="q20" value="A"> A. The author describes events in Cousins’s life in the order they occurred.</label>
+                            <label class="option-label"><input type="radio" name="q20" value="B"> B. The author compares conventional medical treatment and laugh therapy.</label>
+                            <label class="option-label"><input type="radio" name="q20" value="C"> C. The author discusses two opinions about laugh therapy.</label>
+                            <label class="option-label"><input type="radio" name="q20" value="D"> D. The author argues in favor of using laugh therapy.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form2" class="score-display"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Passage 3 Section -->
+        <div id="passage3" class="tab-content">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">Television</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">1 An American TV network has had an international hit with the drama “24,” a thriller known for its suspense and often graphic violence. Over the past year, controversy has surrounded the series because of its portrayal of Muslim terrorists and its frequent scenes of torture. But the content of “24” is not the only thing that would have been unthinkable on prime‑time television 20 years ago. Its form also represents a major change in modern TV: during each episode’s 44 minutes – a real‑time hour, minus 16 minutes for commercials – the show connects the lives of 21 different characters, <strong class="font-bold">each</strong> with their own personalities and specific relationships with other characters. Nine different story lines (or “threads”) are depicted, each involving events and information revealed in previous episodes. [A]</p>
+                        <p class="mb-3">2 [B] For years many people have assumed that popular culture is in a state of decline, rapidly degenerating into “<mark>junk culture</mark>” with no worthwhile purpose. But an interesting new book challenges that assumption. Everything Bad Is Good for You: How Today’s Popular Culture Is Actually Making Us Smarter, by Steven Johnson, makes a persuasive argument that today’s complex TV dramas and other pop culture products give us healthy mental exercise. He calls the use of complex, interwoven plot lines involving multiple characters “<strong class="font-bold">multi‑threading</strong>,” and it is a new and growing phenomenon in TV. To keep up with shows like “24,” he points out, you must “pay attention, make inferences, track shifting social relationships,” and these cognitive challenges are changing our mental development for the better. [C]</p>
+                        <p class="mb-3">3 [D] The most obvious change in the last five years of narrative entertainment is the rise of reality TV. Surely, you might be thinking, watching “Survivor” or “The Bachelor” cannot possibly raise anyone’s IQ. “Survivor” is now in its tenth season, and “The Bachelor” is in its seventh. But as Johnson tells us, lately “even the junk has improved.” The new reality shows are like games: <strong class="font-bold">they</strong> are series of competitive tests, each more challenging than the last, and with rules that must be learned as you play on. On “Survivor,” for instance, the participants and the audience know the general <strong class="font-bold">objective</strong
+                        > of the game, but each episode brings new challenges that require quick thinking. Success in these games calls for the intellectual labor of finding the weak spots in the rules and in your opponents. This labor is done not just by the stars of the shows, but the viewers at home as well. This is what makes these shows such fun to watch – the human mind enjoys being challenged. As Johnson writes, “There’s real pleasure ... in solving puzzles, detecting patterns or understanding a complex narrative system.”</p>
+                    </div>
+                </div>
+
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 3 – Questions 21-30</h4>
+                    <form id="form3">
+                        <!-- Question 21 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Clue (¶ 1–3): Shows how modern TV (complex dramas, reality games) provides cognitive challenge/benefits.">
+                            <p class="font-medium mb-2">21. What is the topic of the passage?</p>
+                            <label class="option-label"><input type="radio" name="q21" value="A"> A. Why “24” became a hit</label>
+                            <label class="option-label"><input type="radio" name="q21" value="B"> B. Benefits of TV today</label>
+                            <label class="option-label"><input type="radio" name="q21" value="C"> C. The decline of TV today</label>
+                            <label class="option-label"><input type="radio" name="q21" value="D"> D. TV and culture</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 22 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="The sentence says there are 21 different characters, and “each with their own personalities and specific relationships” clearly refers to each character. “Each” is modifying “characters,” not personalities, storylines, or episodes.">
+                            <p class="font-medium mb-2">22. The word “each” in paragraph 1 refers to _____. </p>
+                            <label class="option-label"><input type="radio" name="q22" value="A"> A. personalities</label>
+                            <label class="option-label"><input type="radio" name="q22" value="B"> B. characters</label>
+                            <label class="option-label"><input type="radio" name="q22" value="C"> C. story lines</label>
+                            <label class="option-label"><input type="radio" name="q22" value="D"> D. episodes</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 23 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Clue (¶ 1): The discussion of “24” focuses on its intricate, multi‑threaded form.">
+                            <p class="font-medium mb-2">23. The author begins the passage by discussing “24” in order to _____. </p>
+                            <label class="option-label"><input type="radio" name="q23" value="A"> A. prove that TV has become much more violent</label>
+                            <label class="option-label"><input type="radio" name="q23" value="B"> B. show how TV has become more complex</label>
+                            <label class="option-label"><input type="radio" name="q23" value="C"> C. explain why many TV shows nowadays are controversial</label>
+                            <label class="option-label"><input type="radio" name="q23" value="D"> D. argue against its graphic violence and portrayal of terrorists</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 24 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Clue (¶ 2): It is described as “a new … phenomenon in TV” — i.e. a new form.">
+                            <p class="font-medium mb-2">24. “Multi‑threading” in TV is a new type of _____. </p>
+                            <label class="option-label"><input type="radio" name="q24" value="A"> A. form</label>
+                            <label class="option-label"><input type="radio" name="q24" value="B"> B. character</label>
+                            <label class="option-label"><input type="radio" name="q24" value="C"> C. series</label>
+                            <label class="option-label"><input type="radio" name="q24" value="D"> D. content</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 25 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Clue (¶ 2): He sets up the standard “junk culture” complaint to then oppose it.">
+                            <p class="font-medium mb-2">25. The author mentions “junk culture” in paragraph 2 in order to _____. </p>
+                            <label class="option-label"><input type="radio" name="q25" value="A"> A. emphasize how worthless most TV shows are</label>
+                            <label class="option-label"><input type="radio" name="q25" value="B"> B. contrast a common view of TV with the one he presents</label>
+                            <label class="option-label"><input type="radio" name="q25" value="C"> C. explain why TV viewing is in decline in the United States</label>
+                            <label class="option-label"><input type="radio" name="q25" value="D"> D. argue against the view that popular culture can be worthwhile</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 26 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 2–3): Johnson praises many kinds of complex shows, not only hour‑long dramas.">
+                            <p class="font-medium mb-2">26. According to the passage, Johnson’s book argues all the following EXCEPT that _____. </p>
+                            <label class="option-label"><input type="radio" name="q26" value="A"> A. people enjoy the effort of understanding complex shows</label>
+                            <label class="option-label"><input type="radio" name="q26" value="B"> B. popular culture is not in decline</label>
+                            <label class="option-label"><input type="radio" name="q26" value="C"> C. hour‑long dramas bring the greatest benefits</label>
+                            <label class="option-label"><input type="radio" name="q26" value="D"> D. many TV shows involve cognitive challenges</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 27 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 2–3): [C] ends by praising complex dramas; follow it with “It is not only hour‑long dramas that make us smarter.”">
+                            <p class="font-medium mb-2">27. Which space (marked [A], [B], [C], and [D] in the passage) will the following sentence best fit? “It is not only hour‑long dramas that make us smarter.”</p>
+                            <label class="option-label"><input type="radio" name="q27" value="A"> A. [A]</label>
+                            <label class="option-label"><input type="radio" name="q27" value="B"> B. [B]</label>
+                            <label class="option-label"><input type="radio" name="q27" value="C"> C. [C]</label>
+                            <label class="option-label"><input type="radio" name="q27" value="D"> D. [D]</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 28 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 3): “The new reality shows are like games: they are series …”">
+                            <p class="font-medium mb-2">28. The word “they” in paragraph 3 refers to _____. </p>
+                            <label class="option-label"><input type="radio" name="q28" value="A"> A. “Joe Millionaire” and “The Bachelor”</label>
+                            <label class="option-label"><input type="radio" name="q28" value="B"> B. games</label>
+                            <label class="option-label"><input type="radio" name="q28" value="C"> C. junk</label>
+                            <label class="option-label"><input type="radio" name="q28" value="D"> D. shows</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 29 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 3): “The audience know the general objective of the game” = goal.">
+                            <p class="font-medium mb-2">29. The word “objective” in paragraph 3 could best be replaced by _____. </p>
+                            <label class="option-label"><input type="radio" name="q29" value="A"> A. rule</label>
+                            <label class="option-label"><input type="radio" name="q29" value="B"> B. prize</label>
+                            <label class="option-label"><input type="radio" name="q29" value="C"> C. origin</label>
+                            <label class="option-label"><input type="radio" name="q29" value="D"> D. goal</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 30 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Clue (¶ 1–3): The author presents Johnson’s argument without criticism or caveats, implying agreement.">
+                            <p class="font-medium mb-2">30. It can be inferred that the author of the passage _____. </p>
+                            <label class="option-label"><input type="radio" name="q30" value="A"> A. agrees with Steven Johnson’s views</label>
+                            <label class="option-label"><input type="radio" name="q30" value="B"> B. strongly disagrees with Steven Johnson’s views</label>
+                            <label class="option-label"><input type="radio" name="q30" value="C"> C. has no opinion about Steven Johnson’s views</label>
+                            <label class="option-label"><input type="radio" name="q30" value="D"> D. agrees with some of Johnson’s views but disagrees with others</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form3" class="score-display"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Passage 4 Section -->
+        <div id="passage4" class="tab-content">
+            <div class="passage-container">
+                <div class="passage-text-column">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-4">Piaget’s Theory of Cognitive Development</h3>
+                    <div class="text-gray-700 leading-relaxed">
+                        <p class="mb-3">1 The psychologist, philosopher and scientist Jean Piaget has the distinction of being one of the most influential researchers in developmental psychology. Born in Neuchâtel, Switzerland, Piaget was an independent and precocious child and took such an early interest in nature that he wrote his first paper about an albino sparrow when he was 10. During his late adolescence, he studied mollusks and published 20 papers about them. After receiving his Doctorate in nature science, Piaget’s interest in the nature of thought itself, or psychoanalysis, burgeoned, and it led him to France to work for a boys’ school. During that time, he noticed that children of the same age seemed to make the same mistakes on tests; this inflamed his interest in how the minds of children work and develop. Piaget’s subsequent research enabled him to develop the theory of cognitive development. <mark>It posits that there are actually two aspects to this development: assimilation, or the process of coming to know, and accommodation, or the child’s reaction to situations when he acquires the ability to know.</mark> Under these two aspects are organized the several stages of development that Piaget observed in children.</p>
+                        <p class="mb-3">2 The assimilation is one of adaptation: the child uses the environment to fit experiences within a pre‑existing cognitive structure. This is a set of reflexes that exist when the child is born. [A] An infant fed by its mother automatically uses <strong class="font-bold">the sucking reflex</strong> to obtain milk. However, if the mother gives the child a bottle instead of her breast, the baby will employ the same sucking reflex <strong class="font-bold">it</strong> used for the breast with the nipple of the bottle. Piaget divided the assimilation process into two periods, the sensorimotor and the preoperational. The sensorimotor occurs during infancy and has six sub‑stages. [B] The infant starts out with a very limited knowledge of the world, but its cognitive abilities continue to develop based on the interactions with other human beings and its experiences. [C] In succession, the infant can be observed to evince reflexes such as grasping movements; repetitive habits – certain frequent motions with the hands; greater coordination between vision and the grasping of objects; object permanence or the capacity to know that something exists in space and time; experimentation with external objects; and finally, the <strong class="font-bold">development of insight and creativity</strong>, which shows that the baby is ready to move on to the next step that takes place during the toddler years and early childhood. This is the preoperational stage: intellectual development is evidenced by the use of symbols and some language that reflect the existence of memory and imagination. [D]</p>
+                        <p class="mb-3">3 A child undergoing the accommodation aspect of development passes through two periods – concrete operational and formal operational. In the former, which occurs during early adolescence, a child demonstrates the capacity to manipulate measurements and concrete objects. He can solve problems involving measurements and apply them to things in his environment. The child has an increased attention span and begins to understand abstract ideas such as puns and analogies. In the formal operational stage, he begins to think of what is possible rather than merely what is real. He develops a self‑consciousness and a preoccupation with the self. Finally, the child begins to question ideas, which he accepted without question as a child, and sometimes rebels, especially against his parents.</p>
+                        <p class="mb-3">4 Some scholars have questioned the rigidity of Piaget’s stages. They indicate that development is not always smooth and some later stages occur at an earlier period in the child’s life and vice versa. Since then, psychologists have been formulating theories which, while accepting the fact that development comes in stages, <strong class="font-bold">veer</strong> toward a larger core knowledge at birth.</p>
+                        <p class="mb-3">5 The Armenian literary tradition began early in the fifth century A.D. with religious tracts and histories of the Armenians. The most important of these were written by Agathangelos, Egishe, Movses Khorenatsi, and Pavstos Buzand. A <strong class="font-bold">secular</strong> literature developed in the early modern period, and in the eighteenth century Armenian Catholic monks of the Mekhitarist order began publishing ancient texts, modern histories, grammars, and literature. In the nineteenth century, Armenians developed their own journalism and public theater. Khachatur Abovian wrote the first Armenian novel, Verk Haiastani (The Wounds of Armenia), in the early 1840s. Armenian literature and drama often <strong class="font-bold">depict</strong> struggles against religious and ethnic oppression and the aspirations of Armenians for security and selfexpression.</p>
+                    </div>
+                </div>
+
+                <div class="questions-column">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">PASSAGE 4 – Questions 31-40</h4>
+                    <form id="form4">
+                        <!-- Question 31 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 1): He studied mollusks in adolescence and published 20 papers.">
+                            <p class="font-medium mb-2">31. What can be inferred about Jean Piaget in paragraph 1?</p>
+                            <label class="option-label"><input type="radio" name="q31" value="A"> A. He was not intrigued by nature science later.</label>
+                            <label class="option-label"><input type="radio" name="q31" value="B"> B. He was awarded an honorary doctorate.</label>
+                            <label class="option-label"><input type="radio" name="q31" value="C"> C. He was unsuccessful as a biologist.</label>
+                            <label class="option-label"><input type="radio" name="q31" value="D"> D. He enjoyed working with small animals.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 32 -->
+                        <div class="question-item" data-correct-answer="B" data-explanation="Clue (¶ 1): The highlighted sentence precisely states that two aspects (assimilation, accommodation) exist.">
+                            <p class="font-medium mb-2">32. Which of the sentences below best expresses the essential information in the highlighted sentence in the passage? “It posits that there are actually two aspects to this development: assimilation, or the process of coming to know, and accommodation, or the child’s reaction to situations when he acquires the ability to know.”</p>
+                            <label class="option-label"><input type="radio" name="q32" value="A"> A. Assimilation and accommodation developed by Piaget are two phases of intellectual knowledge acquisition in children.</label>
+                            <label class="option-label"><input type="radio" name="q32" value="B"> B. Piaget proposed that the process of cognitive development is divided into two areas, assimilation and accommodation.</label>
+                            <label class="option-label"><input type="radio" name="q32" value="C"> C. Acquiring the ability to know and to use knowledge are similar stages of development in cognitive development, according to Piaget.</label>
+                            <label class="option-label"><input type="radio" name="q32" value="D"> D. Accommodation follows after assimilation when a child has obtained sufficient information.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 33 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 2): The sucking reflex is a built‑in reflex illustrating assimilation’s reflex basis.">
+                            <p class="font-medium mb-2">33. Why does the author mention “the sucking reflex”?</p>
+                            <label class="option-label"><input type="radio" name="q33" value="A"> A. To introduce a stage that occurs in assimilation</label>
+                            <label class="option-label"><input type="radio" name="q33" value="B"> B. To contrast reflexes with the power to reason</label>
+                            <label class="option-label"><input type="radio" name="q33" value="C"> C. To give an example of a pre‑existing cognitive structure</label>
+                            <label class="option-label"><input type="radio" name="q33" value="D"> D. To explain how babies survive in infancy</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 34 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 2): “the baby will employ the same sucking reflex it used for the breast” – “it” refers to the baby using the reflex.">
+                            <p class="font-medium mb-2">34. The word “it” in the passage refers to ____. </p>
+                            <label class="option-label"><input type="radio" name="q34" value="A"> A. milk</label>
+                            <label class="option-label"><input type="radio" name="q34" value="B"> B. the breast</label>
+                            <label class="option-label"><input type="radio" name="q34" value="C"> C. a bottle</label>
+                            <label class="option-label"><input type="radio" name="q34" value="D"> D. the baby</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 35 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 2[C]): [C] lists the reflexes and capacities; immediately after you’d add how these capacities support later social and cognitive skills.">
+                            <p class="font-medium mb-2">35. Which space (marked [A], [B], [C], and [D] in the passage) will the following sentence best fit? “These capacities allow the child to memorize, socialize and cooperate, read, and develop structured routines.”</p>
+                            <label class="option-label"><input type="radio" name="q35" value="A"> A. [A]</label>
+                            <label class="option-label"><input type="radio" name="q35" value="B"> B. [B]</label>
+                            <label class="option-label"><input type="radio" name="q35" value="C"> C. [C]</label>
+                            <label class="option-label"><input type="radio" name="q35" value="D"> D. [D]</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 36 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 2[C]): Piaget says those developments show readiness for the preoperational stage.">
+                            <p class="font-medium mb-2">36. The author cites the development of insight and creativity as ____.</p>
+                            <label class="option-label"><input type="radio" name="q36" value="A"> A. proof that the child has the capacity to know</label>
+                            <label class="option-label"><input type="radio" name="q36" value="B"> B. a gauge of the child’s intellectual abilities</label>
+                            <label class="option-label"><input type="radio" name="q36" value="C"> C. a sign that the child can make his own decisions</label>
+                            <label class="option-label"><input type="radio" name="q36" value="D"> D. an indicator that the child is entering the preoperational stage</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 37 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 3): Accommodation yields concrete‑ and formal‑operational abilities (measurements, abstract ideas, self‑consciousness); no mention of decision‑making without advice.">
+                            <p class="font-medium mb-2">37. All of the following are mentioned in the passage as characteristics of accommodation EXCEPT ____.</p>
+                            <label class="option-label"><input type="radio" name="q37" value="A"> A. the capability to apply measurements in figuring out problems</label>
+                            <label class="option-label"><input type="radio" name="q37" value="B"> B. an adeptness at recognizing the whereabouts of an object</label>
+                            <label class="option-label"><input type="radio" name="q37" value="C"> C. the facility to grasp ideas which are complex and conceptual</label>
+                            <label class="option-label"><input type="radio" name="q37" value="D"> D. a tendency to make decisions without someone else’s advice</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 38 -->
+                        <div class="question-item" data-correct-answer="A" data-explanation="Paragraph 4 says: “They indicate that development is not always smooth and some later stages occur at an earlier period in the child’s life and vice versa.”">
+                            <p class="font-medium mb-2">38. What can be inferred from paragraph 4?</p>
+                            <label class="option-label"><input type="radio" name="q38" value="A"> A. Some stages of development may occur earlier or later than Piaget originally proposed.</label>
+                            <label class="option-label"><input type="radio" name="q38" value="B"> B. Scholars believe Piaget’s theory is completely outdated and no longer useful.</label>
+                            <label class="option-label"><input type="radio" name="q38" value="C"> C. Most psychologists reject the idea that children develop in stages.</label>
+                            <label class="option-label"><input type="radio" name="q38" value="D"> D. Piaget’s theory has been replaced by newer theories with no connection to his ideas.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 39 -->
+                        <div class="question-item" data-correct-answer="D" data-explanation="Clue (¶ 4): “psychologists … have been formulating theories which … veer toward a larger core knowledge” – “veer” = change direction.">
+                            <p class="font-medium mb-2">39. The word “veer” in paragraph 4 is closest in meaning to ____. </p>
+                            <label class="option-label"><input type="radio" name="q39" value="A"> A. incline heavily</label>
+                            <label class="option-label"><input type="radio" name="q39" value="B"> B. take a leap</label>
+                            <label class="option-label"><input type="radio" name="q39" value="C"> C. point out</label>
+                            <label class="option-label"><input type="radio" name="q39" value="D"> D. change direction</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <!-- Question 40 -->
+                        <div class="question-item" data-correct-answer="C" data-explanation="Clue (¶ 4): “Some scholars have questioned the rigidity … some later stages occur earlier … and vice versa.”">
+                            <p class="font-medium mb-2">40. According to paragraph 4, how do scholars today view Jean Piaget’s theory?</p>
+                            <label class="option-label"><input type="radio" name="q40" value="A"> A. They are in complete disagreement with Jean Piaget’s ideas.</label>
+                            <label class="option-label"><input type="radio" name="q40" value="B"> B. They are not certain if Piaget has provided sufficient support for his theory.</label>
+                            <label class="option-label"><input type="radio" name="q40" value="C"> C. They believe that the stages outlined in Piaget’s theory are not always distinct.</label>
+                            <label class="option-label"><input type="radio" name="q40" value="D"> D. They agree with Piaget’s belief that children possess a large core knowledge at birth.</label>
+                            <div class="explanation hidden"></div>
+                        </div>
+                        <div id="score-form4" class="score-display"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-8">
+            <button type="button" id="submit-test-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-xl transition-colors duration-300 text-lg">Submit Test</button>
+        </div>
+    </div>
+
+    <script>
+        // Store correct answers and explanations for each form
+        const correctAnswers = {
+            form1: {
+                q1: { answer: 'A', explanation: 'Clue (¶ 1): “One amazing characteristic …” clearly means “remarkable” or “surprising,” not “average,” “boring,” or “common”.' },
+                q2: { answer: 'C', explanation: 'Clue (¶ 1): Only male humpbacks sing; females do not, so a male + female duo is least likely.' },
+                q3: { answer: 'B', explanation: 'Clue (¶ 1): Mentioned: moaning, blasts, squeals. “Clicking” is never listed.' },
+                q4: { answer: 'D', explanation: 'Clue (¶ 2): “not known with certainty” means “not known for sure.”' },
+                q5: { answer: 'B', explanation: 'Clue (¶ 2): That sentence (“They are…”) introduces the three unknown items that follow.' },
+                q6: { answer: 'D', explanation: 'Clue (¶ 3[B–C]): Whales lack vocal cords and their mouths don’t move while singing.' },
+                q7: { answer: 'D', explanation: 'Clue (¶ 3): After listing the three whale‑sound mysteries ([A], [B], [C]), the next slot [D] is where you’d contrast with human sound production.' },
+                q8: { answer: 'B', explanation: 'Clue (¶ 4): “Perhaps … because they want female whales that are far away to hear them.”' },
+                q9: { answer: 'D', explanation: 'Clue (¶ 5): “when they produce their songs” clearly refers back to the whales.' },
+                q10: { answer: 'C', explanation: 'Clue (¶ 5): Whales spend November–May in Hawaii; outside that period (June–October) they are in Alaska. September falls in that window.' }
+            },
+            form2: {
+                q11: { answer: 'A', explanation: 'Clue (¶ 1): He was told he would become immobilized in the future, but at that point he was not yet immobilized.' },
+                q12: { answer: 'D', explanation: 'Clue (¶ 2): The book’s discussion led him to wonder if positive emotions could produce positive chemical changes.' },
+                q13: { answer: 'D', explanation: 'Clue (¶ 2): “This made Cousins think …” refers to the book’s argument about stress, i.e. its central thesis.' },
+                q14: { answer: 'C', explanation: 'It accurately summarizes the main idea of the sentence. The book Cousins read linked emotional stress and negative attitudes to damage in body chemistry and health.' },
+                q15: { answer: 'C', explanation: 'Clue (¶ 3): “elicit positive emotions” = “bring forth/produce” them.' },
+                q16: { answer: 'D', explanation: 'Clue (¶ 3[C]): He had less pain, better sleep, body‑chemistry changes, return to work—but nothing about becoming stronger.' },
+                q17: { answer: 'C', explanation: 'Clue (¶ 3): Slot [C] ends with “Within eight days … his body chemistry … changed,” so right there you’d note “Soon his therapy began to have a positive effect.”' },
+                q18: { answer: 'C', explanation: 'Clue (¶ 4): “Skeptical readers” = readers who doubt.' },
+                q19: { answer: 'A', explanation: 'Clue (¶ 4): The author immediately acknowledges that some question the efficacy.' },
+                q20: { answer: 'A', explanation: 'Let\'s break down the structure of the passage: Paragraph 1 – The author introduces Cousins’s illness and diagnosis. Paragraph 2 – We see how Cousins was inspired by a book and began thinking about emotional and chemical effects. Paragraph 3 – The author describes his experiment with laugh therapy and its effects chronologically: deciding to try it → implementing it → observing results → full recovery. Paragraph 4 – The author adds a skeptical viewpoint and concludes with how Cousins’s case is an example of alternative medicine.' }
+            },
+            form3: {
+                q21: { answer: 'B', explanation: 'Clue (¶ 1–3): Shows how modern TV (complex dramas, reality games) provides cognitive challenge/benefits.' },
+                q22: { answer: 'B', explanation: 'The sentence says there are 21 different characters, and “each with their own personalities and specific relationships” clearly refers to each character. “Each” is modifying “characters,” not personalities, storylines, or episodes.' },
+                q23: { answer: 'B', explanation: 'Clue (¶ 1): The discussion of “24” focuses on its intricate, multi‑threaded form.' },
+                q24: { answer: 'A', explanation: 'Clue (¶ 2): It is described as “a new … phenomenon in TV” — i.e. a new form.' },
+                q25: { answer: 'B', explanation: 'Clue (¶ 2): He sets up the standard “junk culture” complaint to then oppose it.' },
+                q26: { answer: 'C', explanation: 'Clue (¶ 2–3): Johnson praises many kinds of complex shows, not only hour‑long dramas.' },
+                q27: { answer: 'C', explanation: 'Clue (¶ 2–3): [C] ends by praising complex dramas; follow it with “It is not only hour‑long dramas that make us smarter.”' },
+                q28: { answer: 'D', explanation: 'Clue (¶ 3): “The new reality shows are like games: they are series …”' },
+                q29: { answer: 'D', explanation: 'Clue (¶ 3): “The audience know the general objective of the game” = goal.' },
+                q30: { answer: 'A', explanation: 'Clue (¶ 1–3): The author presents Johnson’s argument without criticism or caveats, implying agreement.' }
+            },
+            form4: {
+                q31: { answer: 'D', explanation: 'Clue (¶ 1): He studied mollusks in adolescence and published 20 papers.' },
+                q32: { answer: 'B', explanation: 'Clue (¶ 1): The highlighted sentence precisely states that two aspects (assimilation, accommodation) exist.' },
+                q33: { answer: 'C', explanation: 'Clue (¶ 2): The sucking reflex is a built‑in reflex illustrating assimilation’s reflex basis.' },
+                q34: { answer: 'D', explanation: 'Clue (¶ 2): “the baby will employ the same sucking reflex it used for the breast” – “it” refers to the baby using the reflex.' },
+                q35: { answer: 'C', explanation: 'Clue (¶ 2[C]): [C] lists the reflexes and capacities; immediately after you’d add how these capacities support later social and cognitive skills.' },
+                q36: { answer: 'D', explanation: 'Clue (¶ 2[C]): Piaget says those developments show readiness for the preoperational stage.' },
+                q37: { answer: 'D', explanation: 'Clue (¶ 3): Accommodation yields concrete‑ and formal‑operational abilities (measurements, abstract ideas, self‑consciousness); no mention of decision‑making without advice.' },
+                q38: { answer: 'A', explanation: 'Paragraph 4 says: “They indicate that development is not always smooth and some later stages occur at an earlier period in the child’s life and vice versa.”' },
+                q39: { answer: 'D', explanation: 'Clue (¶ 4): “psychologists … have been formulating theories which … veer toward a larger core knowledge” – “veer” = change direction.' },
+                q40: { answer: 'C', explanation: 'Clue (¶ 4): “Some scholars have questioned the rigidity … some later stages occur earlier … and vice versa.”' }
+            }
+        };
+
+        let timerInterval;
+        const totalTime = 60 * 60; // 60 minutes in seconds
+        let timeLeft = totalTime;
+        const timerDisplay = document.getElementById('countdown-timer');
+        const timerContainer = document.querySelector('.timer-container');
+        const submitButton = document.getElementById('submit-test-button');
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = formatTime(timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time's Up!";
+                    timerContainer.classList.add('ended');
+                    freezeAllForms();
+                    submitButton.disabled = false; // Ensure submit button is enabled
+                } else if (timeLeft <= 60) { // Highlight red for the last minute
+                    timerContainer.style.backgroundColor = '#fecaca'; /* red-100 */
+                    timerContainer.style.borderColor = '#ef4444'; /* red-400 */
+                    timerContainer.style.color = '#991b1b'; /* red-800 */
+                }
+            }, 1000); // Update every second
+        }
+
+        function freezeAllForms() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.classList.add('frozen-form');
+                const inputs = form.querySelectorAll('input[type="radio"]');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                });
+            });
+        }
+
+        function collectAnswers() {
+            const userAnswers = {};
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+
+            for (const formId in correctAnswers) {
+                const form = document.getElementById(formId);
+                const questions = form.querySelectorAll('.question-item');
+                const answers = correctAnswers[formId];
+
+                questions.forEach((questionDiv, index) => {
+                    const questionNumber = parseInt(questionDiv.querySelector('p').textContent.split('.')[0]);
+                    const questionName = questionDiv.querySelector('input[type="radio"]').name;
+                    const selectedOption = form.querySelector(`input[name="${questionName}"]:checked`);
+                    const correctAnswer = answers[questionName].answer;
+
+                    const userAnswer = selectedOption ? selectedOption.value : 'N/A';
+                    const status = (userAnswer === correctAnswer) ? 'Correct' : 'Incorrect';
+
+                    if (userAnswer === correctAnswer) {
+                        totalCorrect++;
+                    }
+
+                    userAnswers[questionNumber] = {
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        status: status
+                    };
+                    totalQuestions++;
+                });
+            }
+            return { userAnswers, totalCorrect, totalQuestions };
+        }
+
+        function generatePdfReport(results) {
+            const { userAnswers, totalCorrect, totalQuestions } = results;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const today = new Date();
+            const date = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const time = today.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            // Title
+            doc.setFontSize(22);
+            doc.text("VSTEP Reading Comprehension Test Results", 105, 20, null, null, "center");
+
+            // Report Info
+            doc.setFontSize(12);
+            doc.text(`Report generated on: ${date} at ${time}`, 14, 35);
+            doc.text(`Total Score: ${totalCorrect} out of ${totalQuestions} correct!`, 14, 45);
+
+            // Prepare table data
+            const tableColumn = ["Question #", "Your Answer", "Correct Answer", "Status"];
+            const tableRows = [];
+
+            // Sort questions by number
+            const sortedQuestionNumbers = Object.keys(userAnswers).sort((a, b) => parseInt(a) - parseInt(b));
+
+            sortedQuestionNumbers.forEach(qNum => {
+                const data = userAnswers[qNum];
+                tableRows.push([
+                    qNum,
+                    data.userAnswer,
+                    data.correctAnswer,
+                    data.status
+                ]);
+            });
+
+            // Add table
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 55,
+                theme: 'grid',
+                headStyles: { fillColor: [44, 62, 80], textColor: [255, 255, 255], fontStyle: 'bold' },
+                styles: { fontSize: 10, cellPadding: 2, overflow: 'linebreak' },
+                columnStyles: {
+                    0: { cellWidth: 20 }, // Question #
+                    1: { cellWidth: 50 }, // Your Answer
+                    2: { cellWidth: 50 }, // Correct Answer
+                    3: { cellWidth: 30 }  // Status
+                }
+            });
+
+            // Save the PDF
+            doc.save('VSTEP_Test_Results.pdf');
+        }
+
+        submitButton.addEventListener('click', () => {
+            clearInterval(timerInterval); // Stop the timer if still running
+            freezeAllForms(); // Ensure all forms are frozen
+            const results = collectAnswers();
+            generatePdfReport(results);
+        });
+
+        // Tab functionality
+        function openTab(tabId) {
+            // Get all tab content elements
+            const tabContents = document.querySelectorAll('.tab-content');
+            // Hide all tab content
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Get all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            // Deactivate all tab buttons
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            // Activate the clicked tab button
+            event.currentTarget.classList.add('active');
+        }
+
+        // Start the timer when the page loads
+        document.addEventListener('DOMContentLoaded', startTimer);
+    </script>
+</body>
+</html>
