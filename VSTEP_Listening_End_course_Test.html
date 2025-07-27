@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSTEP Listening Comprehension Test</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for better readability and aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            color: #333;
+        }
+        .test-container {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+            padding: 1.5rem; /* Padding inside the main container */
+            border: 1px solid #e5e7eb; /* Light border for separation */
+        }
+
+        .question-group {
+            border: 1px solid #d1d5db; /* Light gray border for groups */
+            border-radius: 0.5rem; /* Rounded corners for groups */
+            padding: 1.5rem;
+            margin-bottom: 2rem; /* Space between different question groups */
+            background-color: #f9fafb; /* Slightly off-white background for groups */
+        }
+
+        .question-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+        }
+        .question-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .option-label {
+            display: block;
+            padding: 0.5rem 0;
+            cursor: pointer;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: background-color 0.2s ease-in-out;
+        }
+        .option-label:hover {
+            background-color: #f3f4f6; /* hover:bg-gray-100 */
+        }
+        .option-label input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        /* Styles for correct/incorrect answers */
+        .correct-answer {
+            background-color: #d1fae5; /* green-100 */
+            border: 1px solid #34d399; /* green-400 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border: 1px solid #ef4444; /* red-400 */
+        }
+        .user-selected {
+            font-weight: bold;
+        }
+        .score-display {
+            background-color: #e0f2fe; /* light blue */
+            color: #0c4a6e; /* dark blue text */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .timer-container {
+            background-color: #fefcbf; /* yellow-100 */
+            border: 1px solid #facc15; /* yellow-400 */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #78350f; /* amber-900 */
+        }
+        .timer-container.ended {
+            background-color: #fecaca; /* red-200 */
+            border-color: #ef4444; /* red-500 */
+            color: #991b1b; /* red-800 */
+        }
+        .frozen-form {
+            pointer-events: none; /* Disable all interactions */
+            opacity: 0.7; /* Visually indicate it's frozen */
+        }
+
+        /* Tab specific styles */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            background-color: #e2e8f0; /* gray-200 */
+            color: #4a5568; /* gray-700 */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            margin: 0 0.25rem; /* Small margin between tabs */
+        }
+        .tab-button:hover {
+            background-color: #cbd5e0; /* gray-300 */
+        }
+        .tab-button.active {
+            background-color: white;
+            border-color: #e5e7eb;
+            color: #4338ca; /* indigo-700 */
+            border-bottom-color: transparent; /* Hide bottom border for active tab */
+            z-index: 10; /* Bring active tab to front */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f0f8ff; /* AliceBlue */
+            border-left: 4px solid #3498db; /* Blue border */
+            border-radius: 0.25rem;
+        }
+    </style>
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF AutoTable plugin for table generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 test-container">
+        <h1 class="text-3xl font-extrabold text-center text-indigo-700 mb-4">VSTEP</h1>
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Listening Comprehension Test</h2>
+
+        <!-- Timer Display -->
+        <div class="timer-container">
+            Time Remaining: <span id="countdown-timer">40:00</span>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('part1')">Part 1</button>
+            <button class="tab-button" onclick="openTab('part2')">Part 2</button>
+            <button class="tab-button" onclick="openTab('part3')">Part 3</button>
+        </div>
+
+        <!-- Part 1 Section -->
+        <div id="part1" class="tab-content active">
+            <form id="form1">
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 1: Questions 1–4</h4>
+                    <!-- Question 1 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 1.C">
+                        <p class="font-medium mb-2">1. What is the purpose of this announcement?</p>
+                        <label class="option-label"><input type="radio" name="q1" value="A"> To invite people to return</label>
+                        <label class="option-label"><input type="radio" name="q1" value="B"> To ask people to leave</label>
+                        <label class="option-label"><input type="radio" name="q1" value="C"> To announce the time</label>
+                        <label class="option-label"><input type="radio" name="q1" value="D"> To promote a special offer</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 2 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 2.C">
+                        <p class="font-medium mb-2">2. What should passengers do before landing?</p>
+                        <label class="option-label"><input type="radio" name="q2" value="A"> Pack their bags</label>
+                        <label class="option-label"><input type="radio" name="q2" value="B"> Get out their ticket</label>
+                        <label class="option-label"><input type="radio" name="q2" value="C"> Put their luggage under the seat</label>
+                        <label class="option-label"><input type="radio" name="q2" value="D"> Change their seats</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 3 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 3.C">
+                        <p class="font-medium mb-2">3. What should the receptionist do first?</p>
+                        <label class="option-label"><input type="radio" name="q3" value="A"> Call the person he is visiting</label>
+                        <label class="option-label"><input type="radio" name="q3" value="B"> Ask his name</label>
+                        <label class="option-label"><input type="radio" name="q3" value="C"> Say hello</label>
+                        <label class="option-label"><input type="radio" name="q3" value="D"> Have him sign the book</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 4 -->
+                    <div class="question-item" data-correct-answer="A" data-explanation="Answer key: 4.A">
+                        <p class="font-medium mb-2">4. What is the talk about?</p>
+                        <label class="option-label"><input type="radio" name="q4" value="A"> The writing assignments</label>
+                        <label class="option-label"><input type="radio" name="q4" value="B"> Last year’s projects</label>
+                        <label class="option-label"><input type="radio" name="q4" value="C"> An exam on Friday</label>
+                        <label class="option-label"><input type="radio" name="q4" value="D"> The students’ poor grades</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 1: Questions 5–8</h4>
+                    <!-- Question 5 -->
+                    <div class="question-item" data-correct-answer="B" data-explanation="Answer key: 5.B">
+                        <p class="font-medium mb-2">5. What are passengers requested to do?</p>
+                        <label class="option-label"><input type="radio" name="q5" value="A"> Buy tickets for another service</label>
+                        <label class="option-label"><input type="radio" name="q5" value="B"> Move to another location</label>
+                        <label class="option-label"><input type="radio" name="q5" value="C"> Get on a different bus</label>
+                        <label class="option-label"><input type="radio" name="q5" value="D"> Wait where they are</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 6 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 6.C">
+                        <p class="font-medium mb-2">6. What are the speakers discussing?</p>
+                        <label class="option-label"><input type="radio" name="q6" value="A"> A vacation package</label>
+                        <label class="option-label"><input type="radio" name="q6" value="B"> A job opportunity</label>
+                        <label class="option-label"><input type="radio" name="q6" value="C"> A business course</label>
+                        <label class="option-label"><input type="radio" name="q6" value="D"> A work schedule</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 7 -->
+                    <div class="question-item" data-correct-answer="A" data-explanation="Answer key: 7.A">
+                        <p class="font-medium mb-2">7. How long does the lecture last?</p>
+                        <label class="option-label"><input type="radio" name="q7" value="A"> About 2 hours</label>
+                        <label class="option-label"><input type="radio" name="q7" value="B"> About 3 hours</label>
+                        <label class="option-label"><input type="radio" name="q7" value="C"> About 4 hours</label>
+                        <label class="option-label"><input type="radio" name="q7" value="D"> About 5 hours</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 8 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 8.C">
+                        <p class="font-medium mb-2">8. Who most likely are the speakers?</p>
+                        <label class="option-label"><input type="radio" name="q8" value="A"> Office workers</label>
+                        <label class="option-label"><input type="radio" name="q8" value="B"> Photographers</label>
+                        <label class="option-label"><input type="radio" name="q8" value="C"> Website developers</label>
+                        <label class="option-label"><input type="radio" name="q8" value="D"> Job applicants</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+                <div id="score-form1" class="score-display"></div>
+            </form>
+        </div>
+
+        <!-- Part 2 Section -->
+        <div id="part2" class="tab-content">
+            <form id="form2">
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 2: Questions 9–12</h4>
+                    <!-- Question 9 -->
+                    <div class="question-item" data-correct-answer="B" data-explanation="Answer key: 9.B">
+                        <p class="font-medium mb-2">9. What are the speakers mainly talking about?</p>
+                        <label class="option-label"><input type="radio" name="q9" value="A"> A school extra-curricular activity</label>
+                        <label class="option-label"><input type="radio" name="q9" value="B"> A cooking class at an institute</label>
+                        <label class="option-label"><input type="radio" name="q9" value="C"> An assignment in an economics class</label>
+                        <label class="option-label"><input type="radio" name="q9" value="D"> The menu for someone’s party</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 10 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 10.C">
+                        <p class="font-medium mb-2">10. How long does the cooking class last?</p>
+                        <label class="option-label"><input type="radio" name="q10" value="A"> One month</label>
+                        <label class="option-label"><input type="radio" name="q10" value="B"> Two months</label>
+                        <label class="option-label"><input type="radio" name="q10" value="C"> Three months</label>
+                        <label class="option-label"><input type="radio" name="q10" value="D"> Four months</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 11 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 11.D">
+                        <p class="font-medium mb-2">11. What does the teacher say about the cooking program?</p>
+                        <label class="option-label"><input type="radio" name="q11" value="A"> Students will study with another teacher.</label>
+                        <label class="option-label"><input type="radio" name="q11" value="B"> It takes place every Friday.</label>
+                        <label class="option-label"><input type="radio" name="q11" value="C"> Mrs. Logan will teach the cooking class.</label>
+                        <label class="option-label"><input type="radio" name="q11" value="D"> Students will make 2 kinds of food.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 12 -->
+                    <div class="question-item" data-correct-answer="A" data-explanation="Answer key: 12.A">
+                        <p class="font-medium mb-2">12. What will the student probably do next?</p>
+                        <label class="option-label"><input type="radio" name="q12" value="A"> Get his mother’s permission to take the class</label>
+                        <label class="option-label"><input type="radio" name="q12" value="B"> Ask more friends to join the cooking class</label>
+                        <label class="option-label"><input type="radio" name="q12" value="C"> Go home and practice making sandwiches</label>
+                        <label class="option-label"><input type="radio" name="q12" value="D"> Start taking cooking lessons immediately</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 2: Questions 13–16</h4>
+                    <!-- Question 13 -->
+                    <div class="question-item" data-correct-answer="B" data-explanation="Answer key: 13.B">
+                        <p class="font-medium mb-2">13. What is the conversation mainly about?</p>
+                        <label class="option-label"><input type="radio" name="q13" value="A"> Problems of visitors to Korea</label>
+                        <label class="option-label"><input type="radio" name="q13" value="B"> Culture in Korea</label>
+                        <label class="option-label"><input type="radio" name="q13" value="C"> Eating customs in Korea</label>
+                        <label class="option-label"><input type="radio" name="q13" value="D"> What people think of Korean</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 14 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 14.C">
+                        <p class="font-medium mb-2">14. What is the woman planning to do?</p>
+                        <label class="option-label"><input type="radio" name="q14" value="A"> Working in Korea</label>
+                        <label class="option-label"><input type="radio" name="q14" value="B"> Visiting a Korean friend</label>
+                        <label class="option-label"><input type="radio" name="q14" value="C"> Teaching English to a Korean student</label>
+                        <label class="option-label"><input type="radio" name="q14" value="D"> Applying to study in Korea</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 15 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 15.D">
+                        <p class="font-medium mb-2">15. What does the man say about age in Korean culture?</p>
+                        <label class="option-label"><input type="radio" name="q15" value="A"> Old people need support from young people.</label>
+                        <label class="option-label"><input type="radio" name="q15" value="B"> Young people cannot eat with older people.</label>
+                        <label class="option-label"><input type="radio" name="q15" value="C"> Older people have higher social positions.</label>
+                        <label class="option-label"><input type="radio" name="q15" value="D"> Young people should show respect to older people.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 16 -->
+                    <div class="question-item" data-correct-answer="A" data-explanation="Answer key: 16.A">
+                        <p class="font-medium mb-2">16. What does the man mean when he says, “You could say that”?</p>
+                        <label class="option-label"><input type="radio" name="q16" value="A"> He agrees with what the woman has said.</label>
+                        <label class="option-label"><input type="radio" name="q16" value="B"> He does not understand what the woman has said.</label>
+                        <label class="option-label"><input type="radio" name="q16" value="C"> He thinks the woman is wrong.</label>
+                        <label class="option-label"><input type="radio" name="q16" value="D"> He encourages the woman to express her idea.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 2: Questions 17–20</h4>
+                    <!-- Question 17 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 17.D">
+                        <p class="font-medium mb-2">17. What is the topic of the conversation?</p>
+                        <label class="option-label"><input type="radio" name="q17" value="A"> Science fiction stories about aliens</label>
+                        <label class="option-label"><input type="radio" name="q17" value="B"> Possible characteristics of alien life forms</label>
+                        <label class="option-label"><input type="radio" name="q17" value="C"> How aliens might communicate with Earth</label>
+                        <label class="option-label"><input type="radio" name="q17" value="D"> How scientists search the universe for alien life</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 18 -->
+                    <div class="question-item" data-correct-answer="B" data-explanation="Answer key: 18.B">
+                        <p class="font-medium mb-2">18. What does the man mean when he says, “Well, none has ever been found, has it?”</p>
+                        <label class="option-label"><input type="radio" name="q18" value="A"> He is unsure whether life on other planets exists.</label>
+                        <label class="option-label"><input type="radio" name="q18" value="B"> He doesn’t believe that life exists on other planets.</label>
+                        <label class="option-label"><input type="radio" name="q18" value="C"> He doesn’t think scientists are looking for extraterrestrial life.</label>
+                        <label class="option-label"><input type="radio" name="q18" value="D"> He thinks that extraterrestrial life will be found soon.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 19 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 19.D">
+                        <p class="font-medium mb-2">19. Why is liquid water necessary?</p>
+                        <label class="option-label"><input type="radio" name="q19" value="A"> It is involved in many biological processes.</label>
+                        <label class="option-label"><input type="radio" name="q19" value="B"> It only exists on planets with mild climates.</label>
+                        <label class="option-label"><input type="radio" name="q19" value="C"> All life on Earth is based on water.</label>
+                        <label class="option-label"><input type="radio" name="q19" value="D"> It helps to form complex carbon molecules.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 20 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 20.D">
+                        <p class="font-medium mb-2">20. What does the man imply when he says, “OK, but you have to admit it would be a lot more of a thrill to find intelligent life”?</p>
+                        <label class="option-label"><input type="radio" name="q20" value="A"> Intelligent life is much less likely to be found.</label>
+                        <label class="option-label"><input type="radio" name="q20" value="B"> Scientists are only interested in intelligent life.</label>
+                        <label class="option-label"><input type="radio" name="q20" value="C"> It is much easier to find intelligent life.</label>
+                        <label class="option-label"><input type="radio" name="q20" value="D"> Intelligent life is much more interesting.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+                <div id="score-form2" class="score-display"></div>
+            </form>
+        </div>
+
+        <!-- Part 3 Section -->
+        <div id="part3" class="tab-content">
+            <form id="form3">
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 3: Questions 21–25</h4>
+                    <!-- Question 21 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 21.C">
+                        <p class="font-medium mb-2">21. The professor asks his students to take notes on _______.</p>
+                        <label class="option-label"><input type="radio" name="q21" value="A"> general education courses</label>
+                        <label class="option-label"><input type="radio" name="q21" value="B"> composition written projects</label>
+                        <label class="option-label"><input type="radio" name="q21" value="C"> courses to take to graduate</label>
+                        <label class="option-label"><input type="radio" name="q21" value="D"> learning a computer language</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 22 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 22.D">
+                        <p class="font-medium mb-2">22. What is a must to satisfy the English requirement?</p>
+                        <label class="option-label"><input type="radio" name="q22" value="A"> 6 credits in written project</label>
+                        <label class="option-label"><input type="radio" name="q22" value="B"> 1 foreign language</label>
+                        <label class="option-label"><input type="radio" name="q22" value="C"> 2 writing papers or more</label>
+                        <label class="option-label"><input type="radio" name="q22" value="D"> 6 basic writing classes</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 23 -->
+                    <div class="question-item" data-correct-answer="B" data-explanation="Answer key: 23.B">
+                        <p class="font-medium mb-2">23. How many hours of mathematics courses do students need?</p>
+                        <label class="option-label"><input type="radio" name="q23" value="A"> Two</label>
+                        <label class="option-label"><input type="radio" name="q23" value="B"> Three</label>
+                        <label class="option-label"><input type="radio" name="q23" value="C"> Six</label>
+                        <label class="option-label"><input type="radio" name="q23" value="D"> Twelve</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 24 -->
+                    <div class="question-item" data-correct-answer="A" data-explanation="Answer key: 24.A">
+                        <p class="font-medium mb-2">24. How does the professor explain graduation requirements?</p>
+                        <label class="option-label"><input type="radio" name="q24" value="A"> By listing requirements for graduation</label>
+                        <label class="option-label"><input type="radio" name="q24" value="B"> By letting the students guess</label>
+                        <label class="option-label"><input type="radio" name="q24" value="C"> By summarizing them in one sentence</label>
+                        <label class="option-label"><input type="radio" name="q24" value="D"> By telling a story about his undergraduate studies</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 25 -->
+                    <div class="question-item" data-correct-answer="B" data-explanation="Answer key: 25.B">
+                        <p class="font-medium mb-2">25. Which of the following is NOT a requirement?</p>
+                        <label class="option-label"><input type="radio" name="q25" value="A"> History</label>
+                        <label class="option-label"><input type="radio" name="q25" value="B"> Physical education</label>
+                        <label class="option-label"><input type="radio" name="q25" value="C"> Literature</label>
+                        <label class="option-label"><input type="radio" name="q25" value="D"> Math</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 3: Questions 26–30</h4>
+                    <!-- Question 26 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 26.D">
+                        <p class="font-medium mb-2">26. What is this passage mainly about?</p>
+                        <label class="option-label"><input type="radio" name="q26" value="A"> Hopi marriage customs</label>
+                        <label class="option-label"><input type="radio" name="q26" value="B"> Chinese marriage traditions</label>
+                        <label class="option-label"><input type="radio" name="q26" value="C"> Having babies</label>
+                        <label class="option-label"><input type="radio" name="q26" value="D"> Finding a marriage partner</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 27 -->
+                    <div class="question-item" data-correct-answer="D" data-explanation="Answer key: 27.D">
+                        <p class="font-medium mb-2">27. Which of the following is TRUE about marriage in China?</p>
+                        <label class="option-label"><input type="radio" name="q27" value="A"> In the past, marriage was decided by the matchmaker.</label>
+                        <label class="option-label"><input type="radio" name="q27" value="B"> Arranged marriages are no longer in existence nowadays.</label>
+                        <label class="option-label"><input type="radio" name="q27" value="C"> Most young people are dependent on matchmakers.</label>
+                        <label class="option-label"><input type="radio" name="q27" value="D"> Matchmakers helped parents find a suitable spouse for their children.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 28 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 28.C">
+                        <p class="font-medium mb-2">28. According to the professor, what is an “arranged marriage”?</p>
+                        <label class="option-label"><input type="radio" name="q28" value="A"> One that is decided by senior family members.</label>
+                        <label class="option-label"><input type="radio" name="q28" value="B"> One that parents of marriage partners had promised before.</label>
+                        <label class="option-label"><input type="radio" name="q28" value="C"> One that is arranged by the matchmaker.</label>
+                        <label class="option-label"><input type="radio" name="q28" value="D"> One that marriage partners arrange their own wedding.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 29 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 29.C">
+                        <p class="font-medium mb-2">29. What is the speaker’s opinion about choosing a marriage partner?</p>
+                        <label class="option-label"><input type="radio" name="q29" value="A"> It has a similar pattern around the world.</label>
+                        <label class="option-label"><input type="radio" name="q29" value="B"> It is related to how old the partners are.</label>
+                        <label class="option-label"><input type="radio" name="q29" value="C"> It is a challenging task for most people.</label>
+                        <label class="option-label"><input type="radio" name="q29" value="D"> It requires how many times the partners meet.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 30 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 30.C">
+                        <p class="font-medium mb-2">30. How does the professor present his ideas?</p>
+                        <label class="option-label"><input type="radio" name="q30" value="A"> By arguing one view over another</label>
+                        <label class="option-label"><input type="radio" name="q30" value="B"> By telling a story</label>
+                        <label class="option-label"><input type="radio" name="q30" value="C"> By comparing and contrasting traditions</label>
+                        <label class="option-label"><input type="radio" name="q30" value="D"> By presenting opinions</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Part 3: Questions 31–35</h4>
+                    <!-- Question 31 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 31.C">
+                        <p class="font-medium mb-2">31. According to the lecture, what is TRUE about Bluetooth?</p>
+                        <label class="option-label"><input type="radio" name="q31" value="A"> It was the earliest and most popular electronic device.</label>
+                        <label class="option-label"><input type="radio" name="q31" value="B"> It was used to connect different electronic devices with cables.</label>
+                        <label class="option-label"><input type="radio" name="q31" value="C"> It was developed to solve the problem of cables.</label>
+                        <label class="option-label"><input type="radio" name="q31" value="D"> It can replace keyboards, mouses, and printers.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 32 -->
+                    <div class="question-item" data-correct-answer="A" data-explanation="Answer key: 32.A">
+                        <p class="font-medium mb-2">32. Why does the teacher mention “wireless mouse products”?</p>
+                        <label class="option-label"><input type="radio" name="q32" value="A"> To give an example of how Bluetooth is used</label>
+                        <label class="option-label"><input type="radio" name="q32" value="B"> To explain how Bluetooth chips are placed in devices</label>
+                        <label class="option-label"><input type="radio" name="q32" value="C"> To emphasize why Bluetooth chips must be developed</label>
+                        <label class="option-label"><input type="radio" name="q32" value="D"> To advertise for a new technology</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 33 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 33.C">
+                        <p class="font-medium mb-2">33. Why does the teacher say, “Perhaps the chip is blue and shaped like a tooth”?</p>
+                        <label class="option-label"><input type="radio" name="q33" value="A"> To point out how the name can be confusing</label>
+                        <label class="option-label"><input type="radio" name="q33" value="B"> To explain the characteristics of the chip features</label>
+                        <label class="option-label"><input type="radio" name="q33" value="C"> To have students think about the origin of the name</label>
+                        <label class="option-label"><input type="radio" name="q33" value="D"> To introduce the person who created Bluetooth</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 34 -->
+                    <div class="question-item" data-correct-answer="C" data-explanation="Answer key: 34.C">
+                        <p class="font-medium mb-2">34. What does the phrase “put in an order” probably mean?</p>
+                        <label class="option-label"><input type="radio" name="q34" value="A"> To put in the correct order</label>
+                        <label class="option-label"><input type="radio" name="q34" value="B"> To make an arrangement</label>
+                        <label class="option-label"><input type="radio" name="q34" value="C"> To make a purchase of food</label>
+                        <label class="option-label"><input type="radio" name="q34" value="D"> To divide into classification</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                    <!-- Question 35 -->
+                    <div class="question-item" data-correct-answer="A" data-explanation="Answer key: 35.A">
+                        <p class="font-medium mb-2">35. What is the teacher’s opinion of Bluetooth technology?</p>
+                        <label class="option-label"><input type="radio" name="q35" value="A"> He thinks it will greatly influence our lives.</label>
+                        <label class="option-label"><input type="radio" name="q35" value="B"> He feels people are expecting too much from it.</label>
+                        <label class="option-label"><input type="radio" name="q35" value="C"> He believes it can compete with other new technologies.</label>
+                        <label class="option-label"><input type="radio" name="q35" value="D"> He is doubtful it will replace other existing devices.</label>
+                        <div class="explanation hidden"></div>
+                    </div>
+                </div>
+                <div id="score-form3" class="score-display"></div>
+            </form>
+        </div>
+
+        <div class="flex justify-center mt-8">
+            <button type="button" id="submit-test-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-xl transition-colors duration-300 text-lg">Submit Test</button>
+        </div>
+    </div>
+
+    <script>
+        // Store correct answers and explanations for each form
+        const correctAnswers = {
+            form1: {
+                q1: { answer: 'C', explanation: 'Answer key: 1.C' },
+                q2: { answer: 'C', explanation: 'Answer key: 2.C' },
+                q3: { answer: 'C', explanation: 'Answer key: 3.C' },
+                q4: { answer: 'A', explanation: 'Answer key: 4.A' },
+                q5: { answer: 'B', explanation: 'Answer key: 5.B' },
+                q6: { answer: 'C', explanation: 'Answer key: 6.C' },
+                q7: { answer: 'A', explanation: 'Answer key: 7.A' },
+                q8: { answer: 'C', explanation: 'Answer key: 8.C' }
+            },
+            form2: {
+                q9: { answer: 'B', explanation: 'Answer key: 9.B' },
+                q10: { answer: 'C', explanation: 'Answer key: 10.C' },
+                q11: { answer: 'D', explanation: 'Answer key: 11.D' },
+                q12: { answer: 'A', explanation: 'Answer key: 12.A' },
+                q13: { answer: 'B', explanation: 'Answer key: 13.B' },
+                q14: { answer: 'C', explanation: 'Answer key: 14.C' },
+                q15: { answer: 'D', explanation: 'Answer key: 15.D' },
+                q16: { answer: 'A', explanation: 'Answer key: 16.A' },
+                q17: { answer: 'D', explanation: 'Answer key: 17.D' },
+                q18: { answer: 'B', explanation: 'Answer key: 18.B' },
+                q19: { answer: 'D', explanation: 'Answer key: 19.D' },
+                q20: { answer: 'D', explanation: 'Answer key: 20.D' }
+            },
+            form3: {
+                q21: { answer: 'C', explanation: 'Answer key: 21.C' },
+                q22: { answer: 'D', explanation: 'Answer key: 22.D' },
+                q23: { answer: 'B', explanation: 'Answer key: 23.B' },
+                q24: { answer: 'A', explanation: 'Answer key: 24.A' },
+                q25: { answer: 'B', explanation: 'Answer key: 25.B' },
+                q26: { answer: 'D', explanation: 'Answer key: 26.D' },
+                q27: { answer: 'D', explanation: 'Answer key: 27.D' },
+                q28: { answer: 'C', explanation: 'Answer key: 28.C' },
+                q29: { answer: 'C', explanation: 'Answer key: 29.C' },
+                q30: { answer: 'C', explanation: 'Answer key: 30.C' },
+                q31: { answer: 'C', explanation: 'Answer key: 31.C' },
+                q32: { answer: 'A', explanation: 'Answer key: 32.A' },
+                q33: { answer: 'C', explanation: 'Answer key: 33.C' },
+                q34: { answer: 'C', explanation: 'Answer key: 34.C' },
+                q35: { answer: 'A', explanation: 'Answer key: 35.A' }
+            }
+        };
+
+        let timerInterval;
+        const totalTime = 40 * 60; // 40 minutes in seconds
+        let timeLeft = totalTime;
+        const timerDisplay = document.getElementById('countdown-timer');
+        const timerContainer = document.querySelector('.timer-container');
+        const submitButton = document.getElementById('submit-test-button');
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = formatTime(timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time's Up!";
+                    timerContainer.classList.add('ended');
+                    freezeAllForms();
+                    submitButton.disabled = false; // Ensure submit button is enabled
+                } else if (timeLeft <= 60) { // Highlight red for the last minute
+                    timerContainer.style.backgroundColor = '#fecaca'; /* red-100 */
+                    timerContainer.style.borderColor = '#ef4444'; /* red-400 */
+                    timerContainer.style.color = '#991b1b'; /* red-800 */
+                }
+            }, 1000); // Update every second
+        }
+
+        function freezeAllForms() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.classList.add('frozen-form');
+                const inputs = form.querySelectorAll('input[type="radio"]');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                });
+            });
+        }
+
+        function collectAnswers() {
+            const userAnswers = {};
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+
+            // Iterate over each form (Part 1, Part 2, Part 3)
+            for (const formId in correctAnswers) {
+                const form = document.getElementById(formId);
+                // Select all question items within the current form
+                const questionItems = form.querySelectorAll('.question-item');
+                const answersForForm = correctAnswers[formId];
+
+                questionItems.forEach((questionDiv) => {
+                    const questionText = questionDiv.querySelector('p').textContent;
+                    // Extract question number from the text (e.g., "1. What is...")
+                    const questionNumberMatch = questionText.match(/^(\d+)\./);
+                    if (!questionNumberMatch) {
+                        console.warn(`Could not extract question number from: ${questionText}`);
+                        return; // Skip if question number cannot be found
+                    }
+                    const questionNumber = parseInt(questionNumberMatch[1]);
+                    const questionName = `q${questionNumber}`; // Construct name like q1, q2, etc.
+
+                    const selectedOption = questionDiv.querySelector(`input[name="${questionName}"]:checked`);
+                    const correctAnswer = answersForForm[questionName] ? answersForForm[questionName].answer : 'N/A';
+
+                    const userAnswer = selectedOption ? selectedOption.value : 'N/A';
+                    const status = (userAnswer === correctAnswer) ? 'Correct' : 'Incorrect';
+
+                    if (userAnswer === correctAnswer) {
+                        totalCorrect++;
+                    }
+
+                    userAnswers[questionNumber] = {
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswer,
+                        status: status
+                    };
+                    totalQuestions++;
+                });
+            }
+            return { userAnswers, totalCorrect, totalQuestions };
+        }
+
+        function generatePdfReport(results) {
+            const { userAnswers, totalCorrect, totalQuestions } = results;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const today = new Date();
+            const date = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const time = today.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            // Title
+            doc.setFontSize(22);
+            doc.text("VSTEP Listening Comprehension Test Results", 105, 20, null, null, "center");
+
+            // Report Info
+            doc.setFontSize(12);
+            doc.text(`Report generated on: ${date} at ${time}`, 14, 35);
+            doc.text(`Total Score: ${totalCorrect} out of ${totalQuestions} correct!`, 14, 45);
+
+            // Prepare table data
+            const tableColumn = ["Question #", "Your Answer", "Correct Answer", "Status"];
+            const tableRows = [];
+
+            // Sort questions by number
+            const sortedQuestionNumbers = Object.keys(userAnswers).sort((a, b) => parseInt(a) - parseInt(b));
+
+            sortedQuestionNumbers.forEach(qNum => {
+                const data = userAnswers[qNum];
+                tableRows.push([
+                    qNum,
+                    data.userAnswer,
+                    data.correctAnswer,
+                    data.status
+                ]);
+            });
+
+            // Add table
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 55,
+                theme: 'grid',
+                headStyles: { fillColor: [44, 62, 80], textColor: [255, 255, 255], fontStyle: 'bold' },
+                styles: { fontSize: 10, cellPadding: 2, overflow: 'linebreak' },
+                columnStyles: {
+                    0: { cellWidth: 20 }, // Question #
+                    1: { cellWidth: 50 }, // Your Answer
+                    2: { cellWidth: 50 }, // Correct Answer
+                    3: { cellWidth: 30 }  // Status
+                }
+            });
+
+            // Save the PDF
+            doc.save('VSTEP_Test_Results.pdf');
+        }
+
+        submitButton.addEventListener('click', () => {
+            clearInterval(timerInterval); // Stop the timer if still running
+            freezeAllForms(); // Ensure all forms are frozen
+            const results = collectAnswers();
+            generatePdfReport(results);
+        });
+
+        // Tab functionality
+        function openTab(tabId) {
+            // Get all tab content elements
+            const tabContents = document.querySelectorAll('.tab-content');
+            // Hide all tab content
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Get all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            // Deactivate all tab buttons
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            // Activate the clicked tab button
+            event.currentTarget.classList.add('active');
+        }
+
+        // Add function to prevent copying text
+        function preventCopying() {
+            document.addEventListener('copy', (e) => {
+                e.preventDefault();
+                // Optionally, you can show a message to the user that copying is not allowed.
+                // alert('Copying text is not allowed on this test.');
+            });
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+            document.addEventListener('selectstart', (e) => {
+                e.preventDefault();
+            });
+        }
+
+        // Start the timer and prevent copying when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            startTimer();
+            preventCopying(); // Call the new function here
+        });
+    </script>
+</body>
+</html>
