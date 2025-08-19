@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Practice: Places and Buildings</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF and plugins for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for better readability and aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b; /* slate-800 */
+        }
+        .main-container {
+            max-width: 80rem; /* 8xl */
+            margin-left: auto;
+            margin-right: auto;
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+            padding: 1.5rem;
+        }
+        .exercise-container {
+            background-color: #f8fafc; /* slate-50 */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0; /* slate-200 */
+        }
+        .question-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0; /* slate-200 */
+        }
+        .question-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .option-label {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: background-color 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+        .option-label:hover {
+            background-color: #f1f5f9; /* hover:bg-slate-100 */
+        }
+        .option-label input[type="radio"], .option-label input[type="checkbox"] {
+            margin-right: 0.5rem;
+            accent-color: #4f46e5; /* indigo-600 */
+        }
+        input[type="text"] {
+            border: 1px solid #cbd5e1; /* slate-300 */
+            border-radius: 0.375rem;
+            padding: 0.25rem 0.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 2px #c7d2fe;
+        }
+        /* Styles for correct/incorrect answers */
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+            color: #15803d; /* green-700 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+            color: #b91c1c; /* red-700 */
+        }
+        .user-selected {
+            font-weight: 600;
+        }
+        .score-display {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0369a1; /* sky-800 */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid #7dd3fc; /* sky-300 */
+        }
+        
+        /* Tab specific styles */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0; /* slate-200 */
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid transparent;
+            border-bottom: none;
+            background-color: transparent;
+            color: #475569; /* slate-600 */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: -2px;
+        }
+        .tab-button:hover {
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b;
+        }
+        .tab-button.active {
+            color: #4f46e5; /* indigo-600 */
+            border-color: #e2e8f0;
+            border-bottom-color: white;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            background-color: white;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .explanation, .transcript {
+            font-size: 0.9rem;
+            color: #334155; /* slate-700 */
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background-color: #f0f9ff; /* sky-50 */
+            border-left: 4px solid #38bdf8; /* sky-400 */
+            border-radius: 0.25rem;
+        }
+        .word-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+        }
+        .word-box span {
+            background-color: #eef2ff; /* indigo-50 */
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px; /* rounded-full */
+            text-align: center;
+            font-weight: 500;
+            color: #4338ca; /* indigo-700 */
+            border: 1px solid #c7d2fe;
+        }
+        .passage-text {
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .hidden {
+            display: none;
+        }
+        mark {
+            background-color: #fef08a;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        /* Highlight toolbar styles (added) */
+        .highlight { padding: 0; border-radius: 3px; }
+        .highlight-toolbar {
+            position: absolute;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding: 6px;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0,0,0,.15);
+            background: #fff;
+            border: 1px solid rgba(30,41,59,0.06);
+            z-index: 9999;
+            transition: opacity .12s ease;
+        }
+        .highlight-color {
+            width: 20px; height: 20px; border-radius: 4px; cursor: pointer; border: 1px solid rgba(0,0,0,.08);
+        }
+        .highlight-toolbar button.clear-btn {
+            background: transparent; border: 1px solid #e2e8f0; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 12px;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+    <div class="main-container">
+        <h1 class="text-3xl font-extrabold text-center text-indigo-700 mb-2">IELTS Practice Unit 2</h1>
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-8">Places and Buildings</h2>
+
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'tab-vocab')">A. Vocabulary</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-grammar')">B. Grammar</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-reading')">C. Reading</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-speaking')">D. Speaking</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-listening')">E. Listening</button>
+        </div>
+
+        <!-- Vocabulary Tab (content unchanged) -->
+        <div id="tab-vocab" class="tab-content active">
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 1: Describing a Town/City</h3>
+                <p class="mb-4">Complete the sentences. Use the words in the box.</p>
+                <div class="word-box"><span>crowded</span><span>fashionable</span><span>historic</span><span>leafy</span><span>modern</span><span>noisy</span><span>quiet</span><span>remote</span></div>
+                <form id="form-vocab-1"><div class="question-item"><p class="font-medium mb-2">1. A <input type="text" name="q_v1_1" class="w-28"> part of town is full of people.</p></div><div class="question-item"><p class="font-medium mb-2">2. A <input type="text" name="q_v1_2" class="w-28"> village is a long way from any towns or cities.</p></div><div class="question-item"><p class="font-medium mb-2">3. A <input type="text" name="q_v1_3" class="w-28"> part of town is pleasant and has a lot of trees.</p></div><div class="question-item"><p class="font-medium mb-2">4. A <input type="text" name="q_v1_4" class="w-28"> part of town is popular.</p></div><div class="question-item"><p class="font-medium mb-2">5. A <input type="text" name="q_v1_5" class="w-28"> part of town doesn't have many people or cars.</p></div><div class="question-item"><p class="font-medium mb-2">6. A <input type="text" name="q_v1_6" class="w-28"> street is very loud, so it might be difficult to sleep if you live there.</p></div><div class="question-item"><p class="font-medium mb-2">7. A <input type="text" name="q_v1_7" class="w-28"> part of town is very new.</p></div><div class="question-item"><p class="font-medium mb-2">8. A <input type="text" name="q_v1_8" class="w-28"> area of town is old and has important buildings in it.</p></div><div id="score-form-vocab-1" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-vocab-1')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-vocab-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 2: Locations</h3>
+                <p class="mb-4">Complete the sentences. Use the words in the box.</p>
+                <div class="word-box"><span>a village</span><span>the city center</span><span>the coast</span><span>the countryside</span><span>the seaside</span><span>the south of</span><span>the suburbs</span><span>the outskirts of</span></div>
+                <form id="form-vocab-2"><div class="question-item"><p class="font-medium">1. I come from a tourist town by <input type="text" name="q_v2_1">. Every summer the beach is full of visitors.</p></div><div class="question-item"><p class="font-medium">2. My house is in <input type="text" name="q_v2_2">, so it's part of the city but away from the city center.</p></div><div class="question-item"><p class="font-medium">3. We live on <input type="text" name="q_v2_3"> the city - it takes just five minutes to walk from our house to the countryside.</p></div><div class="question-item"><p class="font-medium">4. I'd love to live in <input type="text" name="q_v2_4">, away from all the noise and traffic of the city.</p></div><div class="question-item"><p class="font-medium">5. Our house is in <input type="text" name="q_v2_5"> in the mountains. There are only about 30 houses and two shops.</p></div><div class="question-item"><p class="font-medium">6. The city where I was born is on <input type="text" name="q_v2_6">. There are always a lot of ships from around the world in the port.</p></div><div class="question-item"><p class="font-medium">7. I live in <input type="text" name="q_v2_7">, which is great. It means that I can walk to restaurants, cinemas and museums.</p></div><div class="question-item"><p class="font-medium">8. My town is in <input type="text" name="q_v2_8"> my country, not far from the mountains.</p></div><div id="score-form-vocab-2" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-vocab-2')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-vocab-2')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 3: Verb Choices</h3>
+                <p class="mb-4">Choose the correct verbs to complete the text. Use the words in the box.</p>
+                 <div class="word-box"><span>rented</span><span>borrowed</span><span>paid</span><span>shared</span><span>out</span><span>stayed</span><span>in</span><span>owned</span><span>moved</span><span>back</span><span>buy</span><span>earn</span></div>
+                <form id="form-vocab-3">
+                    <div class="passage-text">When I was a teenager, I didn't like living with my parents, so I <input type="text" name="q_v3_1"> home when I was 20 years old. At first, I <input type="text" name="q_v3_2"> a room in a flat - it wasn't my flat, so I had to pay money every month to live there. I didn't live there alone - I <input type="text" name="q_v3_3"> the flat with three other people. It was horrible. The other people never cleaned the flat, and we had a lot of arguments. So I moved <input type="text" name="q_v3_4"> after a couple of weeks and <input type="text" name="q_v3_5"> with some friends for about a week. Then I moved <input type="text" name="q_v3_6"> with my brother and his family. They <input type="text" name="q_v3_7"> a big house in the suburbs. I lived with them for about six months, but then they <input type="text" name="q_v3_8"> house and went to live in a different city. So I had to find a new place to live. In the end, I moved <input type="text" name="q_v3_9"> with my parents. It's much nicer now than when I first lived here. But now I'm saving money to <input type="text" name="q_v3_10"> a flat - hopefully I'll have enough money in a few years.</div>
+                    <div id="score-form-vocab-3" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-vocab-3')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-vocab-3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Grammar Tab (unchanged) -->
+        <div id="tab-grammar" class="tab-content">
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 1: Past Simple Regular Verbs</h3>
+                <p class="mb-4">Complete the sentences with the past simple of the verbs in brackets.</p>
+                <form id="form-grammar-1"><div class="question-item"><p class="font-medium">1. It was a beautiful evening, so we <input type="text" name="q_g1_1"> (walk) along the beach.</p></div><div class="question-item"><p class="font-medium">2. I was born in Spain, but my parents <input type="text" name="q_g1_2"> (move) to Switzerland when I was a baby.</p></div><div class="question-item"><p class="font-medium">3. Last week, we <input type="text" name="q_g1_3"> (visit) the History Museum. It was really interesting.</p></div><div class="question-item"><p class="font-medium">4. We <input type="text" name="q_g1_4"> (plan) to spend our holiday in the countryside, but we spent almost all the time on the beach.</p></div><div class="question-item"><p class="font-medium">5. There isn't a university in my town, so I <input type="text" name="q_g1_5"> (study) in a big city.</p></div><div class="question-item"><p class="font-medium">6. I <input type="text" name="q_g1_6"> (enjoy) my trip to London, but there were a lot of tourists everywhere.</p></div><div class="question-item"><p class="font-medium">7. When we lived in the city center, we went to the theatre every week, but we <input type="text" name="q_g1_7"> (stop) going after we moved to the suburbs.</p></div><div class="question-item"><p class="font-medium">8. I <input type="text" name="q_g1_8"> (try) to contact you, but we were in a very remote house and our phones didn't work.</p></div><div class="question-item"><p class="font-medium">9. We <input type="text" name="q_g1_9"> (stay) in a lovely guest house by the seaside - it was smaller than a hotel, but it had everything we needed.</p></div><div class="question-item"><p class="font-medium">10. We moved to the countryside when I was a teenager. My parents loved it, but I <input type="text" name="q_g1_10"> (prefer) living in the city.</p></div><div id="score-form-grammar-1" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-grammar-1')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-grammar-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+             <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 2: Past Simple Irregular Verbs</h3>
+                <p class="mb-4">Correct the sentences. Change the irregular verbs from the present simple to the past simple.</p>
+                <form id="form-grammar-2"><div class="question-item"><p class="font-medium">1. My parents <input type="text" name="q_g2_1"> (buy) their house 20 years ago.</p></div><div class="question-item"><p class="font-medium">2. It is quite expensive, but the bank <input type="text" name="q_g2_2"> (lend) them half the money so they can afford to buy it.</p></div><div class="question-item"><p class="font-medium">3. It is a small house, but it <input type="text" name="q_g2_3"> (feel) OK when my brother and I are children.</p></div><div class="question-item"><p class="font-medium">4. But as we <input type="text" name="q_g2_4"> (grow) older, the house <input type="text" name="q_g2_5"> (become) too small.</p></div><div class="question-item"><p class="font-medium">5. After about ten years, my parents <input type="text" name="q_g2_6"> (build) a new room at the back of the house.</p></div><div class="question-item"><p class="font-medium">6. But then my brother <input type="text" name="q_g2_7"> (leave) home and the house is too big again!</p></div><div class="question-item"><p class="font-medium">7. House prices then <input type="text" name="q_g2_8"> (rise) very quickly.</p></div><div class="question-item"><p class="font-medium">8. So when my parents <input type="text" name="q_g2_9"> (sell) their house last year, they <input type="text" name="q_g2_10"> (make) a lot of money.</p></div><div id="score-form-grammar-2" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-grammar-2')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-grammar-2')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 3: Past Simple Negative</h3>
+                <p class="mb-4">Complete the sentences with the past simple negative form of the verbs in brackets. Use contractions (e.g. wasn't) where possible.</p>
+                <form id="form-grammar-3"><div class="question-item"><p class="font-medium">1. We <input type="text" name="q_g3_1"> (can) find their house for hours. It was in the middle of nowhere.</p></div><div class="question-item"><p class="font-medium">2. I <input type="text" name="q_g3_2"> (like) living in the city center - it was too crowded.</p></div><div class="question-item"><p class="font-medium">3. Our old flat <input type="text" name="q_g3_3"> (have) a balcony, but our new flat's got one.</p></div><div class="question-item"><p class="font-medium">4. There <input type="text" name="q_g3_4"> (be) many other children in the part of town where I grew up.</p></div><div class="question-item"><p class="font-medium">5. I <input type="text" name="q_g3_5"> (see) my grandparents often when I was young because they lived a long way away.</p></div><div class="question-item"><p class="font-medium">6. We <input type="text" name="q_g3_6"> (need) a car when we lived in the city, but now we're in the suburbs, we have two!</p></div><div class="question-item"><p class="font-medium">7. It <input type="text" name="q_g3_7"> (be) a very fashionable neighborhood, but I liked living there.</p></div><div id="score-form-grammar-3" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-grammar-3')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-grammar-3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+             <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 4: Question Formation</h3>
+                <p class="mb-4">Put the words in the correct order to complete the questions.</p>
+                <form id="form-grammar-4">
+                    <div class="question-item"><p class="font-medium">1. (were / a / child? / did / you / where / you / live / when) <br><input type="text" name="q_g4_1" class="w-full mt-2"></p></div>
+                    <div class="question-item"><p class="font-medium">2. (what / your / was / like? / house) <br><input type="text" name="q_g4_2" class="w-full mt-2"></p></div>
+                    <div class="question-item"><p class="font-medium">3. (living / enjoy / you / did / there?) <br><input type="text" name="q_g4_3" class="w-full mt-2"></p></div>
+                    <div class="question-item"><p class="font-medium">4. (you / didn't / it? / what / about / like) <br><input type="text" name="q_g4_4" class="w-full mt-2"></p></div>
+                    <div class="question-item"><p class="font-medium">5. (could / from / your / you / walk / house? / to / school) <br><input type="text" name="q_g4_5" class="w-full mt-2"></p></div>
+                    <div class="question-item"><p class="font-medium">6. (was / it / a / good / place / to / grow / up?) <br><input type="text" name="q_g4_6" class="w-full mt-2"></p></div>
+                    <div class="question-item"><p class="font-medium">7. (how / old / were / you / when / you / left / home?) <br><input type="text" name="q_g4_7" class="w-full mt-2"></p></div>
+                    <div class="question-item"><p class="font-medium">8. (why / did / you / leave / home?) <br><input type="text" name="q_g4_8" class="w-full mt-2"></p></div>
+                    <div id="score-form-grammar-4" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-grammar-4')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-grammar-4')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reading Tab -->
+        <div id="tab-reading" class="tab-content">
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 1: Vocabulary for Natural World</h3>
+                <p class="mb-4">Match the words with the definitions.</p>
+                <div class="word-box"><span>a population</span><span>a skeleton</span><span>an ecosystem</span><span>to become extinct</span><span>to decrease</span><span>to hunt</span><span>to preserve</span></div>
+                <form id="form-reading-1"><div class="question-item"><p class="font-medium">1. This happens when a type of bird, animal or plant doesn't exist anymore: <input type="text" name="q_r1_1"></p></div><div class="question-item"><p class="font-medium">2. to become smaller in size or number: <input type="text" name="q_r1_2"></p></div><div class="question-item"><p class="font-medium">3. to follow and kill an animal for food or for sport: <input type="text" name="q_r1_3"></p></div><div class="question-item"><p class="font-medium">4. to put something (e.g. food) in ice, salt, sugar or chemicals, so it can stay in good condition: <input type="text" name="q_r1_4"></p></div><div class="question-item"><p class="font-medium">5. all the people or animals that live in one place or area: <input type="text" name="q_r1_5"></p></div><div class="question-item"><p class="font-medium">6. all the living things in an area and the way they affect each other and the environment: <input type="text" name="q_r1_6"></p></div><div class="question-item"><p class="font-medium">7. the frame of bones supporting a human or animal body: <input type="text" name="q_r1_7"></p></div><div id="score-form-reading-1" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-reading-1')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-reading-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+             <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 2: Sentence Completion</h3>
+                <p class="mb-4">Complete the sentences about the natural world. Use the words in the box.</p>
+                <div class="word-box"><span>decrease</span><span>ecosystem</span><span>extinct</span><span>hunt</span><span>population</span><span>preserve</span><span>skeleton</span></div>
+                <form id="form-reading-2"><div class="question-item"><p class="font-medium">1. Pollution harms all the plants, fish and animals in the <input type="text" name="q_r2_1">.</p></div><div class="question-item"><p class="font-medium">2. The tutor showed the <input type="text" name="q_r2_2"> to the medical students and asked which small bones were missing.</p></div><div class="question-item"><p class="font-medium">3. We expect the number of people living in the countryside will <input type="text" name="q_r2_3"> as families move to the cities.</p></div><div class="question-item"><p class="font-medium">4. There are so few polar bears left that it is possible they will soon become <input type="text" name="q_r2_4">.</p></div><div class="question-item"><p class="font-medium">5. The <input type="text" name="q_r2_5"> of my city has risen to 8 million people.</p></div><div class="question-item"><p class="font-medium">6. Lions often <input type="text" name="q_r2_6"> other animals at night.</p></div><div class="question-item"><p class="font-medium">7. Nowadays, most people use fridges to <input type="text" name="q_r2_7"> their food.</p></div><div id="score-form-reading-2" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-reading-2')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-reading-2')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 3: Synonyms and Paraphrases</h3>
+                <p class="mb-4">Match the words and phrases with the correct synonyms and paraphrases.</p>
+                <form id="form-reading-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>build or create</li>
+                                <li>inside of or within</li>
+                                <li>a pair of</li>
+                                <li>not as high as</li>
+                                <li>a little or an amount of</li>
+                                <li>decrease or fall</li>
+                                <li>might or may</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <div class="space-y-2">
+                                <p><input type="text" name="q_r3_1" class="w-32"> get smaller</p>
+                                <p><input type="text" name="q_r3_2" class="w-32"> make</p>
+                                <p><input type="text" name="q_r3_3" class="w-32"> a possibility</p>
+                                <p><input type="text" name="q_r3_4" class="w-32"> both</p>
+                                <p><input type="text" name="q_r3_5" class="w-32"> some</p>
+                                <p><input type="text" name="q_r3_6" class="w-32"> lower (than)</p>
+                                <p><input type="text" name="q_r3_7" class="w-32"> the contents of</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="score-form-reading-3" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-reading-3')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-reading-3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div>
+                </form>
+            </div>
+
+            <!-- New Exercise 4: Mammoth passage + completions -->
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 4: Bringing the mammoth back to life — Complete the sentences</h3>
+                <p class="mb-4">Complete the sentences below. Write ONE WORD ONLY from the passage for each answer.</p>
+                <div class="passage-text">
+                    <h4 class="font-semibold mb-2">Bringing the mammoth back to life</h4>
+                    <p>Mammoths once lived in large numbers across Asia, Africa, North America and Europe. However, over time, their numbers fell until the mammoth became extinct. Scientists think this happened for two reasons. Firstly, the mammoths' natural habitat decreased in size because of climate change. Secondly, many mammoths were killed by people who hunted them. The last population of mammoths lived on Wrangel Island, off north-east Siberia in the Chukchi Sea. These were woolly mammoths that could survive in very cold conditions, but they also died out around 4,000 years ago.</p>
+                    <p>Prehistoric cave paintings show us that people ate the woolly mammoths they killed, but also used their bones and tusks. They used these to make simple animal and human figures, an early kind of art, and also to create some basic tools. We also know a lot about the woolly mammoth because the freezing conditions in Alaska and Siberia have preserved them. Researchers have studied their skeletons, their teeth and even the grass and plants that were still inside their stomachs. We know that their fur was an orange-brown color, they had a thick layer of fat, and they had long, curved tusks. Their ears were short compared to an African or Asian elephant's we might see today, so they would not lose so much heat or get frostbite.</p>
+                </div>
+                <form id="form-reading-4">
+                    <div class="question-item"><p class="font-medium">1. The number of mammoths started to fall when their <input type="text" name="q_r4_1"> got smaller.</p></div>
+                    <div class="question-item"><p class="font-medium">2. Humans used mammoths for food, and to make art and <input type="text" name="q_r4_2">.</p></div>
+                    <div class="question-item"><p class="font-medium">3. Scientists have examined the contents of mammoths’ <input type="text" name="q_r4_3">.</p></div>
+                    <div class="question-item"><p class="font-medium">4. Mammoths had smaller <input type="text" name="q_r4_4"> than modern elephants.</p></div>
+                    <div class="question-item"><p class="font-medium">5. Some scientists think that a ‘new’ mammoth should have some <input type="text" name="q_r4_5">.</p></div>
+                    <div class="question-item"><p class="font-medium">6. Both elephants and mammoths are <input type="text" name="q_r4_6"> animals.</p></div>
+                    <div class="question-item"><p class="font-medium">7. There is a possibility that a ‘new’ mammoth could get a <input type="text" name="q_r4_7">.</p></div>
+                    <div id="score-form-reading-4" class="score-display"></div>
+                    <div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-reading-4')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-reading-4')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div>
+                </form>
+            </div>
+
+            <!-- New Exercise 5: Honey badger passage + completions -->
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 5: The honey badger — Complete the sentences</h3>
+                <p class="mb-4">Complete the sentences below using words or short phrases from the passage.</p>
+                <div class="passage-text">
+                    <h4 class="font-semibold mb-2">The honey badger</h4>
+                    <p>It looks harmless and vulnerable. But the honey badger is afraid of nothing…and will attack and eat almost anything. The honey badger (<em>Mellivora capensis</em>) is an African and south-Asian mammal that has a reputation for being one of the world’s most fearless animals, despite its small size. And in spite of its gentle-sounding name, it is also one of its most aggressive animals. Honey badgers have been known to attack lions, buffalo, and snakes three times their size. Even humans are not safe from a honey badger if it thinks the human will attack or harm it. They are also extremely tough creatures and can recover quickly from injuries that would kill most other animals.</p>
+                    <p>At first glance, honey badgers look like the common European badger. They are usually between 75 cm and 1 metre long, although males are about twice the size of females. They are instantly recognizable by grey and white stripes that extend from the top of the head to the tail. Closer inspection reveals pointed teeth and sharp front claws which can be four centimetres in length.</p>
+                    <p>Honey badgers are meat-eating animals with an extremely varied diet. They mainly eat a range of small creatures like beetles, lizards and birds, but will also catch larger reptiles like snakes and small crocodiles. Some mammals, such as foxes, antelope and wild cats also form part of their diet.</p>
+                    <p>The badgers locate their prey mainly using their excellent sense of smell, and catch most of their prey through digging. During a 24-hour period, they may dig as many as fifty holes, and travel more than 40 kilometres. They are also good climbers, and can easily climb very tall trees to steal eggs from birds’ nests, or catch other tree-dwelling creatures.</p>
+                    <p>As their name suggests, honey badgers have always been associated with honey, although they do not actually eat it. It is the highly nutritious bee eggs (called “brood”) that they prefer, and they will do anything to find it. They usually cause a lot of damage to the hive in the process, and for this reason, beekeepers will often set special traps for honey badgers to protect their hives.</p>
+                    <p>One of the most fascinating aspects of the honey badger is its working relationship with a bird called the greater honeyguide (<em>Indicator indicator</em>). This bird deliberately guides the badger to beehives, then waits while the badger breaks into the hive and extracts the brood. The two creatures, bird and mammal, then share the brood between them.</p>
+                </div>
+                <form id="form-reading-5">
+                    <div class="question-item"><p class="font-medium">1. Although they are not big animals, honey badgers are fearless, <input type="text" name="q_r5_1"> and tough.</p></div>
+                    <div class="question-item"><p class="font-medium">2. Honey badgers will attack <input type="text" name="q_r5_2"> if they need to protect themselves.</p></div>
+                    <div class="question-item"><p class="font-medium">3. The pattern and colours on the honey badger’s back make it <input type="text" name="q_r5_3">.</p></div>
+                    <div class="question-item"><p class="font-medium">4. The food they eat is meat-based and <input type="text" name="q_r5_4">.</p></div>
+                    <div class="question-item"><p class="font-medium">5. <input type="text" name="q_r5_5"> form the biggest part of a honey badger’s diet.</p></div>
+                    <div class="question-item"><p class="font-medium">6. Honey badgers find the creatures they eat by their <input type="text" name="q_r5_6">.</p></div>
+                    <div class="question-item"><p class="font-medium">7. <input type="text" name="q_r5_7"> are often used to catch honey badgers which attack beehives.</p></div>
+                    <div class="question-item"><p class="font-medium">8. For one particular type of food, the honey badger has a <input type="text" name="q_r5_8"> with another creature.</p></div>
+                    <div id="score-form-reading-5" class="score-display"></div>
+                    <div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-reading-5')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-reading-5')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Speaking Tab (unchanged) -->
+        <div id="tab-speaking" class="tab-content">
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 1: Holiday Description</h3>
+                <p class="mb-4">Read the task card. Then complete the student's notes. Use the words in the box.</p>
+                <div class="p-4 border rounded-md bg-slate-50 mb-4"><p class="font-semibold">Describe a place where you had a holiday that you enjoyed.</p><p>You should say:</p><ul class="list-disc list-inside ml-4"><li>where the place was</li><li>when you went there and how long you stayed</li><li>what you did while you were there</li><li>and explain why you enjoyed having a holiday at that place.</li></ul></div>
+                <div class="word-box"><span>bought</span><span>had</span><span>ran</span><span>stayed</span><span>was</span><span>went</span><span>were</span></div>
+                <form id="form-speaking-1"><p class="font-semibold text-lg mb-2">Notes</p><div class="question-item"><p class="font-medium mb-2">• where the place was<br> We <input type="text" name="q_s1_1"> a holiday in Pingyao, China = historical small town</p></div><div class="question-item"><p class="font-medium mb-2">• when you went there and how long you stayed<br> It <input type="text" name="q_s1_2"> this year (June) / we <input type="text" name="q_s1_3"> for 2 or 3 days</p></div><div class="question-item"><p class="font-medium mb-2">• what you did while you were there<br> We <input type="text" name="q_s1_4"> shopping and <input type="text" name="q_s1_5"> some local things</p></div><div class="question-item"><p class="font-medium mb-2">• explain why you enjoyed having a holiday at that place<br> The people who <input type="text" name="q_s1_6"> the hotel <input type="text" name="q_s1_7"> very friendly</p></div><div id="score-form-speaking-1" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-speaking-1')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-speaking-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 2: Correcting Mistakes</h3>
+                <p class="mb-4">Read the task card. Then watch the video of a student doing IELTS Speaking Part 2. The student makes some mistakes and uses the wrong tense in her answers. Correct the ten mistakes using the past simple form of the verbs.</p>
+                <form id="form-speaking-2"><div class="passage-text"><ol class="list-decimal list-inside space-y-2"><li>I really <input type="text" name="q_s2_1"> (want) to go there.</li><li>We <input type="text" name="q_s2_2"> (stay) there for two or three days.</li><li>We <input type="text" name="q_s2_3"> (travel) there and <input type="text" name="q_s2_4"> (go) around there and <input type="text" name="q_s2_5"> (buy) some local things.</li><li>We <input type="text" name="q_s2_6"> (have) two days in a hotel.</li><li>It's quite a small hotel, <input type="text" name="q_s2_7"> (is).</li><li>I really <input type="text" name="q_s2_8"> (enjoy) this holiday.</li><li>After that, we <input type="text" name="q_s2_9"> (go) around another city nearby.</li><li>And then we <input type="text" name="q_s2_10"> (go) back to Beijing.</li></ol></div><div id="score-form-speaking-2" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-speaking-2')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-speaking-2')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div></form>
+            </div>
+            <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 3: Sentence Matching</h3>
+                <p class="mb-4">Match the two halves to complete the sentences.</p>
+                <form id="form-speaking-3">
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                        <div class="space-y-3">
+                            <p>1. Sometimes people in Warsaw spoke to me in Polish.</p>
+                            <p>2. My father gave me a camera for my birthday.</p>
+                            <p>3. I loved the food in Germany.</p>
+                            <p>4. I didn't feel lonely in India.</p>
+                            <p>5. We didn't speak Chinese.</p>
+                            <p>6. When I was in New York I lost my wallet.</p>
+                            <p>7. I visited Egypt.</p>
+                            <p>8. One thing I liked about Alaska was the scenery.</p>
+                        </div>
+                        <div class="space-y-3">
+                            <p><input type="text" name="q_s3_1" class="w-8"> or Arabic, which meant that we had to speak English.</p>
+                            <p><input type="text" name="q_s3_2" class="w-8"> because the people were so friendly.</p>
+                            <p><input type="text" name="q_s3_3" class="w-8"> so I saw the pyramids.</p>
+                            <p><input type="text" name="q_s3_4" class="w-8"> because they could not speak English.</p>
+                            <p><input type="text" name="q_s3_5" class="w-8"> but I hated the weather.</p>
+                            <p><input type="text" name="q_s3_6" class="w-8"> and another thing was the wildlife.</p>
+                            <p><input type="text" name="q_s3_7" class="w-8"> so I had to cancel my credit card.</p>
+                            <p><input type="text" name="q_s3_8" class="w-8"> so I took a lot of photos on the holiday.</p>
+                        </div>
+                    </div>
+                    <div id="score-form-speaking-3" class="score-display"></div><div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-speaking-3')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-speaking-3')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Listening Tab (unchanged) -->
+        <div id="tab-listening" class="tab-content">
+             <div class="exercise-container">
+                <h3 class="text-xl font-bold text-indigo-600 mb-4">Exercise 1: Sound Differences (Track 2.1)</h3>
+                <p class="mb-4">Listen for sound differences. The sentences below contain sounds which students often find hard to pick out. Put a tick next to the sentence that you hear.</p>
+                <form id="form-listening-1">
+                    <div class="question-item">
+                        <p class="font-medium mb-2">1.</p>
+                        <label class="option-label"><input type="radio" name="q_l1_1" value="A"> a. My name is Steve Newly.</label>
+                        <label class="option-label"><input type="radio" name="q_l1_1" value="B"> b. My name is Steve Mewly.</label>
+                    </div>
+                     <div class="question-item">
+                        <p class="font-medium mb-2">2.</p>
+                        <label class="option-label"><input type="radio" name="q_l1_2" value="A"> a. That's Mrs. Melanie Ridgely.</label>
+                        <label class="option-label"><input type="radio" name="q_l1_2" value="B"> b. That's Mrs. Melanie Bridgely.</label>
+                    </div>
+                    <div class="question-item">
+                        <p class="font-medium mb-2">3.</p>
+                        <label class="option-label"><input type="radio" name="q_l1_3" value="A"> a. You'll need to speak to Jane Price.</label>
+                        <label class="option-label"><input type="radio" name="q_l1_3" value="B"> b. You'll need to speak to Joan Price.</label>
+                    </div>
+                     <div class="question-item">
+                        <p class="font-medium mb-2">4.</p>
+                        <label class="option-label"><input type="radio" name="q_l1_4" value="A"> a. It's Catherine – Catherine Millwell.</label>
+                        <label class="option-label"><input type="radio" name="q_l1_4" value="B"> b. It's Catherine – Catherine Meilwell.</label>
+                    </div>
+                     <div class="question-item">
+                        <p class="font-medium mb-2">5.</p>
+                        <label class="option-label"><input type="radio" name="q_l1_5" value="A"> a. The name is Darren Knight.</label>
+                        <label class="option-label"><input type="radio" name="q_l1_5" value="B"> b. The name is Daryl Knight.</label>
+                    </div>
+                    <div id="score-form-listening-1" class="score-display"></div>
+                    <div class="transcript hidden" id="transcript-listening-1">
+                        <p><strong>Transcript:</strong></p>
+                        <p>1. My name is Steve <mark>Mewly</mark>. I live at 10, Staines Close.</p>
+                        <p>2. That's Mrs. Melanie <mark>Bridgely</mark>. And the address is Charwood Crescent.</p>
+                        <p>3. You'll need to speak to <mark>Joan</mark> Price. You can find us at the end of Beachcroft Road.</p>
+                        <p>4. It's Catherine – Catherine <mark>Millwell</mark>. My address is Ditchﬁeld Way.</p>
+                        <p>5. The name is <mark>Daryl</mark> Knight. This is it – 102, Vine Court Place.</p>
+                    </div>
+                    <div class="flex justify-center space-x-4 mt-6"><button type="button" onclick="checkAnswers('form-listening-1')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">Check Answers</button><button type="button" onclick="resetForm('form-listening-1')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- PDF Export Button -->
+        <div class="flex justify-center mt-8">
+            <button type="button" onclick="exportResultsToPdf()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 text-lg">
+                Export Results to PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating highlight toolbar (initially hidden) -->
+    <div id="highlight-toolbar" class="highlight-toolbar hidden" role="toolbar" aria-hidden="true" aria-label="Highlight toolbar">
+        <!-- color swatches -->
+        <div class="highlight-color" data-color="#fff59d" title="Yellow" style="background:#fff59d"></div>
+        <div class="highlight-color" data-color="#ffd7a8" title="Peach" style="background:#ffd7a8"></div>
+        <div class="highlight-color" data-color="#c8f7c5" title="Green" style="background:#c8f7c5"></div>
+        <div class="highlight-color" data-color="#cfe9ff" title="Blue" style="background:#cfe9ff"></div>
+        <button class="clear-btn" id="clear-highlight-btn" title="Clear highlight">Clear</button>
+    </div>
+
+    <script>
+        // Store correct answers for each form
+        const correctAnswers = {
+            'form-vocab-1': {
+                'q_v1_1': { answer: 'crowded' }, 'q_v1_2': { answer: 'remote' }, 'q_v1_3': { answer: 'leafy' }, 'q_v1_4': { answer: 'fashionable' }, 'q_v1_5': { answer: 'quiet' }, 'q_v1_6': { answer: 'noisy' }, 'q_v1_7': { answer: 'modern' }, 'q_v1_8': { answer: 'historic' }
+            },
+            'form-vocab-2': {
+                'q_v2_1': { answer: 'the seaside' }, 'q_v2_2': { answer: 'the suburbs' }, 'q_v2_3': { answer: 'the outskirts of' }, 'q_v2_4': { answer: 'the countryside' }, 'q_v2_5': { answer: 'a village' }, 'q_v2_6': { answer: 'the coast' }, 'q_v2_7': { answer: 'the city center' }, 'q_v2_8': { answer: 'the south of' }
+            },
+            'form-vocab-3': {
+                'q_v3_1': { answer: 'left' }, 'q_v3_2': { answer: 'rented' }, 'q_v3_3': { answer: 'shared' }, 'q_v3_4': { answer: 'out' }, 'q_v3_5': { answer: 'stayed' }, 'q_v3_6': { answer: 'in' }, 'q_v3_7': { answer: 'owned' }, 'q_v3_8': { answer: 'left' }, 'q_v3_9': { answer: 'back' }, 'q_v3_10': { answer: 'buy' }
+            },
+            'form-grammar-1': {
+                'q_g1_1': { answer: 'walked' }, 'q_g1_2': { answer: 'moved' }, 'q_g1_3': { answer: 'visited' }, 'q_g1_4': { answer: 'planned' }, 'q_g1_5': { answer: 'studied' }, 'q_g1_6': { answer: 'enjoyed' }, 'q_g1_7': { answer: 'stopped' }, 'q_g1_8': { answer: 'tried' }, 'q_g1_9': { answer: 'stayed' }, 'q_g1_10': { answer: 'preferred' }
+            },
+            'form-grammar-2': {
+                'q_g2_1': { answer: 'bought' }, 'q_g2_2': { answer: 'lent' }, 'q_g2_3': { answer: 'felt' }, 'q_g2_4': { answer: 'grew' }, 'q_g2_5': { answer: 'became' }, 'q_g2_6': { answer: 'built' }, 'q_g2_7': { answer: 'left' }, 'q_g2_8': { answer: 'rose' }, 'q_g2_9': { answer: 'sold' }, 'q_g2_10': { answer: 'made' }
+            },
+            'form-grammar-3': {
+                'q_g3_1': { answer: "couldn't" }, 'q_g3_2': { answer: "didn't like" }, 'q_g3_3': { answer: "didn't have" }, 'q_g3_4': { answer: "weren't" }, 'q_g3_5': { answer: "didn't see" }, 'q_g3_6': { answer: "didn't need" }, 'q_g3_7': { answer: "wasn't" }
+            },
+             'form-grammar-4': {
+                'q_g4_1': { answer: 'Where did you live when you were a child?' }, 'q_g4_2': { answer: 'What was your house like?' }, 'q_g4_3': { answer: 'Did you enjoy living there?' }, 'q_g4_4': { answer: "What didn't you like about it?" }, 'q_g4_5': { answer: 'Could you walk to school from your house?' }, 'q_g4_6': { answer: 'Was it a good place to grow up?' }, 'q_g4_7': { answer: 'How old were you when you left home?' }, 'q_g4_8': { answer: 'Why did you leave home?' }
+            },
+            'form-reading-1': {
+                'q_r1_1': { answer: 'to become extinct' }, 'q_r1_2': { answer: 'to decrease' }, 'q_r1_3': { answer: 'to hunt' }, 'q_r1_4': { answer: 'to preserve' }, 'q_r1_5': { answer: 'a population' }, 'q_r1_6': { answer: 'an ecosystem' }, 'q_r1_7': { answer: 'a skeleton' }
+            },
+            'form-reading-2': {
+                'q_r2_1': { answer: 'ecosystem' }, 'q_r2_2': { answer: 'skeleton' }, 'q_r2_3': { answer: 'decrease' }, 'q_r2_4': { answer: 'extinct' }, 'q_r2_5': { answer: 'population' }, 'q_r2_6': { answer: 'hunt' }, 'q_r2_7': { answer: 'preserve' }
+            },
+            'form-reading-3': {
+                 'q_r3_1': { answer: '6' }, 'q_r3_2': { answer: '1' }, 'q_r3_3': { answer: '7' }, 'q_r3_4': { answer: '3' }, 'q_r3_5': { answer: '5' }, 'q_r3_6': { answer: '4' }, 'q_r3_7': { answer: '2' }
+            },
+
+            // new reading exercises
+            'form-reading-4': {
+                'q_r4_1': { answer: 'habitat' }, 'q_r4_2': { answer: 'tools' }, 'q_r4_3': { answer: 'stomachs' }, 'q_r4_4': { answer: 'ears' }, 'q_r4_5': { answer: 'freedom' }, 'q_r4_6': { answer: 'social' }, 'q_r4_7': { answer: 'disease' }
+            },
+            'form-reading-5': {
+                'q_r5_1': { answer: 'aggressive' }, 'q_r5_2': { answer: 'humans' }, 'q_r5_3': { answer: 'instantly recognizable' }, 'q_r5_4': { answer: 'varied' }, 'q_r5_5': { answer: 'small creatures' }, 'q_r5_6': { answer: 'smell' }, 'q_r5_7': { answer: 'special traps' }, 'q_r5_8': { answer: 'working relationship' }
+            },
+
+            'form-speaking-1': {
+                'q_s1_1': { answer: 'had' }, 'q_s1_2': { answer: 'was' }, 'q_s1_3': { answer: 'stayed' }, 'q_s1_4': { answer: 'went' }, 'q_s1_5': { answer: 'bought' }, 'q_s1_6': { answer: 'ran' }, 'q_s1_7': { answer: 'were' }
+            },
+            'form-speaking-2': {
+                'q_s2_1': { answer: 'wanted' }, 'q_s2_2': { answer: 'stayed' }, 'q_s2_3': { answer: 'travelled' }, 'q_s2_4': { answer: 'went' }, 'q_s2_5': { answer: 'bought' }, 'q_s2_6': { answer: 'had' }, 'q_s2_7': { answer: 'was' }, 'q_s2_8': { answer: 'enjoyed' }, 'q_s2_9': { answer: 'went' }, 'q_s2_10': { answer: 'went' }
+            },
+            'form-speaking-3': {
+                'q_s3_1': { answer: '5' }, 'q_s3_2': { answer: '2' }, 'q_s3_3': { answer: '7' }, 'q_s3_4': { answer: '4' }, 'q_s3_5': { answer: '3' }, 'q_s3_6': { answer: '8' }, 'q_s3_7': { answer: '6' }, 'q_s3_8': { answer: '1' }
+            },
+            'form-listening-1': {
+                'q_l1_1': { answer: 'B' }, 'q_l1_2': { answer: 'B' }, 'q_l1_3': { answer: 'B' }, 'q_l1_4': { answer: 'A' }, 'q_l1_5': { answer: 'B' }
+            }
+        };
+
+        // Function to check answers for a given form
+        function checkAnswers(formId) {
+            const form = document.getElementById(formId);
+            const answers = correctAnswers[formId];
+            let score = 0;
+            let totalQuestions = 0;
+
+            for (const questionName in answers) {
+                totalQuestions++;
+                const inputElement = form.querySelector(`[name="${questionName}"]`);
+                if (inputElement) {
+                    inputElement.classList.remove('correct-answer', 'incorrect-answer');
+                    
+                    if(inputElement.type === 'radio') {
+                        const selectedOption = form.querySelector(`input[name="${questionName}"]:checked`);
+                        const userAnswer = selectedOption ? selectedOption.value : '';
+                         if (userAnswer.toLowerCase() === answers[questionName].answer.toLowerCase()) {
+                            score++;
+                            selectedOption.closest('.option-label').classList.add('correct-answer');
+                        } else if (selectedOption) {
+                            selectedOption.closest('.option-label').classList.add('incorrect-answer');
+                        }
+                    } else {
+                        const userAnswer = inputElement.value.trim().toLowerCase();
+                        const correctAns = answers[questionName].answer.toLowerCase();
+                        if (userAnswer === correctAns) {
+                            inputElement.classList.add('correct-answer');
+                            score++;
+                        } else {
+                            inputElement.classList.add('incorrect-answer');
+                        }
+                    }
+                }
+            }
+            
+            const scoreDisplay = document.getElementById(`score-${formId}`);
+            scoreDisplay.textContent = `You scored ${score} out of ${totalQuestions}!`;
+
+            // Show transcript for listening exercises
+            const transcript = document.getElementById(`transcript-${formId}`);
+            if(transcript) {
+                transcript.classList.remove('hidden');
+            }
+        }
+
+        // Function to reset a form
+        function resetForm(formId) {
+            const form = document.getElementById(formId);
+            form.reset();
+            form.querySelectorAll('input[type="text"], .option-label').forEach(el => {
+                el.classList.remove('correct-answer', 'incorrect-answer');
+            });
+            document.getElementById(`score-${formId}`).textContent = '';
+            const transcript = document.getElementById(`transcript-${formId}`);
+            if(transcript) {
+                transcript.classList.add('hidden');
+            }
+        }
+
+        // Tab functionality
+        function openTab(evt, tabId) {
+            document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = "none");
+            document.querySelectorAll('.tab-button').forEach(tb => tb.classList.remove('active'));
+            document.getElementById(tabId).style.display = "block";
+            evt.currentTarget.classList.add('active');
+        }
+        // Set default active tab on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.tab-button.active').click();
+        });
+
+        // PDF Export Functionality
+        async function exportResultsToPdf() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let yOffset = 15;
+            const margin = 15;
+
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            doc.text("IELTS Practice Test Results", doc.internal.pageSize.width / 2, yOffset, { align: 'center' });
+            yOffset += 10;
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'normal');
+            doc.text("Unit 2: Places and Buildings", doc.internal.pageSize.width / 2, yOffset, { align: 'center' });
+            yOffset += 10;
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text(`Report generated on: ${new Date().toLocaleString()}`, doc.internal.pageSize.width / 2, yOffset, { align: 'center' });
+            yOffset += 15;
+
+            const allResults = [];
+            let totalOverallScore = 0;
+            let totalOverallQuestions = 0;
+
+            for (const formId in correctAnswers) {
+                const form = document.getElementById(formId);
+                const exerciseContainer = form.closest('.exercise-container');
+                const formTitle = exerciseContainer.querySelector('h3').textContent;
+                let qCounter = 0;
+                
+                for (const questionName in correctAnswers[formId]) {
+                    qCounter++;
+                    totalOverallQuestions++;
+                    const correctAnswerData = correctAnswers[formId][questionName];
+                    let userAnswer = 'N/A';
+                    let status = 'Incorrect';
+                    
+                    const inputElement = form.querySelector(`[name="${questionName}"]`);
+                    if (inputElement) {
+                         if(inputElement.type === 'radio') {
+                            const selectedOption = form.querySelector(`input[name="${questionName}"]:checked`);
+                            userAnswer = selectedOption ? selectedOption.value : 'N/A';
+                         } else {
+                            userAnswer = inputElement.value.trim() || 'N/A';
+                         }
+                    }
+
+                    if (userAnswer.toLowerCase() === correctAnswerData.answer.toLowerCase()) {
+                        status = 'Correct';
+                        totalOverallScore++;
+                    }
+                    
+                    allResults.push({
+                        section: formTitle,
+                        questionNum: qCounter,
+                        userAnswer: userAnswer,
+                        correctAnswer: correctAnswerData.answer,
+                        status: status
+                    });
+                }
+            }
+
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`Total Score: ${totalOverallScore} out of ${totalOverallQuestions} correct!`, margin, yOffset);
+            yOffset += 10;
+
+            const tableColumn = ["Question #", "Your Answer", "Correct Answer", "Status"];
+            const tableRows = [];
+            let currentSection = "";
+
+            allResults.forEach(result => {
+                if (result.section !== currentSection) {
+                    tableRows.push([{ content: result.section, colSpan: 4, styles: { fontStyle: 'bold', fillColor: '#f1f5f9', textColor: '#1e293b', halign: 'center' } }]);
+                    currentSection = result.section;
+                }
+                tableRows.push([
+                    result.questionNum,
+                    result.userAnswer,
+                    result.correctAnswer,
+                    result.status
+                ]);
+            });
+
+            doc.autoTable({
+                startY: yOffset,
+                head: [tableColumn],
+                body: tableRows,
+                theme: 'grid',
+                headStyles: { fillColor: '#4f46e5' },
+                didParseCell: function(data) {
+                    if (data.section === 'body' && data.column.index === 3) { // Status column
+                        if (data.cell.raw === 'Correct') {
+                            data.cell.styles.textColor = [34, 139, 34]; // ForestGreen
+                        } else if (data.cell.raw === 'Incorrect') {
+                            data.cell.styles.textColor = [220, 20, 60]; // Crimson
+                        }
+                    }
+                }
+            });
+
+            // NOTE: highlights are inline spans in HTML. Exporting highlighted text with colors into PDF requires extra parsing.
+            // For now the PDF includes results table. If you want highlights exported too, I can add HTML-to-PDF conversion that preserves inline styles.
+
+            doc.save('IELTS_PlacesAndBuildings_Results.pdf');
+        }
+    </script>
+
+    <!-- Highlight toolbar script appended so it coexists with the above functions -->
+    <script>
+        /*************************************************************************
+         * HIGHLIGHT TOOLBAR
+         *
+         * Behavior:
+         * - When user selects text (mouse or keyboard) the toolbar appears near
+         *   the top-left of the selection.
+         * - Clicking a color wraps the selection with a <span class="highlight">
+         *   and sets its background-color.
+         * - If the selection is inside an input/textarea, the entire input is
+         *   highlighted (background changed) because partial styling inside inputs
+         *   isn't possible with plain <input type="text">.
+         * - Clicking "Clear" removes highlight from the current selection:
+         *   - If selection was inside a highlighted span, that span will be removed
+         *     (replacing span with its text nodes).
+         *   - If selection was inside an input with highlight, the input background is reset.
+         *************************************************************************/
+
+        const toolbar = document.getElementById('highlight-toolbar');
+        const colorButtons = toolbar.querySelectorAll('.highlight-color');
+        const clearBtn = document.getElementById('clear-highlight-btn');
+
+        // Helper: show toolbar at coords (page coords)
+        function showToolbar(x, y) {
+            // Keep toolbar within viewport horizontally if possible
+            const maxLeft = window.scrollX + document.documentElement.clientWidth - toolbar.offsetWidth - 8;
+            const left = Math.min(x, maxLeft);
+            toolbar.style.left = Math.max(window.scrollX + 6, left) + 'px';
+            toolbar.style.top = Math.max(window.scrollY + 6, y) + 'px';
+            toolbar.classList.remove('hidden');
+            toolbar.setAttribute('aria-hidden', 'false');
+        }
+        function hideToolbar() {
+            toolbar.classList.add('hidden');
+            toolbar.setAttribute('aria-hidden', 'true');
+        }
+
+        document.addEventListener('selectionchange', onPossibleSelection);
+        document.addEventListener('mouseup', (e) => { setTimeout(onPossibleSelection, 10); });
+
+        document.addEventListener('mousedown', (e) => {
+            if (toolbar.contains(e.target)) return;
+            setTimeout(() => {
+                const sel = window.getSelection();
+                if (!sel || sel.isCollapsed) hideToolbar();
+            }, 10);
+        });
+
+        let currentRange = null;
+        let selectionInsideInput = null;
+
+        function onPossibleSelection() {
+            const sel = window.getSelection();
+            if (!sel) { hideToolbar(); return; }
+            if (sel.isCollapsed) { currentRange = null; selectionInsideInput = null; hideToolbar(); return; }
+
+            const range = sel.getRangeAt(0);
+            currentRange = range;
+
+            const text = sel.toString();
+            if (!text || text.trim().length === 0) {
+                const active = document.activeElement;
+                if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+                    selectionInsideInput = active;
+                    const rect = active.getBoundingClientRect();
+                    const x = window.scrollX + rect.left + 6;
+                    const y = window.scrollY + rect.top - toolbar.offsetHeight - 8;
+                    showToolbar(x, y);
+                    return;
+                }
+                hideToolbar();
+                return;
+            }
+
+            const startContainer = range.startContainer;
+            const endContainer = range.endContainer;
+            const startInput = (startContainer.nodeType === Node.ELEMENT_NODE) ? startContainer.closest('input,textarea') : startContainer.parentElement ? startContainer.parentElement.closest('input,textarea') : null;
+            const endInput = (endContainer.nodeType === Node.ELEMENT_NODE) ? endContainer.closest('input,textarea') : endContainer.parentElement ? endContainer.parentElement.closest('input,textarea') : null;
+
+            if (startInput || endInput) {
+                selectionInsideInput = startInput || endInput;
+                const rect = selectionInsideInput.getBoundingClientRect();
+                const x = window.scrollX + rect.left + 6;
+                const y = window.scrollY + rect.top - toolbar.offsetHeight - 8;
+                showToolbar(x, y);
+                return;
+            } else {
+                selectionInsideInput = null;
+            }
+
+            let rect = null;
+            try { rect = range.getBoundingClientRect(); } catch (err) { rect = null; }
+
+            if (rect && (rect.width || rect.height)) {
+                const x = window.scrollX + rect.left + 4;
+                const y = window.scrollY + rect.top - toolbar.offsetHeight - 8;
+                showToolbar(x, y);
+            } else {
+                hideToolbar();
+            }
+        }
+
+        function wrapRangeWithHighlight(range, color) {
+            if (!range || range.collapsed) return null;
+            try {
+                const content = range.extractContents();
+                const span = document.createElement('span');
+                span.classList.add('highlight');
+                span.style.backgroundColor = color;
+                span.setAttribute('data-highlight', 'true');
+                span.appendChild(content);
+                range.insertNode(span);
+                span.normalize();
+                return span;
+            } catch (err) {
+                try {
+                    const span = document.createElement('span');
+                    span.classList.add('highlight');
+                    span.style.backgroundColor = color;
+                    span.setAttribute('data-highlight', 'true');
+                    range.surroundContents(span);
+                    return span;
+                } catch (err2) {
+                    console.warn('Could not surround contents:', err2);
+                    return null;
+                }
+            }
+        }
+
+        // Use mousedown so the handler runs BEFORE the selection is removed by the click
+colorButtons.forEach(btn => {
+    btn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const color = btn.dataset.color;
+        if (!color) return;
+
+        // If the selection was inside an <input> or <textarea>, highlight the element's background
+        if (selectionInsideInput) {
+            selectionInsideInput.style.backgroundColor = color;
+            selectionInsideInput.setAttribute('data-input-highlight', color);
+            window.getSelection().removeAllRanges();
+            hideToolbar();
+            return;
+        }
+
+        // Try to use the live selection first
+        const sel = window.getSelection();
+        let range = null;
+
+        // If there's a live selection, clone it
+        if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+            range = sel.getRangeAt(0).cloneRange();
+        } else if (currentRange) {
+            // Fallback to the previously stored range from selectionchange
+            try {
+                range = currentRange.cloneRange();
+            } catch (err) {
+                range = null;
+            }
+        }
+
+        if (!range || range.collapsed) {
+            // nothing to highlight
+            hideToolbar();
+            return;
+        }
+
+        // Wrap the selection with a highlight span
+        const span = wrapRangeWithHighlight(range, color);
+
+        // Clear selection and hide toolbar
+        try { sel.removeAllRanges(); } catch (err) {}
+        hideToolbar();
+    });
+});
+
+// Clear highlight — use mousedown for same reason (preserve selection until handler runs)
+clearBtn.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (selectionInsideInput) {
+        selectionInsideInput.style.backgroundColor = '';
+        selectionInsideInput.removeAttribute('data-input-highlight');
+        hideToolbar();
+        return;
+    }
+
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed) {
+        hideToolbar();
+        return;
+    }
+
+    const range = sel.rangeCount ? sel.getRangeAt(0) : null;
+    if (!range) {
+        hideToolbar();
+        return;
+    }
+
+    // If the selection is inside a single highlight span, remove that span
+    let node = range.startContainer;
+    let highlightSpan = null;
+    while (node) {
+        if (node.nodeType === Node.ELEMENT_NODE && node.classList && node.classList.contains('highlight')) {
+            highlightSpan = node;
+            break;
+        }
+        node = node.parentElement;
+    }
+    if (highlightSpan) {
+        const parent = highlightSpan.parentNode;
+        while (highlightSpan.firstChild) parent.insertBefore(highlightSpan.firstChild, highlightSpan);
+        parent.removeChild(highlightSpan);
+        hideToolbar();
+        sel.removeAllRanges();
+        return;
+    }
+
+    // Otherwise remove any highlight spans that intersect the selection
+    const highlights = document.querySelectorAll('span.highlight');
+    highlights.forEach(h => {
+        const hRect = h.getBoundingClientRect();
+        const selRect = range.getBoundingClientRect();
+        if (!(hRect.right < selRect.left || hRect.left > selRect.right || hRect.bottom < selRect.top || hRect.top > selRect.bottom)) {
+            const parent = h.parentNode;
+            while (h.firstChild) parent.insertBefore(h.firstChild, h);
+            parent.removeChild(h);
+        }
+    });
+
+    hideToolbar();
+    sel.removeAllRanges();
+});
+
+        document.addEventListener('click', (e) => {
+            const hit = e.target.closest('span.highlight');
+            if (hit) {
+                const rect = hit.getBoundingClientRect();
+                const x = window.scrollX + rect.left + 6;
+                const y = window.scrollY + rect.top - toolbar.offsetHeight - 8;
+                selectionInsideInput = null;
+                currentRange = null;
+                showToolbar(x, y);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                const range = document.createRange();
+                range.selectNodeContents(hit);
+                sel.addRange(range);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideToolbar();
+                window.getSelection().removeAllRanges();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!toolbar.contains(e.target)) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    setTimeout(onPossibleSelection, 10);
+                    return;
+                }
+                hideToolbar();
+            }
+        });
+
+        // Optional: you can implement saving highlights to localStorage here if desired.
+    </script>
+</body>
+</html>
