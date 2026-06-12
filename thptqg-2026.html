@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interactive English Test — Mã đề 1101</title>
+  <title>Split-screen Interactive English Test — Mã đề 1101</title>
   <style>
     :root {
       --bg: #eef3f8;
@@ -19,13 +19,15 @@
       --bad-bg: #fee2e2;
       --bad-border: #dc2626;
       --bad-text: #7f1d1d;
-      --warn-bg: #fff7ed;
-      --warn-border: #f97316;
+      --soft-blue: #eff6ff;
       --shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+      --small-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
       --radius: 18px;
     }
 
     * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
 
     html { scroll-behavior: smooth; }
 
@@ -35,24 +37,25 @@
       background: radial-gradient(circle at top left, #dbeafe 0, transparent 30rem), var(--bg);
       color: var(--ink);
       line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .topbar {
-      position: sticky;
-      top: 0;
+      flex: 0 0 auto;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
     }
 
     .topbar-inner {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 14px 22px;
+      width: 100%;
+      padding: 12px clamp(14px, 2.5vw, 24px);
       display: flex;
-      gap: 16px;
+      gap: 18px;
       align-items: center;
       justify-content: space-between;
     }
@@ -87,7 +90,7 @@
     .timer-label {
       color: var(--muted);
       font-size: 0.9rem;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
@@ -121,81 +124,80 @@
       50% { transform: scale(1.035); }
     }
 
-    main {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 26px 22px 70px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #ffffff, #eff6ff);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: clamp(22px, 4vw, 34px);
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.6rem, 4vw, 2.5rem);
-      letter-spacing: -0.04em;
-      line-height: 1.15;
-    }
-
-    .hero p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      max-width: 800px;
-    }
-
-    .summary-strip {
+    .split-main {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin: 20px 0 0;
+      grid-template-columns: minmax(340px, 48%) minmax(420px, 52%);
+      overflow: hidden;
     }
 
-    .stat {
+    .pane {
+      min-height: 0;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      padding: clamp(14px, 2vw, 24px);
+    }
+
+    .passage-pane {
+      border-right: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(239, 246, 255, 0.82), rgba(255, 255, 255, 0.72));
+    }
+
+    .question-pane {
+      background: rgba(248, 250, 252, 0.78);
+    }
+
+    .pane-heading {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin-bottom: 16px;
+      padding: 16px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.75);
-      border-radius: 18px;
-      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--small-shadow);
     }
 
-    .stat b {
-      display: block;
-      font-size: 1.35rem;
+    .pane-heading h1,
+    .pane-heading h2 {
+      margin: 0 0 6px;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      font-size: clamp(1.25rem, 2.2vw, 1.85rem);
     }
 
-    .stat span {
+    .pane-heading p {
+      margin: 0;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.96rem;
     }
 
     .toolbar {
       position: sticky;
-      top: 82px;
-      z-index: 40;
+      top: 0;
+      z-index: 30;
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 14px;
-      align-items: center;
-      background: rgba(238, 243, 248, 0.94);
-      padding: 12px 0;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(248, 250, 252, 0.78));
       backdrop-filter: blur(10px);
     }
 
     .progress-card, .actions {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.95);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+      box-shadow: var(--small-shadow);
     }
 
-    .progress-card {
-      padding: 14px;
-    }
+    .progress-card { padding: 14px; }
 
     .progress-top {
       display: flex;
@@ -204,7 +206,7 @@
       align-items: center;
       margin-bottom: 10px;
       color: var(--muted);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 0.95rem;
     }
 
@@ -238,6 +240,7 @@
       font-weight: 800;
       font-size: 0.98rem;
       transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+      font-family: inherit;
     }
 
     button:hover:not(:disabled) { transform: translateY(-1px); }
@@ -258,7 +261,7 @@
 
     .result-panel {
       display: none;
-      margin: 12px 0 22px;
+      margin: 0 0 16px;
       padding: 18px;
       border-radius: 20px;
       border: 1px solid var(--line);
@@ -268,11 +271,14 @@
 
     .result-panel.show { display: block; }
 
+    .result-panel h2 { margin: 0 0 6px; }
+    .result-panel p { margin: 0; color: var(--muted); }
+
     .result-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
-      margin-top: 12px;
+      margin-top: 14px;
     }
 
     .result-item {
@@ -292,7 +298,7 @@
       display: grid;
       grid-template-columns: repeat(20, 1fr);
       gap: 6px;
-      margin: 16px 0 22px;
+      margin: 0 0 18px;
     }
 
     .nav-btn {
@@ -324,8 +330,96 @@
       color: var(--bad-text);
     }
 
+    .passage-card,
     .section {
-      margin: 26px 0;
+      margin: 0 0 18px;
+    }
+
+    .passage-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: clamp(18px, 2.6vw, 26px);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .passage-card.active-passage {
+      border-color: #60a5fa;
+      box-shadow: 0 16px 34px rgba(37, 99, 235, 0.14);
+    }
+
+    .passage-head {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .passage-head h2,
+    .section-title {
+      margin: 0 0 6px;
+      font-size: clamp(1.13rem, 2.2vw, 1.45rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .instruction {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .passage-body h3 {
+      margin: 0 0 12px;
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+
+    .passage-body p,
+    .prompt-card p { margin: 0 0 13px; }
+    .passage-body p:last-child,
+    .prompt-card p:last-child { margin-bottom: 0; }
+    .adapted { text-align: right; color: var(--muted); font-size: 0.92rem; }
+
+    .prompt-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .prompt-card {
+      border: 1px solid var(--line);
+      border-left: 5px solid #93c5fd;
+      border-radius: 18px;
+      padding: 14px;
+      background: #fbfdff;
+      scroll-margin-top: 88px;
+      transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .prompt-card.active-passage {
+      border-color: #2563eb;
+      background: #eff6ff;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .prompt-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: #1e3a8a;
     }
 
     .section-header {
@@ -336,35 +430,14 @@
       margin-bottom: 12px;
     }
 
-    .section-title {
-      margin: 0;
-      font-size: clamp(1.18rem, 3vw, 1.55rem);
-      letter-spacing: -0.02em;
-    }
-
-    .instruction {
-      margin: 5px 0 0;
-      color: var(--muted);
-    }
-
-    .passage {
-      background: #ffffff;
+    .question-section-header {
       border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: clamp(18px, 3vw, 26px);
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
-      margin-bottom: 16px;
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      margin-bottom: 12px;
     }
-
-    .passage h3 {
-      margin: 0 0 12px;
-      text-align: center;
-      letter-spacing: 0.04em;
-    }
-
-    .passage p { margin: 0 0 13px; }
-    .passage p:last-child { margin-bottom: 0; }
-    .adapted { text-align: right; color: var(--muted); font-size: 0.92rem; }
 
     .questions-grid {
       display: grid;
@@ -376,9 +449,9 @@
       border: 1px solid var(--line);
       border-left: 6px solid #cbd5e1;
       border-radius: 20px;
-      padding: clamp(16px, 3vw, 22px);
+      padding: clamp(16px, 2.3vw, 22px);
       box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
-      scroll-margin-top: 170px;
+      scroll-margin-top: 122px;
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
 
@@ -422,6 +495,23 @@
 
     .q-stem > p:first-child { margin-top: 0; }
     .q-stem > p:last-child { margin-bottom: 0; }
+
+    .prompt-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      box-shadow: none;
+      font-size: 0.82rem;
+    }
+
+    .prompt-link:hover:not(:disabled) {
+      background: #dbeafe;
+    }
 
     .badge {
       display: none;
@@ -484,39 +574,48 @@
       display: flex;
       justify-content: center;
       gap: 12px;
-      margin-top: 28px;
+      margin: 24px 0 12px;
     }
 
     .footnote {
-      margin-top: 22px;
       color: var(--muted);
       font-size: 0.9rem;
       text-align: center;
+      margin: 0 0 24px;
     }
 
-    @media (max-width: 900px) {
-      .toolbar { position: static; grid-template-columns: 1fr; }
-      .actions { justify-content: stretch; }
-      .actions button { flex: 1; }
+    @media (max-width: 1060px) {
+      .split-main { grid-template-columns: 44% 56%; }
+      .choices { grid-template-columns: 1fr; }
       .nav-grid { grid-template-columns: repeat(10, 1fr); }
-      .result-grid, .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    @media (max-width: 720px) {
-      .topbar-inner { align-items: stretch; flex-direction: column; }
+    @media (max-width: 760px) {
+      body { overflow: hidden; }
+      .topbar-inner { align-items: stretch; flex-direction: column; gap: 10px; }
       .timer-wrap { justify-content: space-between; }
       #timer { min-width: 130px; }
-      .choices { grid-template-columns: 1fr; }
+      .split-main {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(210px, 42%) minmax(260px, 58%);
+      }
+      .passage-pane { border-right: 0; border-bottom: 1px solid var(--line); }
+      .toolbar { grid-template-columns: 1fr; }
+      .actions { justify-content: stretch; }
+      .actions button { flex: 1; }
       .q-top { flex-direction: column; }
       .q-number { width: 38px; height: 38px; }
-      .result-grid, .summary-strip { grid-template-columns: 1fr; }
+      .result-grid { grid-template-columns: 1fr; }
     }
 
     @media print {
-      .topbar, .toolbar, .bottom-actions, .nav-grid { display: none !important; }
-      body { background: white; }
-      main { padding: 0; }
-      .hero, .passage, .q-card { box-shadow: none; }
+      body { display: block; overflow: visible; background: white; }
+      .topbar, .toolbar, .bottom-actions, .nav-grid, .prompt-link { display: none !important; }
+      .split-main { display: block; overflow: visible; }
+      .pane { overflow: visible; padding: 0; }
+      .passage-pane { border-right: 0; }
+      .pane-heading, .passage-card, .q-card, .question-section-header { box-shadow: none; }
     }
   </style>
 </head>
@@ -525,7 +624,7 @@
     <div class="topbar-inner">
       <div class="brand">
         <strong>Interactive English Multiple Choice Test</strong>
-        <span>Mã đề 1101 • 40 questions • Timer starts automatically</span>
+        <span>Mã đề 1101 • Split-screen mode • 40 questions</span>
       </div>
       <div class="timer-wrap" aria-label="Countdown timer">
         <span class="timer-label">Time left</span>
@@ -534,40 +633,39 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <h1>Đề tiếng Anh THPTQG 2026 — Mã đề 1101</h1>
-      <p>Choose A, B, C or D for each question. When you click <strong>Check Answers</strong>, your result will show the number of correct answers and your score on a 10-point scale. Correct answers are highlighted in green; incorrect selected answers are highlighted in red. When time reaches 00:00, all questions are locked and the test is submitted automatically.</p>
-      <div class="summary-strip" aria-label="Test overview">
-        <div class="stat"><b>40</b><span>Total questions</span></div>
-        <div class="stat"><b>60:00</b><span>Countdown timer</span></div>
-        <div class="stat"><b>10.00</b><span>Maximum score</span></div>
-      </div>
-    </section>
+  <main class="split-main">
+    <aside id="passagePane" class="pane passage-pane" aria-label="Text passages"></aside>
 
-    <section class="toolbar" aria-label="Quiz controls">
-      <div class="progress-card">
-        <div class="progress-top">
-          <span id="progressText">Answered: 0 / 40</span>
-          <span id="statusText">In progress</span>
+    <section id="rightPane" class="pane question-pane" aria-label="Questions and answer choices">
+      <section class="pane-heading">
+        <h1>Đề tiếng Anh THPTQG 2026 — Mã đề 1101</h1>
+        <p>Read in the left half, answer in the right half. Click <strong>Check Answers</strong> to lock the test and see your score out of 10.</p>
+      </section>
+
+      <section class="toolbar" aria-label="Quiz controls">
+        <div class="progress-card">
+          <div class="progress-top">
+            <span id="progressText">Answered: 0 / 40</span>
+            <span id="statusText">In progress</span>
+          </div>
+          <div class="progress-bar" aria-hidden="true"><div id="progressFill"></div></div>
         </div>
-        <div class="progress-bar" aria-hidden="true"><div id="progressFill"></div></div>
+        <div class="actions">
+          <button id="checkBtn" class="primary-btn" type="button">Check Answers</button>
+          <button id="resetBtn" class="ghost-btn" type="button">Restart</button>
+        </div>
+      </section>
+
+      <section id="resultPanel" class="result-panel" aria-live="polite"></section>
+      <section id="questionNav" class="nav-grid" aria-label="Question navigation"></section>
+      <section id="quiz"></section>
+
+      <div class="bottom-actions">
+        <button id="checkBtnBottom" class="primary-btn" type="button">Check Answers</button>
+        <button id="resetBtnBottom" class="ghost-btn" type="button">Restart</button>
       </div>
-      <div class="actions">
-        <button id="checkBtn" class="primary-btn" type="button">Check Answers</button>
-        <button id="resetBtn" class="ghost-btn" type="button">Restart</button>
-      </div>
+      <p class="footnote">Tip: the numbered buttons jump to each question and move the matching text into view.</p>
     </section>
-
-    <section id="resultPanel" class="result-panel" aria-live="polite"></section>
-    <section id="questionNav" class="nav-grid" aria-label="Question navigation"></section>
-    <section id="quiz"></section>
-
-    <div class="bottom-actions">
-      <button id="checkBtnBottom" class="primary-btn" type="button">Check Answers</button>
-      <button id="resetBtnBottom" class="ghost-btn" type="button">Restart</button>
-    </div>
-    <p class="footnote">Tip: the numbered buttons near the top jump to each question.</p>
   </main>
 
   <script>
@@ -1058,6 +1156,8 @@
   "40": "D"
 };
     const totalQuestions = Object.keys(answerKey).length;
+    const passagePane = document.getElementById('passagePane');
+    const rightPane = document.getElementById('rightPane');
     const quizEl = document.getElementById('quiz');
     const navEl = document.getElementById('questionNav');
     const resultPanel = document.getElementById('resultPanel');
@@ -1098,6 +1198,109 @@
       timerId = setInterval(tick, 1000);
     }
 
+    function questionSectionIndex(questionId) {
+      return quizData.findIndex((section) => section.questions.some((question) => Number(question.id) === Number(questionId)));
+    }
+
+    function hasSharedText(section) {
+      return Boolean(section.content && section.content.trim());
+    }
+
+    function scrollWithinPane(pane, target, extraOffset = 14) {
+      if (!pane || !target) return;
+      const paneRect = pane.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const top = pane.scrollTop + targetRect.top - paneRect.top - extraOffset;
+      pane.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
+
+    function setActivePassage(target) {
+      passagePane.querySelectorAll('.active-passage').forEach((el) => el.classList.remove('active-passage'));
+      if (target) target.classList.add('active-passage');
+    }
+
+    function syncPassageForQuestion(questionId, shouldScroll = true) {
+      const sectionIndex = questionSectionIndex(questionId);
+      if (sectionIndex < 0) return;
+      const section = quizData[sectionIndex];
+      const targetId = hasSharedText(section) ? `passage-section-${sectionIndex}` : `passage-q${questionId}`;
+      const target = document.getElementById(targetId);
+      setActivePassage(target);
+      if (shouldScroll) scrollWithinPane(passagePane, target, 74);
+    }
+
+    function scrollToQuestion(questionId) {
+      const card = document.getElementById(`q${questionId}`);
+      scrollWithinPane(rightPane, card, 118);
+      syncPassageForQuestion(questionId, true);
+    }
+
+    function renderPassages() {
+      passagePane.innerHTML = `
+        <section class="pane-heading">
+          <h2>Text passages</h2>
+          <p>This half scrolls separately, so you can keep the reading text open while answering on the right.</p>
+        </section>
+      `;
+
+      quizData.forEach((section, index) => {
+        const article = document.createElement('article');
+        article.className = 'passage-card';
+        article.id = `passage-section-${index}`;
+        article.dataset.sectionIndex = String(index);
+
+        const questionNumbers = section.questions.map((question) => question.id);
+        const first = questionNumbers[0];
+        const last = questionNumbers[questionNumbers.length - 1];
+        const range = first === last ? `Question ${first}` : `Questions ${first}–${last}`;
+
+        const head = document.createElement('div');
+        head.className = 'passage-head';
+        head.innerHTML = `
+          <span class="eyebrow">${range}</span>
+          <h2>${section.title}</h2>
+          <p class="instruction">${section.instruction}</p>
+        `;
+        article.appendChild(head);
+
+        if (hasSharedText(section)) {
+          const body = document.createElement('div');
+          body.className = 'passage-body';
+          body.innerHTML = section.content;
+          article.appendChild(body);
+        } else {
+          const prompts = document.createElement('div');
+          prompts.className = 'prompt-list';
+          section.questions.forEach((question) => {
+            const prompt = document.createElement('section');
+            prompt.className = 'prompt-card';
+            prompt.id = `passage-q${question.id}`;
+            prompt.innerHTML = `
+              <h3>Question ${question.id} prompt</h3>
+              <div>${question.stem}</div>
+            `;
+            prompts.appendChild(prompt);
+          });
+          article.appendChild(prompts);
+        }
+
+        passagePane.appendChild(article);
+      });
+    }
+
+    function renderQuestionStem(section, question) {
+      if (!hasSharedText(section)) {
+        return `
+          <p><strong>Question ${question.id}.</strong> Choose the best arrangement.</p>
+          <button class="prompt-link" type="button" data-prompt-target="passage-q${question.id}">View prompt on the left</button>
+        `;
+      }
+      if (String(question.stem).includes('<strong>Question')) {
+        return question.stem;
+      }
+      return `<p><strong>Question ${question.id}.</strong> ${question.stem}</p>`;
+    }
+
     function renderQuiz() {
       quizEl.innerHTML = '';
       quizData.forEach((section, index) => {
@@ -1106,21 +1309,12 @@
         sectionEl.setAttribute('aria-labelledby', `section-${index}`);
 
         const header = document.createElement('div');
-        header.className = 'section-header';
+        header.className = 'question-section-header';
         header.innerHTML = `
-          <div>
-            <h2 class="section-title" id="section-${index}">${section.title}</h2>
-            <p class="instruction">${section.instruction}</p>
-          </div>
+          <h2 class="section-title" id="section-${index}">${section.title}</h2>
+          <p class="instruction">Questions are answered here. The related text is in the left half.</p>
         `;
         sectionEl.appendChild(header);
-
-        if (section.content && section.content.trim()) {
-          const passage = document.createElement('div');
-          passage.className = 'passage';
-          passage.innerHTML = section.content;
-          sectionEl.appendChild(passage);
-        }
 
         const grid = document.createElement('div');
         grid.className = 'questions-grid';
@@ -1140,11 +1334,7 @@
 
           const stem = document.createElement('div');
           stem.className = 'q-stem';
-          if (String(question.stem).includes('<strong>Question')) {
-            stem.innerHTML = question.stem;
-          } else {
-            stem.innerHTML = `<p><strong>Question ${question.id}.</strong> ${question.stem}</p>`;
-          }
+          stem.innerHTML = renderQuestionStem(section, question);
 
           const badge = document.createElement('div');
           badge.className = 'badge';
@@ -1197,9 +1387,7 @@
         button.className = 'nav-btn';
         button.textContent = String(i);
         button.setAttribute('aria-label', `Go to question ${i}`);
-        button.addEventListener('click', () => {
-          document.getElementById(`q${i}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
+        button.addEventListener('click', () => scrollToQuestion(i));
         navEl.appendChild(button);
       }
     }
@@ -1292,7 +1480,7 @@
           <div class="result-item"><b>${score.toFixed(2)}</b><span>Score / 10</span></div>
         </div>
       `;
-      resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollWithinPane(rightPane, resultPanel, 118);
     }
 
     function checkAnswers(source = 'manual') {
@@ -1317,15 +1505,36 @@
     }
 
     document.addEventListener('change', (event) => {
-      if (event.target.matches('input[type="radio"]')) updateProgress();
+      if (event.target.matches('input[type="radio"]')) {
+        updateProgress();
+        const questionId = Number(event.target.name.replace('q', ''));
+        syncPassageForQuestion(questionId, false);
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      const promptButton = event.target.closest('[data-prompt-target]');
+      if (promptButton) {
+        const target = document.getElementById(promptButton.dataset.promptTarget);
+        setActivePassage(target);
+        scrollWithinPane(passagePane, target, 74);
+        return;
+      }
+
+      const card = event.target.closest('.q-card');
+      if (card) {
+        syncPassageForQuestion(Number(card.dataset.questionId), false);
+      }
     });
 
     checkButtons.forEach((button) => button.addEventListener('click', () => checkAnswers('manual')));
     resetButtons.forEach((button) => button.addEventListener('click', confirmRestart));
 
+    renderPassages();
     renderQuiz();
     renderNav();
     updateProgress();
+    syncPassageForQuestion(1, false);
     startTimer();
   </script>
 </body>
