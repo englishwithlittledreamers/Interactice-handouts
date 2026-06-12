@@ -140,10 +140,13 @@
       padding: clamp(14px, 2vw, 24px);
     }
 
+    /* left intro removed */
     .passage-pane {
       border-right: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(239, 246, 255, 0.82), rgba(255, 255, 255, 0.72));
     }
+
+    .passage-pane > .pane-heading { display: none !important; }
 
     .question-pane {
       background: rgba(248, 250, 252, 0.78);
@@ -1236,12 +1239,7 @@
     }
 
     function renderPassages() {
-      passagePane.innerHTML = `
-        <section class="pane-heading">
-          <h2>Text passages</h2>
-          <p>This half scrolls separately, so you can keep the reading text open while answering on the right.</p>
-        </section>
-      `;
+      passagePane.innerHTML = '';
 
       quizData.forEach((section, index) => {
         const article = document.createElement('article');
